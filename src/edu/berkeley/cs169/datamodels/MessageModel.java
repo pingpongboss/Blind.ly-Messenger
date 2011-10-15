@@ -4,28 +4,28 @@ public class MessageModel {
 	private String content;
 	private ContactModel from;
 	private ContactModel to;
-	
-	public String getContent (){
+
+	public String getContent() {
 		return content;
 	}
-	
-	public void setContent (String newcontent){
+
+	public void setContent(String newcontent) {
 		content = newcontent;
 	}
-	
-	public ContactModel getSender (){
+
+	public ContactModel getFrom() {
 		return from;
 	}
-	
-	public void setSender (ContactModel s){
-		from = s ;
+
+	public void setFrom(ContactModel f) {
+		from = f;
 	}
-	
-	public ContactModel getReceiver (){
+
+	public ContactModel getTo() {
 		return to;
 	}
-	
-	public void setReceiver (ContactModel r){
-		to = r;
+
+	public void setTo(ContactModel t) {
+		to = t;
 	}
 }

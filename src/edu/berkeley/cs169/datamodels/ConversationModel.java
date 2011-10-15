@@ -6,20 +6,19 @@ public class ConversationModel {
 	private List<MessageModel> messages;
 	private ContactModel other;
 
-	public ContactModel getOther (){
+	public ContactModel getOther() {
 		return other;
 	}
-	
-	public void setOther(ContactModel o){
+
+	public void setOther(ContactModel o) {
 		other = o;
 	}
-	
-	public List<MessageModel> getMessage () {
+
+	public List<MessageModel> getMessages() {
 		return messages;
 	}
-	
-	public void setMessage (MessageModel m){
-		messages.add(m);
+
+	public void setMessages(List<MessageModel> m) {
+		messages = m;
 	}
-	
 }

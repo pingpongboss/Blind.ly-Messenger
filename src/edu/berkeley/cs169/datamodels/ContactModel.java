@@ -4,19 +4,19 @@ public class ContactModel {
 	private String name;
 	private String number;
 
-	public String getName () {
+	public String getName() {
 		return name;
 	}
-	
-	public void setName (String newname) {
+
+	public void setName(String newname) {
 		name = newname;
 	}
-	
-	public String getNumber () {
+
+	public String getNumber() {
 		return number;
 	}
-	
-	public void setNumber (String newnumber) {
+
+	public void setNumber(String newnumber) {
 		number = newnumber;
 	}
 }
