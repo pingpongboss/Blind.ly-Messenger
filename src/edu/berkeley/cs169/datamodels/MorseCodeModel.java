@@ -3,5 +3,13 @@ package edu.berkeley.cs169.datamodels;
 import java.util.List;
 
 public class MorseCodeModel {
-	List<Integer> rawData; 
+	private List<Integer> rawData; 
+	
+	public List<Integer> getRawDate (){
+		return rawData;
+	}
+	
+	public void setRawDate(Integer n){
+		rawData.add(n);
+	}
 }
