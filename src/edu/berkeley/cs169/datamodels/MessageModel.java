@@ -5,6 +5,12 @@ public class MessageModel {
 	private ContactModel from;
 	private ContactModel to;
 
+	public MessageModel(String content, ContactModel from, ContactModel to) {
+		this.content = content;
+		this.from = from;
+		this.to = to;
+	}
+
 	public String getContent() {
 		return content;
 	}

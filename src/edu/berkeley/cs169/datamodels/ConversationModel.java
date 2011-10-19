@@ -5,6 +5,14 @@ import java.util.List;
 public class ConversationModel {
 	private List<MessageModel> messages;
 	private ContactModel other;
+	
+	
+
+	public ConversationModel(List<MessageModel> messages, ContactModel other) {
+		super();
+		this.messages = messages;
+		this.other = other;
+	}
 
 	public ContactModel getOther() {
 		return other;
