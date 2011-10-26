@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Blind.ly Messenger</string>
+    <string name="main_up">COMPOSE</string>
+    <string name="main_down">READ</string>
 </resources>

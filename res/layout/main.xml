@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
-    
+    <ImageView
+        android:id="@+id/banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/banner_small" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/banner"
+        android:layout_alignLeft="@+id/banner"
+        android:layout_marginBottom="15dp" >
+
+        <ImageButton
+            android:id="@+id/button_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_up" />
+
+        <TextView
+            android:id="@+id/text_up"
+            style="@style/mainTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:text="@string/main_up" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/banner"
+        android:layout_below="@+id/banner"
+        android:layout_marginTop="15dp" >
+
+        <ImageButton
+            android:id="@+id/button_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_down" />
+
+        <TextView
+            android:id="@+id/text_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/main_down" style="@style/mainTextStyle" android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
