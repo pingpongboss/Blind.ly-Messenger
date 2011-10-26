@@ -1,18 +1,28 @@
 package edu.berkeley.cs169.utils;
 
+import android.content.Context;
+import android.os.Vibrator;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 
 public class BMUtils {
 	public static MorseCodeModel textToMorse(String text) {
-		long[] data = pattern(text);
-		return new MorseCodeModel(data);
+		// TODO Jesse. Make it return an actual MorseCodeModel. Work with Woosuk
+		return null;
 	}
 
 	public static String morseToText(MorseCodeModel morse) {
+		// TODO Woosuk
 		return null;
 	}
-	
 
+	public static void textToVibration(String text, Context context) {
+		long[] data = pattern(text);
+
+		Vibrator vibrator = (Vibrator) context
+				.getSystemService(Context.VIBRATOR_SERVICE);
+		
+		vibrator.vibrate(data, -1);
+	}
 
 	/** Return the pattern data for a given character */
 	private static long[] pattern(char c) {

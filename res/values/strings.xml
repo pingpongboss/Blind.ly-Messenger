@@ -3,4 +3,5 @@
     <string name="app_name">Blind.ly Messenger</string>
     <string name="main_up">COMPOSE</string>
     <string name="main_down">READ</string>
+    <string name="main_alert">UP to compose DOWN to read</string>
 </resources>
