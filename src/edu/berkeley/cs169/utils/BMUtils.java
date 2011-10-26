@@ -6,8 +6,51 @@ import edu.berkeley.cs169.datamodels.MorseCodeModel;
 
 public class BMUtils {
 	public static MorseCodeModel textToMorse(String text) {
-		// TODO Jesse. Make it return an actual MorseCodeModel. Work with Woosuk
-		return null;
+		boolean lastWasWhitespace;
+		int strlen = text.length();
+
+		// Calculate how long our array needs to be.
+		int len = 0;
+		lastWasWhitespace = true;
+		for (int i = 0; i < strlen; i++) {
+			char c = text.charAt(i);
+			if (Character.isWhitespace(c)) {
+				if (!lastWasWhitespace) {
+					len += 2;
+					lastWasWhitespace = true;
+				}
+			} else {
+				if (!lastWasWhitespace) {
+					len++;
+				}
+				lastWasWhitespace = false;
+				len += MorseCodeModel.convert(pattern(c)).length;
+			}
+		}
+
+		long[] result = new long[len];
+		lastWasWhitespace = true;
+		int pos = 0;
+		for (int i = 0; i < strlen; i++) {
+			char c = text.charAt(i);
+			if (Character.isWhitespace(c)) {
+				if (!lastWasWhitespace) {
+					result[pos] = MorseCodeModel.SPACE;
+					result[++pos] = MorseCodeModel.SPACE;
+					pos++;
+					lastWasWhitespace = true;
+				}
+			} else {
+				if (!lastWasWhitespace) {
+					result[pos++] = MorseCodeModel.SPACE;
+				}
+				lastWasWhitespace = false;
+				long[] letter = MorseCodeModel.convert(pattern(c));
+				System.arraycopy(letter, 0, result, pos, letter.length);
+				pos += letter.length;
+			}
+		}
+		return new MorseCodeModel(result);
 	}
 
 	public static String morseToText(MorseCodeModel morse) {
@@ -20,7 +63,7 @@ public class BMUtils {
 
 		Vibrator vibrator = (Vibrator) context
 				.getSystemService(Context.VIBRATOR_SERVICE);
-		
+
 		vibrator.vibrate(data, -1);
 	}
 
