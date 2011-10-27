@@ -106,4 +106,36 @@ public class BMUtilsTest {
 
 		assertEquals(expected, m);
 	}
+	
+	@Test
+	public void testTextToMorse4() {
+		MorseCodeModel expected = new MorseCodeModel(new long[] { 2, 2, 2, 2, 2 });
+		MorseCodeModel m = BMUtils.textToMorse("0");
+
+		assertEquals(expected, m);
+	}
+	
+	@Test
+	public void testTextToMorse5() {
+		MorseCodeModel expected = new MorseCodeModel(new long[] { 2, 1, 2, 1, 0,
+				1, 1, 1, 0, 1, 2, 2, 2, 2, 0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 });
+		MorseCodeModel m = BMUtils.textToMorse("CS169");
+
+		assertEquals(expected, m);
+	}
+	
+	@Test
+	public void testTextToMorse6() {
+		MorseCodeModel expected = new MorseCodeModel(new long[] { 1, 2, 2, 2, 2,
+				0, 0, 1, 1, 2, 2, 2, 0, 0, 1, 1, 1, 2, 2});
+		MorseCodeModel m = BMUtils.textToMorse("1 2 3");
+
+		assertEquals(expected, m);
+	}
+	
+
+	@Test
+	public void testInverse() {
+		assertEquals(BMUtils.morseToText(BMUtils.textToMorse("HELLO")), "HELLO");
+	}
 }
