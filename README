@@ -14,7 +14,9 @@ This project needs the following prereqs:
  * Android SDK Platform-tools v8
  * Android 4.0 (API 14) (Target SDK version)
  * Android 1.6 (API 4) (Min SDK version)
+ * Eclipse ADT Plugin (Android Development Tools v14.0.0.v201110171935-205994)
  
 To test/run this project do the following:
- * Create a new Android AVD. Target [Android 1.6 - API Level 4].
+ * Create a new Android AVD. Target [Android 1.6 - API Level 4]
  * Right click the project in Eclipse and choose Run As -> Android Application
+ * The Android emulator does not vibrate. To test fully, copy bin/Blind.ly-Messenger.apk onto an Android phone, install, and run the app 
