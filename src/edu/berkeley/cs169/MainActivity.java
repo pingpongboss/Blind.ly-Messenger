@@ -1,6 +1,7 @@
 package edu.berkeley.cs169;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,7 +45,8 @@ public class MainActivity extends Activity {
 	// Edit for each Activity
 	protected void startUpAction() {
 		Log.d(TAG, "Clicked UP");
-		BMUtils.textToVibration("e", this);
+
+		startActivity(new Intent(this, ComposeActivity.class));
 	}
 
 	// Edit for each Activity
@@ -97,7 +99,6 @@ public class MainActivity extends Activity {
 		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
 		layoutUp.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				startUpAction();
 			}
@@ -106,7 +107,6 @@ public class MainActivity extends Activity {
 		LinearLayout layoutDown = (LinearLayout) findViewById(R.id.layout_down);
 		layoutDown.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				startDownAction();
 			}
