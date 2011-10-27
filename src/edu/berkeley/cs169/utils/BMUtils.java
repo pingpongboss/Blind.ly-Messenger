@@ -24,7 +24,7 @@ public class BMUtils {
 					len++;
 				}
 				lastWasWhitespace = false;
-				len += MorseCodeModel.convert(pattern(c)).length;
+				len += MorseCodeModel.pattern(c).length;
 			}
 		}
 
@@ -45,7 +45,7 @@ public class BMUtils {
 					result[pos++] = MorseCodeModel.SPACE;
 				}
 				lastWasWhitespace = false;
-				long[] letter = MorseCodeModel.convert(pattern(c));
+				long[] letter = MorseCodeModel.pattern(c);
 				System.arraycopy(letter, 0, result, pos, letter.length);
 				pos += letter.length;
 			}

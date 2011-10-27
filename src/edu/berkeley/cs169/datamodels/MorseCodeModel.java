@@ -10,7 +10,8 @@ public class MorseCodeModel {
 	public static final int DASH = 2;
 	public static final int SPACE = 0;
 
-	// convert BMVibrateConstant morse code representation to the MorseCodeModel morse
+	// convert BMVibrateConstant morse code representation to the MorseCodeModel
+	// morse
 	// code representation
 	public static long[] convert(long[] pattern) {
 		int len = pattern.length;
@@ -21,14 +22,14 @@ public class MorseCodeModel {
 				count++;
 			}
 		}
-		
+
 		long[] toReturn = new long[count];
 		for (int i = 0; i < count; i++) {
 			if (pattern[i] == BMVibrateConstants.DASH) {
 				toReturn[i] = MorseCodeModel.DASH;
 			} else if (pattern[i] == BMVibrateConstants.DOT) {
 				toReturn[i] = MorseCodeModel.DOT;
-			} 
+			}
 		}
 		return toReturn;
 	}
@@ -45,5 +46,76 @@ public class MorseCodeModel {
 
 	public void setRawData(long[] r) {
 		rawData = r;
+	}
+
+	/** The characters from 'A' to 'Z' */
+	public static final long[][] LETTERS = new long[][] {
+	/* A */new long[] { DOT, DASH },
+	/* B */new long[] { DASH, DOT, DOT, DOT },
+	/* C */new long[] { DASH, DOT, DASH, DOT },
+	/* D */new long[] { DASH, DOT, DOT },
+	/* E */new long[] { DOT },
+	/* F */new long[] { DOT, DOT, DASH, DOT },
+	/* G */new long[] { DASH, DASH, DOT },
+	/* H */new long[] { DOT, DOT, DOT, DOT },
+	/* I */new long[] { DOT, DOT },
+	/* J */new long[] { DOT, DASH, DASH, DASH },
+	/* K */new long[] { DASH, DOT, DASH },
+	/* L */new long[] { DOT, DASH, DOT, DOT },
+	/* M */new long[] { DASH, DASH },
+	/* N */new long[] { DASH, DOT },
+	/* O */new long[] { DASH, DASH, DASH },
+	/* P */new long[] { DOT, DASH, DASH, DOT },
+	/* Q */new long[] { DASH, DASH, DOT, DASH },
+	/* R */new long[] { DOT, DASH, DOT },
+	/* S */new long[] { DOT, DOT, DOT },
+	/* T */new long[] { DASH },
+	/* U */new long[] { DOT, DOT, DASH },
+	/* V */new long[] { DOT, DOT, DASH },
+	/* W */new long[] { DOT, DASH, DASH },
+	/* X */new long[] { DASH, DOT, DOT, DASH },
+	/* Y */new long[] { DASH, DOT, DASH, DASH },
+	/* Z */new long[] { DASH, DASH, DOT, DOT }, };
+
+	/** The characters from '0' to '9' */
+	public static final long[][] NUMBERS = new long[][] {
+	/* 0 */new long[] { DASH, DASH, DASH, DASH, DASH },
+	/* 1 */new long[] { DOT, DASH, DASH, DASH, DASH },
+	/* 2 */new long[] { DOT, DOT, DASH, DASH, DASH },
+	/* 3 */new long[] { DOT, DOT, DOT, DASH, DASH },
+	/* 4 */new long[] { DOT, DOT, DOT, DOT, DASH },
+	/* 5 */new long[] { DOT, DOT, DOT, DOT, DOT },
+	/* 6 */new long[] { DASH, DOT, DOT, DOT, DOT },
+	/* 7 */new long[] { DASH, DASH, DOT, DOT, DOT },
+	/* 8 */new long[] { DASH, DASH, DASH, DOT, DOT },
+	/* 9 */new long[] { DASH, DASH, DASH, DASH, DOT }, };
+
+	public static long[] pattern(char c) {
+		/** Return the pattern data for a given character */
+		if (c >= 'A' && c <= 'Z') {
+			return LETTERS[c - 'A'];
+		}
+		if (c >= 'a' && c <= 'z') {
+			return LETTERS[c - 'a'];
+		} else if (c >= '0' && c <= '9') {
+			return NUMBERS[c - '0'];
+		} else {
+			return BMVibrateConstants.ERROR_GAP; // fix this 4 me plz
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof MorseCodeModel)) {
+			return false;
+		}
+		long[] otherRawData = ((MorseCodeModel)obj).rawData;
+		if (otherRawData.length != this.rawData.length) return false;
+		
+		for (int i = 0; i < this.rawData.length; i++) {
+			if (this.rawData[i] != otherRawData[i]) return false;
+		}
+
+		return true;
 	}
 }
