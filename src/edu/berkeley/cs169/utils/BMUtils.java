@@ -53,9 +53,42 @@ public class BMUtils {
 		return new MorseCodeModel(result);
 	}
 
+	// "AB C" "120211002121"
 	public static String morseToText(MorseCodeModel morse) {
-		// TODO Woosuk
-		return null;
+		String output = "";
+		String word = "";
+		String tempWord = "";
+		boolean prev = false;
+
+		long[] morseInput = morse.getRawData();
+
+		for (int i = 0; i < morseInput.length; i++) {
+			if (morseInput[i] == MorseCodeModel.DOT) {
+				prev = false;
+				tempWord += MorseCodeModel.DOT;
+
+			} else if (morseInput[i] == MorseCodeModel.DASH) {
+				prev = false;
+				tempWord += MorseCodeModel.DASH;
+
+			} else if (morseInput[i] == MorseCodeModel.SPACE) {
+				if (prev == true) {// word is ready to be added
+					prev = false;
+					output += word + " ";
+					word = "";
+				} else { // constructing a word
+					prev = true;
+					word += morseWordToText(tempWord);
+					tempWord = "";
+				}
+			}
+
+		}
+		if (!tempWord.equals("")) { // if ended without last letter/word being
+									// added.
+			output += word + morseWordToText(tempWord);
+		}
+		return output;
 	}
 
 	public static void textToVibration(String text, Context context) {
@@ -65,6 +98,85 @@ public class BMUtils {
 				.getSystemService(Context.VIBRATOR_SERVICE);
 
 		vibrator.vibrate(data, -1);
+	}
+
+	private static String morseWordToText(String input) {
+		String output = "";
+		if (input.equals("12")) {
+			output = "A";
+		} else if (input.equals("2111")) {
+			output = "B";
+		} else if (input.equals("2121")) {
+			output = "C";
+		} else if (input.equals("211")) {
+			output = "D";
+		} else if (input.equals("1")) {
+			output = "E";
+		} else if (input.equals("1121")) {
+			output = "F";
+		} else if (input.equals("221")) {
+			output = "G";
+		} else if (input.equals("1111")) {
+			output = "H";
+		} else if (input.equals("11")) {
+			output = "I";
+		} else if (input.equals("1222")) {
+			output = "J";
+		} else if (input.equals("212")) {
+			output = "K";
+		} else if (input.equals("1211")) {
+			output = "L";
+		} else if (input.equals("22")) {
+			output = "M";
+		} else if (input.equals("21")) {
+			output = "N";
+		} else if (input.equals("222")) {
+			output = "O";
+		} else if (input.equals("1221")) {
+			output = "P";
+		} else if (input.equals("2212")) {
+			output = "Q";
+		} else if (input.equals("121")) {
+			output = "R";
+		} else if (input.equals("111")) {
+			output = "S";
+		} else if (input.equals("2")) {
+			output = "T";
+		} else if (input.equals("112")) {
+			output = "U";
+		} else if (input.equals("1112")) {
+			output = "V";
+		} else if (input.equals("122")) {
+			output = "W";
+		} else if (input.equals("2112")) {
+			output = "X";
+		} else if (input.equals("2122")) {
+			output = "Y";
+		} else if (input.equals("2211")) {
+			output = "Z";
+		} else if (input.equals("22222")) {
+			output = "0";
+		} else if (input.equals("12222")) {
+			output = "1";
+		} else if (input.equals("11222")) {
+			output = "2";
+		} else if (input.equals("11122")) {
+			output = "3";
+		} else if (input.equals("11112")) {
+			output = "4";
+		} else if (input.equals("11111")) {
+			output = "5";
+		} else if (input.equals("21111")) {
+			output = "6";
+		} else if (input.equals("22111")) {
+			output = "7";
+		} else if (input.equals("22211")) {
+			output = "8";
+		} else if (input.equals("22221")) {
+			output = "9";
+		}
+
+		return output;
 	}
 
 	/** Return the pattern data for a given character */
