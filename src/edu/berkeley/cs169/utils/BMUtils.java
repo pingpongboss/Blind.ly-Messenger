@@ -182,14 +182,14 @@ public class BMUtils {
 	/** Return the pattern data for a given character */
 	private static long[] pattern(char c) {
 		if (c >= 'A' && c <= 'Z') {
-			return BMConstants.LETTERS[c - 'A'];
+			return BMVibrateConstants.LETTERS[c - 'A'];
 		}
 		if (c >= 'a' && c <= 'z') {
-			return BMConstants.LETTERS[c - 'a'];
+			return BMVibrateConstants.LETTERS[c - 'a'];
 		} else if (c >= '0' && c <= '9') {
-			return BMConstants.NUMBERS[c - '0'];
+			return BMVibrateConstants.NUMBERS[c - '0'];
 		} else {
-			return BMConstants.ERROR_GAP;
+			return BMVibrateConstants.ERROR_GAP;
 		}
 	}
 
@@ -228,13 +228,13 @@ public class BMUtils {
 			char c = str.charAt(i);
 			if (Character.isWhitespace(c)) {
 				if (!lastWasWhitespace) {
-					result[pos] = BMConstants.WORD_GAP;
+					result[pos] = BMVibrateConstants.WORD_GAP;
 					pos++;
 					lastWasWhitespace = true;
 				}
 			} else {
 				if (!lastWasWhitespace) {
-					result[pos] = BMConstants.LETTER_GAP;
+					result[pos] = BMVibrateConstants.LETTER_GAP;
 					pos++;
 				}
 				lastWasWhitespace = false;

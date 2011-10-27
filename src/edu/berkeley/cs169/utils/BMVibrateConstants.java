@@ -3,7 +3,7 @@ package edu.berkeley.cs169.utils;
 /**
  * Refactored
  */
-public class BMConstants {
+public class BMVibrateConstants {
 	public static final long SPEED_BASE = 100;
 	public static final long DOT = SPEED_BASE;
 	public static final long DASH = SPEED_BASE * 3;
