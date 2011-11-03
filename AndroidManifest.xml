@@ -15,6 +15,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ComposeActivity" android:screenOrientation="nosensor"></activity>
+        <activity android:name=".MessageInputActivity" android:screenOrientation="nosensor"></activity>
 
     </application>
 </manifest>

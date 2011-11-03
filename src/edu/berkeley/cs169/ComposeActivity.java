@@ -1,9 +1,13 @@
 package edu.berkeley.cs169;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import edu.berkeley.cs169.utils.BMUtils;
 
 public class ComposeActivity extends Activity {
@@ -40,13 +44,14 @@ public class ComposeActivity extends Activity {
 		// Edit for each Activity
 		protected void startUpAction() {
 			Log.d(TAG, "Clicked UP");
+			
 			BMUtils.textToVibration("e", this);
 		}
 
 		// Edit for each Activity
 		protected void startDownAction() {
 			Log.d(TAG, "Clicked DOWN");
-			BMUtils.textToVibration("t", this);
+			startActivity(new Intent(this, MessageInputActivity.class));
 		}
 
 		// Same for all Activities
@@ -88,9 +93,9 @@ public class ComposeActivity extends Activity {
 //		private MessageModel mMessage;
 		
 		@Override
-		protected void onCreate(Bundle savedInstanceState) {
+		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			
 			setContentView(R.layout.compose);
+
 		}
 }

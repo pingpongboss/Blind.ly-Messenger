@@ -17,7 +17,7 @@
     </EditText>
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/text_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
