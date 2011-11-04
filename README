@@ -1,7 +1,7 @@
 CS169 Project
 Blind.ly Messenger
 
-Enabling blind people to SMS silently using only their Android smartphone.
+Enabling blind people to SMS silently using only their Android smartphone. App accepts input via the volume rockers, interpreted as morse code. 
 
 Mark Wei
 Edmond Lo
