@@ -25,4 +25,10 @@
         android:layout_marginTop="30dp"
         android:inputType="textMultiLine" android:hint="Compose message body" android:minLines="5" android:padding="10dp" android:drawableLeft="@drawable/button_down" android:drawablePadding="20dp"/>
 
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Send" />
+
 </LinearLayout>
