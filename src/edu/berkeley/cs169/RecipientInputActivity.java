@@ -8,14 +8,14 @@ import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import edu.berkeley.cs169.utils.NavigationKeyIntepreter;
-import edu.berkeley.cs169.utils.NavigationKeyIntepreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class RecipientInputActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	private ListView mContactList;
 	private boolean mShowInvisible;
-	NavigationKeyIntepreter keyInterpreter;
+	NavigationKeyInterpreter keyInterpreter;
 	int curPosition = 0;
 
 	@Override
@@ -29,7 +29,7 @@ public class RecipientInputActivity extends Activity implements
 		mShowInvisible = false;
 
 		// Register handler for UI elements
-		keyInterpreter = new NavigationKeyIntepreter(this);
+		keyInterpreter = new NavigationKeyInterpreter(this);
 
 		// Populate the contact list
 		populateContactList();
