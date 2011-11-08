@@ -1,27 +1,19 @@
-//WOOSUK CAN YOU SEE THIS? HUH?! HUUHH?!?!
-
 package edu.berkeley.cs169;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
 import edu.berkeley.cs169.utils.BMUtils;
 
-public class MainActivity extends Activity {
-
-	// {{ Copy and edit these fields and methods for each Activity
+public class MessageInputActivity extends Activity{
 
 	// Edit for each Activity
-	public static final String TAG = "MainActivity";
+	public static final String TAG = "MessageInputActivity";
+	
 	// Same for all Activities
-	public boolean upPressed = false;
-	public boolean downPressed = false;
-
+			public boolean upPressed = false;
+			public boolean downPressed = false;
 	// Same for all Activities
 	@Override
 	protected void onResume() {
@@ -29,26 +21,24 @@ public class MainActivity extends Activity {
 
 		vibrateShortCode();
 	}
-
 	// Edit for each Activity
 	protected void vibrateShortCode() {
-		String alert = getResources().getString(R.string.main_shortcode);
+		String alert = getResources().getString(R.string.compose_shortcode);
 
 		BMUtils.textToVibration(alert, this);
-	}
+		}
 
 	// Edit for each Activity
 	protected void vibrateHelp() {
-		String alert = getResources().getString(R.string.main_help);
+		String alert = getResources().getString(R.string.compose_help);
 
 		BMUtils.textToVibration(alert, this);
-	}
+		}
 
 	// Edit for each Activity
 	protected void startUpAction() {
 		Log.d(TAG, "Clicked UP");
-
-		startActivity(new Intent(this, ComposeActivity.class));
+		BMUtils.textToVibration("e", this);
 	}
 
 	// Edit for each Activity
@@ -56,7 +46,7 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "Clicked DOWN");
 		BMUtils.textToVibration("t", this);
 	}
-
+	
 	// Same for all Activities
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -92,26 +82,15 @@ public class MainActivity extends Activity {
 	}
 
 	// }}
-
+	
+//	private MessageModel mMessage;
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-
-		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
-		layoutUp.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				startUpAction();
-			}
-		});
-
-		LinearLayout layoutDown = (LinearLayout) findViewById(R.id.layout_down);
-		layoutDown.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				startDownAction();
-			}
-		});
+		
+		setContentView(R.layout.messageinput);
 	}
-}
+}	
+
+
