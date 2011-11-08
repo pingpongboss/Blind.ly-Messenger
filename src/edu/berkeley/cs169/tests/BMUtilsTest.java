@@ -36,8 +36,8 @@ public class BMUtilsTest {
 
 	@Test
 	public void testMorseToText3() {
-		long[] array = new long[] { 1, 1, 1, 1, 0, 1, 1, 0, 0, 2, 0, 1,
-				1, 1, 1, 0, 1, 0, 1, 2, 1, 0, 1 };
+		long[] array = new long[] { 1, 1, 1, 1, 0, 1, 1, 0, 0, 2, 0, 1, 1, 1,
+				1, 0, 1, 0, 1, 2, 1, 0, 1 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
@@ -45,8 +45,6 @@ public class BMUtilsTest {
 		String s = Utils.morseToText(morse);
 		assertEquals(s, "HI THERE");
 	}
-
-	
 
 	@Test
 	public void testMorseToText4() {
@@ -72,9 +70,8 @@ public class BMUtilsTest {
 
 	@Test
 	public void testMorseToText6() {
-		long[] array = new long[] { 1, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0,
-				1, 1, 1, 0, 1, 1, 2, 0, 2, 1, 2, 0, 1, 1, 1, 1, 1, 0,
-				1, 1, 1, 1, 1 };
+		long[] array = new long[] { 1, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 1, 1,
+				1, 0, 1, 1, 2, 0, 2, 1, 2, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
@@ -85,8 +82,8 @@ public class BMUtilsTest {
 
 	@Test
 	public void testMorseToText7() {
-		long[] array = new long[] { 1, 2, 2, 2, 2, 0, 0, 1, 1, 2, 2, 2,
-				0, 0, 1, 1, 1, 2, 2 };
+		long[] array = new long[] { 1, 2, 2, 2, 2, 0, 0, 1, 1, 2, 2, 2, 0, 0,
+				1, 1, 1, 2, 2 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
@@ -97,8 +94,8 @@ public class BMUtilsTest {
 
 	@Test
 	public void testMorseToText8() {
-		long[] array = new long[] { 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 2,
-				2, 2, 0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 };
+		long[] array = new long[] { 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 2, 2, 2,
+				0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
@@ -109,12 +106,12 @@ public class BMUtilsTest {
 
 	@Test
 	public void testTextToMorse1() {
-		long[] array = new long[] { 1, 1, 1, 1, 0, 1, 0, 1, 2, 1, 1, 0,
-				1, 2, 1, 1, 0, 2, 2, 2 };
+		long[] array = new long[] { 1, 1, 1, 1, 0, 1, 0, 1, 2, 1, 1, 0, 1, 2,
+				1, 1, 0, 2, 2, 2 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
-		
+
 		MorseCodeModel expected = new MorseCodeModel(list);
 		MorseCodeModel m = Utils.textToMorse("HELLO");
 
@@ -134,8 +131,8 @@ public class BMUtilsTest {
 
 	@Test
 	public void testTextToMorse3() {
-		long[] array = new long[] { 1, 1, 1, 1, 0, 1, 1, 0, 0, 2, 0, 1,
-				1, 1, 1, 0, 1, 0, 1, 2, 1, 0, 1 };
+		long[] array = new long[] { 1, 1, 1, 1, 0, 1, 1, 0, 0, 2, 0, 1, 1, 1,
+				1, 0, 1, 0, 1, 2, 1, 0, 1 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
@@ -158,8 +155,8 @@ public class BMUtilsTest {
 
 	@Test
 	public void testTextToMorse5() {
-		long[] array = new long[] { 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 2,
-				2, 2, 0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 };
+		long[] array = new long[] { 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 2, 2, 2,
+				0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 };
 		ArrayList<Long> list = new ArrayList<Long>();
 		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
@@ -168,7 +165,6 @@ public class BMUtilsTest {
 
 		assertEquals(expected, m);
 	}
-	
 
 	@Test
 	public void testTextToMorse6() {
@@ -205,5 +201,19 @@ public class BMUtilsTest {
 	public void testInverse3() {
 
 		assertEquals(Utils.morseToText(Utils.textToMorse("AB C")), "AB C");
+	}
+
+	@Test
+	public void testLastChar() {
+		String text = "HELLO";
+		MorseCodeModel morse = Utils.textToMorse(text);
+		assertEquals(morse.getLastChar(), 'O');
+	}
+
+	@Test
+	public void testLastChar2() {
+		String text = "A ";
+		MorseCodeModel morse = Utils.textToMorse(text);
+		assertEquals(morse.getLastChar(), ' ');
 	}
 }
