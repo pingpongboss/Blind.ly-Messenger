@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.widget.EditText;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
@@ -12,12 +13,17 @@ public class ComposeActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	NavigationKeyInterpreter keyIntepreter;
 
+	public static int PHONE_NUM_SELECT = 555555;
+	private EditText recipient;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compose);
 
 		keyIntepreter = new NavigationKeyInterpreter(this);
+
+		recipient = (EditText) findViewById(R.id.text_receipient);
 	}
 
 	@Override
@@ -26,6 +32,15 @@ public class ComposeActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.compose_shortcode);
 		Utils.textToVibration(alert, this);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PHONE_NUM_SELECT) {
+			if (resultCode == RecipientInputActivity.PHONE_NUM_OK) {
+				recipient.setText(data.getExtras().getString("recipient"));
+			}
+		}
 	}
 
 	@Override
@@ -62,7 +77,8 @@ public class ComposeActivity extends Activity implements
 	}
 
 	protected void editRecipient() {
-		Utils.textToVibration("t", this);
+		startActivityForResult(new Intent(this, RecipientInputActivity.class),
+				PHONE_NUM_SELECT);
 	}
 
 	protected void editMessage() {
