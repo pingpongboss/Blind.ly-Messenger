@@ -1,5 +1,6 @@
 package edu.berkeley.cs169;
 
+import edu.berkeley.cs169.utils.Utils;
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class ReadMessageActivity extends Activity {
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +34,11 @@ public class ReadMessageActivity extends Activity {
 	            view.setText(number[0] + " " + body[0]);
 	            setContentView(view);
 
+	}
+	
+	protected void startHelp() {
+		String alert = getResources().getString(R.string.compose_help);
+		Utils.textToVibration(alert, this);
 	}
 
 }

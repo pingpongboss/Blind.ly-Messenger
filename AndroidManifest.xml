@@ -40,6 +40,12 @@
             android:name=".ReadMessageActivity"
             android:screenOrientation="nosensor" >
         </activity>
+
+        <receiver android:name=".smsNotification" >
+            <intent-filter >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" >
