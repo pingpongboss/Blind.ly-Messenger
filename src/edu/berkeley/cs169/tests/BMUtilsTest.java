@@ -198,7 +198,7 @@ public class BMUtilsTest {
 	@Test
 	public void testInverse2() {
 
-		assertEquals(Utils.morseToText(Utils.textToMorse("1 2 3")), "1 2 3");
+		assertEquals(Utils.morseToText(Utils.textToMorse("1 23")), "1 23");
 	}
 
 	@Test
