@@ -3,111 +3,71 @@ package edu.berkeley.cs169;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Button;
+import edu.berkeley.cs169.utils.NavigationKeyIntepreter;
+import edu.berkeley.cs169.utils.NavigationKeyIntepreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
 
-public class ComposeActivity extends Activity {
-	// {{ Copy and edit these fields and methods for each Activity
-
-	Button sendButton; // Send Button
-
-	// Edit for each Activity
+public class ComposeActivity extends Activity implements
+		NavigationKeyInterpreterResultListener {
 	public static final String TAG = "ComposeActivity";
-	// Same for all Activities
-	public boolean upPressed = false;
-	public boolean downPressed = false;
-
-	// Same for all Activities
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		vibrateShortCode();
-	}
-
-	// Edit for each Activity
-	protected void vibrateShortCode() {
-		String alert = getResources().getString(R.string.compose_shortcode);
-
-		Utils.textToVibration(alert, this);
-	}
-
-	// Edit for each Activity
-	protected void vibrateHelp() {
-		String alert = getResources().getString(R.string.compose_help);
-
-		Utils.textToVibration(alert, this);
-	}
-
-	// Edit for each Activity
-	protected void startUpAction() {
-		Log.d(TAG, "Clicked UP");
-
-		Utils.textToVibration("e", this);
-	}
-
-	// Edit for each Activity
-	protected void startDownAction() {
-		Log.d(TAG, "Clicked DOWN");
-		startActivity(new Intent(this, MessageInputActivity.class));
-	}
-
-	// Same for all Activities
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			upPressed = true;
-			return true;
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			downPressed = true;
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	// Same for all Activities
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_UP:
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			if (upPressed && downPressed) {
-				vibrateHelp();
-			} else if (upPressed) {
-				startUpAction();
-			} else if (downPressed) {
-				startDownAction();
-			}
-			upPressed = false;
-			downPressed = false;
-			return true;
-		}
-		return super.onKeyUp(keyCode, event);
-	}
-
-	// }}
-
-	// private MessageModel mMessage;
+	NavigationKeyIntepreter keyIntepreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compose);
 
-		sendButton = (Button) findViewById(R.id.sendButton);
+		keyIntepreter = new NavigationKeyIntepreter(this);
+	}
 
-		// Sending SMS
-		sendButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+	@Override
+	protected void onResume() {
+		super.onResume();
 
-				String phoneNo = "5103234764";
-				String message = "Hi 169 team2";
-				Utils.sendSMSHelper(phoneNo, message);
-			}
-		});
+		String alert = getResources().getString(R.string.compose_shortcode);
+		Utils.textToVibration(alert, this);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyIntepreter.onKeyDown(keyCode, event))
+			return true;
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyIntepreter.onKeyUp(keyCode, event))
+			return true;
+		return super.onKeyUp(keyCode, event);
+	}
+
+	@Override
+	public void onKeyInterpreterResult(int resultCode) {
+		switch (resultCode) {
+		case 2: // up && down
+			startHelp();
+			break;
+		case 0: // up
+			editRecipient();
+			break;
+		case 1: // down
+			editMessage();
+			break;
+		}
+	}
+
+	protected void startHelp() {
+		String alert = getResources().getString(R.string.compose_help);
+		Utils.textToVibration(alert, this);
+	}
+
+	protected void editRecipient() {
+		Utils.textToVibration("t", this);
+	}
+
+	protected void editMessage() {
+		startActivity(new Intent(this, MessageInputActivity.class));
 	}
 }

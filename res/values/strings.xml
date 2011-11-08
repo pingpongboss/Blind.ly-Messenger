@@ -7,4 +7,6 @@
     <string name="main_shortcode">m</string>
     <string name="compose_help">UP for recipient DOWN for message</string>
     <string name="compose_shortcode">c</string>
+    <string name="compose_recipient_hint">Enter recipient</string>
+    <string name="compose_message_hint">Compose message body</string>
 </resources>

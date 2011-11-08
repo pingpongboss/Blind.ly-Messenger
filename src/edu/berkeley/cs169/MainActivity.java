@@ -48,19 +48,6 @@ public class MainActivity extends Activity implements
 		Utils.textToVibration(alert, this);
 	}
 
-	protected void startHelp() {
-		String alert = getResources().getString(R.string.main_help);
-		Utils.textToVibration(alert, this);
-	}
-
-	protected void startCompose() {
-		startActivity(new Intent(this, ComposeActivity.class));
-	}
-
-	protected void startRead() {
-		Utils.textToVibration("t", this);
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyIntepreter.onKeyDown(keyCode, event))
@@ -70,7 +57,7 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (!keyIntepreter.onKeyUp(keyCode, event))
+		if (keyIntepreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
 	}
@@ -88,5 +75,18 @@ public class MainActivity extends Activity implements
 			startRead();
 			break;
 		}
+	}
+
+	protected void startHelp() {
+		String alert = getResources().getString(R.string.main_help);
+		Utils.textToVibration(alert, this);
+	}
+
+	protected void startCompose() {
+		startActivity(new Intent(this, ComposeActivity.class));
+	}
+
+	protected void startRead() {
+		Utils.textToVibration("t", this);
 	}
 }
