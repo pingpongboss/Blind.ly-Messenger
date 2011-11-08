@@ -9,4 +9,5 @@
     <string name="compose_shortcode">c</string>
     <string name="compose_recipient_hint">Enter recipient</string>
     <string name="compose_message_hint">Compose message body</string>
+    <string name="message_edit_hint">Compose message body</string>
 </resources>

@@ -11,19 +11,23 @@ import edu.berkeley.cs169.utils.Utils;
 
 public class ComposeActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
-	NavigationKeyInterpreter keyIntepreter;
-
+	NavigationKeyInterpreter keyInterpreter;
+<<<<<<< HEAD
 	public static int PHONE_NUM_SELECT = 555555;
 	private EditText recipient;
+=======
+>>>>>>> 9bd6286d8a5170e8098ed04baa12e35221c88302
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compose);
 
-		keyIntepreter = new NavigationKeyInterpreter(this);
-
+		keyInterpreter = new NavigationKeyInterpreter(this);
+<<<<<<< HEAD
 		recipient = (EditText) findViewById(R.id.text_receipient);
+=======
+>>>>>>> 9bd6286d8a5170e8098ed04baa12e35221c88302
 	}
 
 	@Override
@@ -45,28 +49,31 @@ public class ComposeActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyIntepreter.onKeyDown(keyCode, event))
+		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
 		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyIntepreter.onKeyUp(keyCode, event))
+		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
 	}
 
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
-		case UP_AND_DOWN: // up && down
-			startHelp();
-			break;
 		case UP: // up
 			editRecipient();
 			break;
 		case DOWN: // down
 			editMessage();
+			break;
+		case UP_AND_DOWN: // up && down
+			// TODO send the SMS
+			break;
+		case UP_AND_DOWN_HOLD: // hold up && down
+			startHelp();
 			break;
 		}
 	}

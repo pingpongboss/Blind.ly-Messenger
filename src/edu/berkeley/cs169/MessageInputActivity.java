@@ -4,94 +4,78 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.EditText;
+import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
+import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
 
-public class MessageInputActivity extends Activity{
+public class MessageInputActivity extends Activity implements
+		KeyboardKeyInterpreterResultListener {
+	KeyboardKeyInterpreter keyInterpreter;
+	EditText edit;
 
-	// Edit for each Activity
-	public static final String TAG = "MessageInputActivity";
-	
-	// Same for all Activities
-			public boolean upPressed = false;
-			public boolean downPressed = false;
-	// Same for all Activities
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.message_input);
+
+		keyInterpreter = new KeyboardKeyInterpreter(this);
+
+		edit = (EditText) findViewById(R.id.edit);
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		vibrateShortCode();
-	}
-	// Edit for each Activity
-	protected void vibrateShortCode() {
 		String alert = getResources().getString(R.string.compose_shortcode);
-
 		Utils.textToVibration(alert, this);
-		}
+	}
 
 	// Edit for each Activity
 	protected void vibrateHelp() {
 		String alert = getResources().getString(R.string.compose_help);
 
 		Utils.textToVibration(alert, this);
-		}
-
-	// Edit for each Activity
-	protected void startUpAction() {
-		Log.d(TAG, "Clicked UP");
-		Utils.textToVibration("e", this);
 	}
 
-	// Edit for each Activity
-	protected void startDownAction() {
-		Log.d(TAG, "Clicked DOWN");
-		Utils.textToVibration("t", this);
-	}
-	
 	// Same for all Activities
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			upPressed = true;
+		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			downPressed = true;
-			return true;
-		}
 		return super.onKeyDown(keyCode, event);
 	}
 
 	// Same for all Activities
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_UP:
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			if (upPressed && downPressed) {
-				vibrateHelp();
-			} else if (upPressed) {
-				startUpAction();
-			} else if (downPressed) {
-				startDownAction();
-			}
-			upPressed = false;
-			downPressed = false;
+		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
-		}
 		return super.onKeyUp(keyCode, event);
 	}
 
-	// }}
-	
-//	private MessageModel mMessage;
-	
-	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.message_input);
+	public void onKeyInterpreterResult(int resultCode, Object result) {
+		switch (resultCode) {
+		case DOT:
+			break;
+		case DASH:
+			break;
+		case LETTER_GAP:
+			break;
+		case WORD_GAP:
+			break;
+		case LAST_LETTER:
+			Log.d("MessageInputActivity", result.toString());
+			edit.setText(edit.getText().toString() + result);
+			break;
+		}
 	}
-}	
 
+	// }}
 
+	// private MessageModel mMessage;
+
+}
