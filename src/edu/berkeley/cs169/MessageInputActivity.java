@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
@@ -14,6 +16,8 @@ public class MessageInputActivity extends Activity implements
 	KeyboardKeyInterpreter keyInterpreter;
 	EditText edit;
 
+	String recipient;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,7 +26,12 @@ public class MessageInputActivity extends Activity implements
 
 		keyInterpreter = new KeyboardKeyInterpreter(this);
 
+		recipient = getIntent().getStringExtra("recipient");
+
 		edit = (EditText) findViewById(R.id.edit);
+
+		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
+		recipientTextView.setText("To: " + recipient);
 	}
 
 	@Override
@@ -33,14 +42,12 @@ public class MessageInputActivity extends Activity implements
 		Utils.textToVibration(alert, this);
 	}
 
-	// Edit for each Activity
 	protected void vibrateHelp() {
 		String alert = getResources().getString(R.string.compose_help);
 
 		Utils.textToVibration(alert, this);
 	}
 
-	// Same for all Activities
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event))
@@ -48,7 +55,6 @@ public class MessageInputActivity extends Activity implements
 		return super.onKeyDown(keyCode, event);
 	}
 
-	// Same for all Activities
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyUp(keyCode, event))
@@ -70,11 +76,15 @@ public class MessageInputActivity extends Activity implements
 			Log.d("MessageInputActivity", result.toString());
 			edit.setText(edit.getText().toString() + result);
 			break;
+		case DONE:
+			String message = edit.getText().toString();
+			Utils.sendSMSHelper(recipient, message);
+			Toast.makeText(
+					this,
+					String.format("SMS sent to %s: \"%s\"", recipient, message),
+					Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
-
-	// }}
-
-	// private MessageModel mMessage;
 
 }

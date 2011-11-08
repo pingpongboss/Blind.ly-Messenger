@@ -65,10 +65,10 @@ public class RecipientInputActivity extends Activity implements
 			Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
 					Toast.LENGTH_LONG).show();
 
-			Intent i = new Intent();
+			Intent i = new Intent(this, MessageInputActivity.class);
 			i.putExtra("recipient", num);
-			setResult(PHONE_NUM_OK, i);
-			finish();
+
+			startActivity(i);
 			break;
 		case 0: // up
 			scrollToPrev();

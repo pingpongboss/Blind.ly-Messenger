@@ -15,6 +15,7 @@ public class KeyboardKeyInterpreter {
 
 	long upKeyDownTimestamp = -1;
 	long upKeyUpTimestamp = -1;
+	long downKeyDownTimestamp = -1;
 
 	public KeyboardKeyInterpreter(KeyboardKeyInterpreterResultListener listener) {
 		this.listener = listener;
@@ -51,6 +52,11 @@ public class KeyboardKeyInterpreter {
 				upKeyUpTimestamp = -1;
 			}
 			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			if (downKeyDownTimestamp == -1) {
+				downKeyDownTimestamp = event.getEventTime();
+			}
+			return true;
 		}
 		return false;
 	}
@@ -75,6 +81,11 @@ public class KeyboardKeyInterpreter {
 				upKeyUpTimestamp = event.getEventTime();
 			}
 			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			if (downKeyDownTimestamp != -1) {
+				listener.onKeyInterpreterResult(6, null);
+			}
+			return true;
 		}
 		return false;
 	}
@@ -85,6 +96,7 @@ public class KeyboardKeyInterpreter {
 		public static final int LETTER_GAP = 3;
 		public static final int WORD_GAP = 4;
 		public static final int LAST_LETTER = 5;
+		public static final int DONE = 6;
 
 		public void onKeyInterpreterResult(int resultCode, Object result);
 
