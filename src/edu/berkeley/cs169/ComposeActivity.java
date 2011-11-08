@@ -12,11 +12,8 @@ import edu.berkeley.cs169.utils.Utils;
 public class ComposeActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	NavigationKeyInterpreter keyInterpreter;
-<<<<<<< HEAD
 	public static int PHONE_NUM_SELECT = 555555;
 	private EditText recipient;
-=======
->>>>>>> 9bd6286d8a5170e8098ed04baa12e35221c88302
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,10 +21,7 @@ public class ComposeActivity extends Activity implements
 		setContentView(R.layout.compose);
 
 		keyInterpreter = new NavigationKeyInterpreter(this);
-<<<<<<< HEAD
 		recipient = (EditText) findViewById(R.id.text_receipient);
-=======
->>>>>>> 9bd6286d8a5170e8098ed04baa12e35221c88302
 	}
 
 	@Override
