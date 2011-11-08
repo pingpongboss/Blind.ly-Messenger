@@ -25,6 +25,7 @@ public class ReadMessageActivity extends Activity {
 		
 		    String[] body = new String[smsEntriesCount];
 		    String[] number = new String[smsEntriesCount];
+		    if (c.moveToFirst() == false){
 		    if (c.moveToFirst()) 
 		    {
 		    	for (int i = 0; i < smsEntriesCount; i++) 
@@ -41,6 +42,7 @@ public class ReadMessageActivity extends Activity {
 		    view.setText(msg);
 		    setContentView(view);
 		    readMessage();
+		    }
 	}
 	private void readMessage() {
 		Utils.textToVibration(content, this);
