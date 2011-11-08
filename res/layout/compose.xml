@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" android:gravity="center_vertical">
 
     <EditText
         android:id="@+id/text_receipient"
@@ -17,12 +17,17 @@
     </EditText>
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/text_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:inputType="textMultiLine" android:hint="Compose message body" android:minLines="5" android:padding="10dp" android:drawableLeft="@drawable/button_down" android:drawablePadding="20dp"/>
+        android:drawableLeft="@drawable/button_down"
+        android:drawablePadding="20dp"
+        android:hint="Compose message body"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:padding="10dp" />
 
 </LinearLayout>
