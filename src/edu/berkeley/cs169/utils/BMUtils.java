@@ -2,6 +2,7 @@ package edu.berkeley.cs169.utils;
 
 import android.content.Context;
 import android.os.Vibrator;
+import android.telephony.SmsManager;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 
 public class BMUtils {
@@ -244,5 +245,10 @@ public class BMUtils {
 			}
 		}
 		return result;
+	}
+
+	public static void sendSMSHelper(String phoneNumber, String message) {
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(phoneNumber, null, message, null, null);
 	}
 }
