@@ -61,7 +61,6 @@ public class MainActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	@Override
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
 		case UP_AND_DOWN: // up && down
