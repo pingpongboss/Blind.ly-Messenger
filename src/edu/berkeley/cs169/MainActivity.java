@@ -88,6 +88,6 @@ public class MainActivity extends Activity implements
 	}
 
 	protected void startRead() {
-		Utils.textToVibration("t", this);
+		startActivity(new Intent(this, ReadMessageActivity.class));
 	}
 }
