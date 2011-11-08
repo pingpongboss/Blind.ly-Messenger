@@ -7,21 +7,20 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import edu.berkeley.cs169.utils.NavigationKeyIntepreter;
-import edu.berkeley.cs169.utils.NavigationKeyIntepreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
 
 public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
-	public static final String TAG = "MainActivity";
-	NavigationKeyIntepreter keyIntepreter;
+	NavigationKeyInterpreter keyIntepreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		keyIntepreter = new NavigationKeyIntepreter(this);
+		keyIntepreter = new NavigationKeyInterpreter(this);
 
 		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
 		layoutUp.setOnClickListener(new OnClickListener() {
@@ -65,13 +64,13 @@ public class MainActivity extends Activity implements
 	@Override
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
-		case 2: // up && down
+		case UP_AND_DOWN: // up && down
 			startHelp();
 			break;
-		case 0: // up
+		case UP: // up
 			startCompose();
 			break;
-		case 1: // down
+		case DOWN: // down
 			startRead();
 			break;
 		}

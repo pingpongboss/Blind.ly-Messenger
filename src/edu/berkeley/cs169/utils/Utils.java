@@ -1,5 +1,7 @@
 package edu.berkeley.cs169.utils;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
@@ -10,45 +12,25 @@ public class Utils {
 		boolean lastWasWhitespace;
 		int strlen = text.length();
 
-		// Calculate how long our array needs to be.
-		int len = 0;
+		ArrayList<Long> result = new ArrayList<Long>();
 		lastWasWhitespace = true;
 		for (int i = 0; i < strlen; i++) {
 			char c = text.charAt(i);
 			if (Character.isWhitespace(c)) {
 				if (!lastWasWhitespace) {
-					len += 2;
+					result.add(MorseCodeModel.SPACE);
+					result.add(MorseCodeModel.SPACE);
 					lastWasWhitespace = true;
 				}
 			} else {
 				if (!lastWasWhitespace) {
-					len++;
-				}
-				lastWasWhitespace = false;
-				len += MorseCodeModel.pattern(c).length;
-			}
-		}
-
-		long[] result = new long[len];
-		lastWasWhitespace = true;
-		int pos = 0;
-		for (int i = 0; i < strlen; i++) {
-			char c = text.charAt(i);
-			if (Character.isWhitespace(c)) {
-				if (!lastWasWhitespace) {
-					result[pos] = MorseCodeModel.SPACE;
-					result[++pos] = MorseCodeModel.SPACE;
-					pos++;
-					lastWasWhitespace = true;
-				}
-			} else {
-				if (!lastWasWhitespace) {
-					result[pos++] = MorseCodeModel.SPACE;
+					result.add(MorseCodeModel.SPACE);
 				}
 				lastWasWhitespace = false;
 				long[] letter = MorseCodeModel.pattern(c);
-				System.arraycopy(letter, 0, result, pos, letter.length);
-				pos += letter.length;
+				for (int j = 0; j < letter.length; j++) {
+					result.add(letter[j]);
+				}
 			}
 		}
 		return new MorseCodeModel(result);
@@ -61,18 +43,18 @@ public class Utils {
 		String tempWord = "";
 		boolean prev = false;
 
-		long[] morseInput = morse.getRawData();
+		ArrayList<Long> morseInput = morse.getRawData();
 
-		for (int i = 0; i < morseInput.length; i++) {
-			if (morseInput[i] == MorseCodeModel.DOT) {
+		for (int i = 0; i < morseInput.size(); i++) {
+			if (morseInput.get(i).equals(MorseCodeModel.DOT)) {
 				prev = false;
 				tempWord += MorseCodeModel.DOT;
 
-			} else if (morseInput[i] == MorseCodeModel.DASH) {
+			} else if (morseInput.get(i).equals(MorseCodeModel.DASH)) {
 				prev = false;
 				tempWord += MorseCodeModel.DASH;
 
-			} else if (morseInput[i] == MorseCodeModel.SPACE) {
+			} else if (morseInput.get(i) == MorseCodeModel.SPACE) {
 				if (prev == true) {// word is ready to be added
 					prev = false;
 					output += word + " ";

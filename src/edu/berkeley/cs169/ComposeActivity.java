@@ -4,21 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import edu.berkeley.cs169.utils.NavigationKeyIntepreter;
-import edu.berkeley.cs169.utils.NavigationKeyIntepreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
 
 public class ComposeActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
-	public static final String TAG = "ComposeActivity";
-	NavigationKeyIntepreter keyIntepreter;
+	NavigationKeyInterpreter keyIntepreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compose);
 
-		keyIntepreter = new NavigationKeyIntepreter(this);
+		keyIntepreter = new NavigationKeyInterpreter(this);
 	}
 
 	@Override
@@ -46,13 +45,13 @@ public class ComposeActivity extends Activity implements
 	@Override
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
-		case 2: // up && down
+		case UP_AND_DOWN: // up && down
 			startHelp();
 			break;
-		case 0: // up
+		case UP: // up
 			editRecipient();
 			break;
-		case 1: // down
+		case DOWN: // down
 			editMessage();
 			break;
 		}

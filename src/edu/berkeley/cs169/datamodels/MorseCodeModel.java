@@ -1,14 +1,18 @@
 package edu.berkeley.cs169.datamodels;
 
+import java.util.ArrayList;
+
 import edu.berkeley.cs169.utils.VibrateConstants;
 
 public class MorseCodeModel {
 	// use SPACE to separate letters, two SPACEs to separate words
 	// this representation is ONLY used for the MorseCodeModel
 	// DO NOT USE THIS ANYWHERE ELSE
-	public static final int DOT = 1;
-	public static final int DASH = 2;
-	public static final int SPACE = 0;
+	public static final long DOT = 1;
+	public static final long DASH = 2;
+	public static final long SPACE = 0;
+
+	ArrayList<Long> rawData;
 
 	// convert BMVibrateConstant morse code representation to the MorseCodeModel
 	// morse
@@ -34,17 +38,15 @@ public class MorseCodeModel {
 		return toReturn;
 	}
 
-	private long[] rawData;
-
-	public MorseCodeModel(long[] data) {
+	public MorseCodeModel(ArrayList<Long> data) {
 		rawData = data;
 	}
 
-	public long[] getRawData() {
+	public ArrayList<Long> getRawData() {
 		return rawData;
 	}
 
-	public void setRawData(long[] r) {
+	public void setRawData(ArrayList<Long> r) {
 		rawData = r;
 	}
 
@@ -100,20 +102,22 @@ public class MorseCodeModel {
 		} else if (c >= '0' && c <= '9') {
 			return NUMBERS[c - '0'];
 		} else {
-			return VibrateConstants.ERROR_GAP; // fix this 4 me plz
+			return VibrateConstants.ERROR_GAP;
 		}
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || !(obj instanceof MorseCodeModel)) {
 			return false;
 		}
-		long[] otherRawData = ((MorseCodeModel)obj).rawData;
-		if (otherRawData.length != this.rawData.length) return false;
-		
-		for (int i = 0; i < this.rawData.length; i++) {
-			if (this.rawData[i] != otherRawData[i]) return false;
+		ArrayList<Long> otherRawData = ((MorseCodeModel) obj).rawData;
+		if (otherRawData.size() != this.rawData.size())
+			return false;
+
+		for (int i = 0; i < this.rawData.size(); i++) {
+			if (this.rawData.get(i) != otherRawData.get(i))
+				return false;
 		}
 
 		return true;

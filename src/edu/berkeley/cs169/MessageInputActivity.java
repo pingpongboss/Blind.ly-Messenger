@@ -85,11 +85,12 @@ public class MessageInputActivity extends Activity{
 	
 //	private MessageModel mMessage;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.messageinput);
+		setContentView(R.layout.message_input);
 	}
 }	
 
