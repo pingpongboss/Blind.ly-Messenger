@@ -25,7 +25,7 @@ public class ReadMessageActivity extends Activity {
 		
 		    String[] body = new String[smsEntriesCount];
 		    String[] number = new String[smsEntriesCount];
-		    if (c.moveToFirst() == false){
+		    if (c.moveToFirst() == true){
 		    if (c.moveToFirst()) 
 		    {
 		    	for (int i = 0; i < smsEntriesCount; i++) 
