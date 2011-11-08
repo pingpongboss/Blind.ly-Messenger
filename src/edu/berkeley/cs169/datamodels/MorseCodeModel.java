@@ -24,6 +24,16 @@ public class MorseCodeModel {
 			return str.charAt(str.length() - 1);
 		return 0;
 	}
+	
+	
+	public String toString(){
+		ArrayList<String> output = new ArrayList<String>();
+		int length = rawData.size();
+		for(int i = 0; i < length ; i++ ){
+			output.add( rawData.get(i).toString());
+		}
+		return output.toString();
+	}
 
 	public ArrayList<Long> getRawData() {
 		return rawData;
