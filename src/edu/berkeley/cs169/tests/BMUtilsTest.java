@@ -216,4 +216,6 @@ public class BMUtilsTest {
 		MorseCodeModel morse = Utils.textToMorse(text);
 		assertEquals(morse.getLastChar(), ' ');
 	}
+	
+
 }
