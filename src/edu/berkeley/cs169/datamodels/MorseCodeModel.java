@@ -14,6 +14,41 @@ public class MorseCodeModel {
 
 	ArrayList<Long> rawData;
 
+	public MorseCodeModel(ArrayList<Long> data) {
+		rawData = data;
+	}
+
+	// "ab" => 'b'
+	// "ab c " => ' '
+	public char getLastChar() {
+		return 0;
+	}
+
+	public ArrayList<Long> getRawData() {
+		return rawData;
+	}
+
+	public void setRawData(ArrayList<Long> r) {
+		rawData = r;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof MorseCodeModel)) {
+			return false;
+		}
+		ArrayList<Long> otherRawData = ((MorseCodeModel) obj).rawData;
+		if (otherRawData.size() != this.rawData.size())
+			return false;
+
+		for (int i = 0; i < this.rawData.size(); i++) {
+			if (this.rawData.get(i) != otherRawData.get(i))
+				return false;
+		}
+
+		return true;
+	}
+
 	// convert BMVibrateConstant morse code representation to the MorseCodeModel
 	// morse
 	// code representation
@@ -36,18 +71,6 @@ public class MorseCodeModel {
 			}
 		}
 		return toReturn;
-	}
-
-	public MorseCodeModel(ArrayList<Long> data) {
-		rawData = data;
-	}
-
-	public ArrayList<Long> getRawData() {
-		return rawData;
-	}
-
-	public void setRawData(ArrayList<Long> r) {
-		rawData = r;
 	}
 
 	/** The characters from 'A' to 'Z' */
@@ -104,22 +127,5 @@ public class MorseCodeModel {
 		} else {
 			return VibrateConstants.ERROR_GAP;
 		}
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof MorseCodeModel)) {
-			return false;
-		}
-		ArrayList<Long> otherRawData = ((MorseCodeModel) obj).rawData;
-		if (otherRawData.size() != this.rawData.size())
-			return false;
-
-		for (int i = 0; i < this.rawData.size(); i++) {
-			if (this.rawData.get(i) != otherRawData.get(i))
-				return false;
-		}
-
-		return true;
 	}
 }
