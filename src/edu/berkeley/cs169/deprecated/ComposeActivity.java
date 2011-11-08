@@ -1,49 +1,33 @@
-package edu.berkeley.cs169;
+package edu.berkeley.cs169.deprecated;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
+import edu.berkeley.cs169.MessageInputActivity;
+import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
 
-public class MainActivity extends Activity implements
+@Deprecated
+public class ComposeActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	NavigationKeyInterpreter keyInterpreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.compose);
 
 		keyInterpreter = new NavigationKeyInterpreter(this);
-
-		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
-		layoutUp.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				startCompose();
-			}
-		});
-
-		LinearLayout layoutDown = (LinearLayout) findViewById(R.id.layout_down);
-		layoutDown.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				startRead();
-			}
-		});
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		String alert = getResources().getString(R.string.main_shortcode);
+		String alert = getResources().getString(R.string.compose_shortcode);
 		Utils.textToVibration(alert, this);
 	}
 
@@ -64,13 +48,13 @@ public class MainActivity extends Activity implements
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
 		case UP: // up
-			startCompose();
+			editRecipient();
 			break;
 		case DOWN: // down
-			startRead();
+			editMessage();
 			break;
 		case UP_AND_DOWN: // up && down
-			// nothing to do
+			// TODO send the SMS
 			break;
 		case UP_AND_DOWN_HOLD: // hold up && down
 			startHelp();
@@ -79,15 +63,15 @@ public class MainActivity extends Activity implements
 	}
 
 	protected void startHelp() {
-		String alert = getResources().getString(R.string.main_help);
+		String alert = getResources().getString(R.string.compose_help);
 		Utils.textToVibration(alert, this);
 	}
 
-	protected void startCompose() {
-		startActivity(new Intent(this, RecipientInputActivity.class));
+	protected void editRecipient() {
+		Utils.textToVibration("t", this);
 	}
 
-	protected void startRead() {
-		startActivity(new Intent(this, ReadMessageActivity.class));
+	protected void editMessage() {
+		startActivity(new Intent(this, MessageInputActivity.class));
 	}
 }
