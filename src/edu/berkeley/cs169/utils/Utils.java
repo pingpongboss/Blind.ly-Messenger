@@ -5,7 +5,7 @@ import android.os.Vibrator;
 import android.telephony.SmsManager;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 
-public class BMUtils {
+public class Utils {
 	public static MorseCodeModel textToMorse(String text) {
 		boolean lastWasWhitespace;
 		int strlen = text.length();
@@ -183,14 +183,14 @@ public class BMUtils {
 	/** Return the pattern data for a given character */
 	private static long[] pattern(char c) {
 		if (c >= 'A' && c <= 'Z') {
-			return BMVibrateConstants.LETTERS[c - 'A'];
+			return VibrateConstants.LETTERS[c - 'A'];
 		}
 		if (c >= 'a' && c <= 'z') {
-			return BMVibrateConstants.LETTERS[c - 'a'];
+			return VibrateConstants.LETTERS[c - 'a'];
 		} else if (c >= '0' && c <= '9') {
-			return BMVibrateConstants.NUMBERS[c - '0'];
+			return VibrateConstants.NUMBERS[c - '0'];
 		} else {
-			return BMVibrateConstants.ERROR_GAP;
+			return VibrateConstants.ERROR_GAP;
 		}
 	}
 
@@ -229,13 +229,13 @@ public class BMUtils {
 			char c = str.charAt(i);
 			if (Character.isWhitespace(c)) {
 				if (!lastWasWhitespace) {
-					result[pos] = BMVibrateConstants.WORD_GAP;
+					result[pos] = VibrateConstants.WORD_GAP;
 					pos++;
 					lastWasWhitespace = true;
 				}
 			} else {
 				if (!lastWasWhitespace) {
-					result[pos] = BMVibrateConstants.LETTER_GAP;
+					result[pos] = VibrateConstants.LETTER_GAP;
 					pos++;
 				}
 				lastWasWhitespace = false;

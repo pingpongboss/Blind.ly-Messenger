@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import edu.berkeley.cs169.utils.BMUtils;
+import edu.berkeley.cs169.utils.Utils;
 
 public class ComposeActivity extends Activity {
 	// {{ Copy and edit these fields and methods for each Activity
@@ -32,21 +32,21 @@ public class ComposeActivity extends Activity {
 	protected void vibrateShortCode() {
 		String alert = getResources().getString(R.string.compose_shortcode);
 
-		BMUtils.textToVibration(alert, this);
+		Utils.textToVibration(alert, this);
 	}
 
 	// Edit for each Activity
 	protected void vibrateHelp() {
 		String alert = getResources().getString(R.string.compose_help);
 
-		BMUtils.textToVibration(alert, this);
+		Utils.textToVibration(alert, this);
 	}
 
 	// Edit for each Activity
 	protected void startUpAction() {
 		Log.d(TAG, "Clicked UP");
 
-		BMUtils.textToVibration("e", this);
+		Utils.textToVibration("e", this);
 	}
 
 	// Edit for each Activity
@@ -106,7 +106,7 @@ public class ComposeActivity extends Activity {
 
 				String phoneNo = "5103234764";
 				String message = "Hi 169 team2";
-				BMUtils.sendSMSHelper(phoneNo, message);
+				Utils.sendSMSHelper(phoneNo, message);
 			}
 		});
 	}

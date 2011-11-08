@@ -1,6 +1,6 @@
 package edu.berkeley.cs169.datamodels;
 
-import edu.berkeley.cs169.utils.BMVibrateConstants;
+import edu.berkeley.cs169.utils.VibrateConstants;
 
 public class MorseCodeModel {
 	// use SPACE to separate letters, two SPACEs to separate words
@@ -18,16 +18,16 @@ public class MorseCodeModel {
 
 		int count = 0;
 		for (int i = 0; i < len; i++) {
-			if (pattern[i] != BMVibrateConstants.GAP) {
+			if (pattern[i] != VibrateConstants.GAP) {
 				count++;
 			}
 		}
 
 		long[] toReturn = new long[count];
 		for (int i = 0; i < count; i++) {
-			if (pattern[i] == BMVibrateConstants.DASH) {
+			if (pattern[i] == VibrateConstants.DASH) {
 				toReturn[i] = MorseCodeModel.DASH;
-			} else if (pattern[i] == BMVibrateConstants.DOT) {
+			} else if (pattern[i] == VibrateConstants.DOT) {
 				toReturn[i] = MorseCodeModel.DOT;
 			}
 		}
@@ -100,7 +100,7 @@ public class MorseCodeModel {
 		} else if (c >= '0' && c <= '9') {
 			return NUMBERS[c - '0'];
 		} else {
-			return BMVibrateConstants.ERROR_GAP; // fix this 4 me plz
+			return VibrateConstants.ERROR_GAP; // fix this 4 me plz
 		}
 	}
 	

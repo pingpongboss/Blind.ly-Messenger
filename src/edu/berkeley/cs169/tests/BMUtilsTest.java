@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
-import edu.berkeley.cs169.utils.BMUtils;
+import edu.berkeley.cs169.utils.Utils;
 
 public class BMUtilsTest {
 
@@ -13,7 +13,7 @@ public class BMUtilsTest {
 	public void testMorseToText1() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 1, 1, 1, 0,
 				1, 0, 1, 2, 1, 1, 0, 1, 2, 1, 1, 0, 2, 2, 2 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "HELLO");
 	}
 
@@ -21,7 +21,7 @@ public class BMUtilsTest {
 	public void testMorseToText2() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 2, 0, 2, 1,
 				1, 1, 0, 0, 2, 1, 2, 1 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "AB C");
 	}
 
@@ -29,7 +29,7 @@ public class BMUtilsTest {
 	public void testMorseToText3() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 1, 1, 1, 0,
 				1, 1, 0, 0, 2, 0, 1, 1, 1, 1, 0, 1, 0, 1, 2, 1, 0, 1 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "HI THERE");
 	}
 
@@ -37,21 +37,21 @@ public class BMUtilsTest {
 	public void testMorseToText4() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 1, 1, 1, 0,
 				1, 1, 0, 0, 2, 0, 1, 1, 1, 1, 0, 1, 0, 1, 2, 1, 0, 1 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "HI THERE");
 	}
 
 	@Test
 	public void testMorseToText5() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 2 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "A");
 	}
 
 	@Test
 	public void testMorseToText6() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 2, 2, 2, 2, 2 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "0");
 	}
 
@@ -60,7 +60,7 @@ public class BMUtilsTest {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 2, 2, 0, 2,
 				2, 2, 0, 2, 2, 2, 0, 1, 1, 1, 0, 1, 1, 2, 0, 2, 1, 2, 0, 1, 1,
 				1, 1, 1, 0, 1, 1, 1, 1, 1 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "WOOSUK55");
 	}
 
@@ -68,7 +68,7 @@ public class BMUtilsTest {
 	public void testMorseToText8() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 1, 2, 2, 2, 2,
 				0, 0, 1, 1, 2, 2, 2, 0, 0, 1, 1, 1, 2, 2 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "1 2 3");
 	}
 
@@ -76,7 +76,7 @@ public class BMUtilsTest {
 	public void testMorseToText9() {
 		MorseCodeModel morse = new MorseCodeModel(new long[] { 2, 1, 2, 1, 0,
 				1, 1, 1, 0, 1, 2, 2, 2, 2, 0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 });
-		String s = BMUtils.morseToText(morse);
+		String s = Utils.morseToText(morse);
 		assertEquals(s, "CS169");
 	}
 
@@ -84,7 +84,7 @@ public class BMUtilsTest {
 	public void testTextToMorse1() {
 		MorseCodeModel expected = new MorseCodeModel(new long[] { 1, 1, 1, 1,
 				0, 1, 0, 1, 2, 1, 1, 0, 1, 2, 1, 1, 0, 2, 2, 2 });
-		MorseCodeModel m = BMUtils.textToMorse("HELLO");
+		MorseCodeModel m = Utils.textToMorse("HELLO");
 
 		assertEquals(expected, m);
 	}
@@ -93,7 +93,7 @@ public class BMUtilsTest {
 	public void testTextToMorse2() {
 		MorseCodeModel expected = new MorseCodeModel(new long[] { 1, 2, 0, 2,
 				1, 1, 1, 0, 0, 2, 1, 2, 1 });
-		MorseCodeModel m = BMUtils.textToMorse("AB C");
+		MorseCodeModel m = Utils.textToMorse("AB C");
 
 		assertEquals(expected, m);
 	}
@@ -102,7 +102,7 @@ public class BMUtilsTest {
 	public void testTextToMorse3() {
 		MorseCodeModel expected = new MorseCodeModel(new long[] { 1, 1, 1, 1,
 				0, 1, 1, 0, 0, 2, 0, 1, 1, 1, 1, 0, 1, 0, 1, 2, 1, 0, 1 });
-		MorseCodeModel m = BMUtils.textToMorse("HI THERE");
+		MorseCodeModel m = Utils.textToMorse("HI THERE");
 
 		assertEquals(expected, m);
 	}
@@ -110,7 +110,7 @@ public class BMUtilsTest {
 	@Test
 	public void testTextToMorse4() {
 		MorseCodeModel expected = new MorseCodeModel(new long[] { 2, 2, 2, 2, 2 });
-		MorseCodeModel m = BMUtils.textToMorse("0");
+		MorseCodeModel m = Utils.textToMorse("0");
 
 		assertEquals(expected, m);
 	}
@@ -119,7 +119,7 @@ public class BMUtilsTest {
 	public void testTextToMorse5() {
 		MorseCodeModel expected = new MorseCodeModel(new long[] { 2, 1, 2, 1, 0,
 				1, 1, 1, 0, 1, 2, 2, 2, 2, 0, 2, 1, 1, 1, 1, 0, 2, 2, 2, 2, 1 });
-		MorseCodeModel m = BMUtils.textToMorse("CS169");
+		MorseCodeModel m = Utils.textToMorse("CS169");
 
 		assertEquals(expected, m);
 	}
@@ -128,7 +128,7 @@ public class BMUtilsTest {
 	public void testTextToMorse6() {
 		MorseCodeModel expected = new MorseCodeModel(new long[] { 1, 2, 2, 2, 2,
 				0, 0, 1, 1, 2, 2, 2, 0, 0, 1, 1, 1, 2, 2});
-		MorseCodeModel m = BMUtils.textToMorse("1 2 3");
+		MorseCodeModel m = Utils.textToMorse("1 2 3");
 
 		assertEquals(expected, m);
 	}
@@ -136,6 +136,6 @@ public class BMUtilsTest {
 
 	@Test
 	public void testInverse() {
-		assertEquals(BMUtils.morseToText(BMUtils.textToMorse("HELLO")), "HELLO");
+		assertEquals(Utils.morseToText(Utils.textToMorse("HELLO")), "HELLO");
 	}
 }
