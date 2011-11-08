@@ -5,9 +5,13 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.widget.TextView;
 
 public class ReadMessageActivity extends Activity {
+	String msg = "";
+	String content = "";
+	String name = "";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,23 +27,43 @@ public class ReadMessageActivity extends Activity {
 		    String[] number = new String[smsEntriesCount];
 		    if (c.moveToFirst()) 
 		    {
-		        for (int i = 0; i < smsEntriesCount; i++) 
-		        {
-		            body[i] = c.getString(c.getColumnIndexOrThrow("body")).toString();
-		            number[i] = c.getString(c.getColumnIndexOrThrow("address")).toString();
-		            c.moveToNext();
-		        }
+		    	for (int i = 0; i < smsEntriesCount; i++) 
+		    	{
+		    		body[i] = c.getString(c.getColumnIndexOrThrow("body")).toString();
+		    		number[i] = c.getString(c.getColumnIndexOrThrow("address")).toString();
+		    		c.moveToNext();
+		    	}
 		    }
 		    c.close();
-	            view.setText(number[0] + " " + body[0]);
-	            setContentView(view);
-
+		    content = body[0];
+		    name = getContactNameFromNumber(number[0]);
+		    msg = name + ": " + body[0];
+		    view.setText(msg);
+		    setContentView(view);
+		    readMessage();
+	}
+	private void readMessage() {
+		Utils.textToVibration(content, this);
 	}
 	
-	protected void startHelp() {
-		String alert = getResources().getString(R.string.compose_help);
-		Utils.textToVibration(alert, this);
+	private String getContactNameFromNumber(String number) {
+		String[] projection = new String[] {
+				Contacts.Phones.DISPLAY_NAME,
+				Contacts.Phones.NUMBER };
+		
+		Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL, Uri.encode(number));
+ 
+		Cursor c = getContentResolver().query(contactUri, projection, null,
+				null, null);
+ 
+		if (c.moveToFirst()) {
+			String name = c.getString(c
+					.getColumnIndex(Contacts.Phones.DISPLAY_NAME));
+			return name;
+		}
+ 
+		// return the original number if no match was found
+		return number;
 	}
-
 }
 
