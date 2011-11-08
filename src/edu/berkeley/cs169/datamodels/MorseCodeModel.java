@@ -2,12 +2,12 @@ package edu.berkeley.cs169.datamodels;
 
 import java.util.ArrayList;
 
+import edu.berkeley.cs169.utils.Utils;
 import edu.berkeley.cs169.utils.VibrateConstants;
 
 public class MorseCodeModel {
 	// use SPACE to separate letters, two SPACEs to separate words
 	// this representation is ONLY used for the MorseCodeModel
-	// DO NOT USE THIS ANYWHERE ELSE
 	public static final long DOT = 1;
 	public static final long DASH = 2;
 	public static final long SPACE = 0;
@@ -18,9 +18,10 @@ public class MorseCodeModel {
 		rawData = data;
 	}
 
-	// "ab" => 'b'
-	// "ab c " => ' '
 	public char getLastChar() {
+		String str = Utils.morseToText(this);
+		if (str.length() > 0)
+			return str.charAt(str.length() - 1);
 		return 0;
 	}
 

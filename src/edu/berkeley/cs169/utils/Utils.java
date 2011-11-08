@@ -84,7 +84,7 @@ public class Utils {
 		vibrator.vibrate(data, -1);
 	}
 
-	private static String morseWordToText(String input) {
+	public static String morseWordToText(String input) {
 		String output = "";
 		if (input.equals("12")) {
 			output = "A";
