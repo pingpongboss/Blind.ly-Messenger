@@ -13,14 +13,14 @@ import edu.berkeley.cs169.utils.Utils;
 
 public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
-	NavigationKeyInterpreter keyIntepreter;
+	NavigationKeyInterpreter keyInterpreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		keyIntepreter = new NavigationKeyInterpreter(this);
+		keyInterpreter = new NavigationKeyInterpreter(this);
 
 		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
 		layoutUp.setOnClickListener(new OnClickListener() {
@@ -49,28 +49,31 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyIntepreter.onKeyDown(keyCode, event))
+		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
 		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyIntepreter.onKeyUp(keyCode, event))
+		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
 	}
 
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
-		case UP_AND_DOWN: // up && down
-			startHelp();
-			break;
 		case UP: // up
 			startCompose();
 			break;
 		case DOWN: // down
 			startRead();
+			break;
+		case UP_AND_DOWN: // up && down
+			// nothing to do
+			break;
+		case UP_AND_DOWN_HOLD: // hold up && down
+			startHelp();
 			break;
 		}
 	}
