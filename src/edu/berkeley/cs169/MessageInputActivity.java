@@ -56,7 +56,6 @@ public class MessageInputActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	@Override
 	public void onKeyInterpreterResult(int resultCode, Object result) {
 		switch (resultCode) {
 		case DOT:

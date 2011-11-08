@@ -21,7 +21,7 @@ public class ComposeActivity extends Activity implements
 		setContentView(R.layout.compose);
 
 		keyInterpreter = new NavigationKeyInterpreter(this);
-		recipient = (EditText) findViewById(R.id.text_receipient);
+		recipient = (EditText) findViewById(R.id.text_recipient);
 	}
 
 	@Override
