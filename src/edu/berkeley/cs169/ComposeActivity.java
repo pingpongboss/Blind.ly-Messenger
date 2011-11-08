@@ -43,7 +43,6 @@ public class ComposeActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	@Override
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
 		case 2: // up && down
