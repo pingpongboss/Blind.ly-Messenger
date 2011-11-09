@@ -28,7 +28,7 @@ public class RecipientInputActivity extends Activity implements
 		setContentView(R.layout.contact_manager);
 
 		mContactList = (ListView) findViewById(R.id.contactList);
-
+		
 		// Initialize class properties
 		mShowInvisible = false;
 		mNumbersOnly = true;
@@ -38,6 +38,7 @@ public class RecipientInputActivity extends Activity implements
 
 		// Populate the contact list
 		populateContactList();
+		
 	}
 
 	@Override
@@ -57,18 +58,7 @@ public class RecipientInputActivity extends Activity implements
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
 		case 2: // power
-			Cursor c = (Cursor) mContactList.getItemAtPosition(curPosition);
-			long id = Long.parseLong(c.getString(0));
-			String num = getContactPhoneNumberByPhoneType(id,
-					ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
-
-			Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
-					Toast.LENGTH_LONG).show();
-
-			Intent i = new Intent(this, MessageInputActivity.class);
-			i.putExtra("recipient", num);
-
-			startActivity(i);
+			passPhoneNumber();
 			break;
 		case 0: // up
 			scrollToPrev();
@@ -79,20 +69,38 @@ public class RecipientInputActivity extends Activity implements
 		}
 	}
 
+	private void passPhoneNumber() {
+		Cursor c = (Cursor) mContactList.getItemAtPosition(curPosition);
+		long id = Long.parseLong(c.getString(0));
+		String num = getContactPhoneNumberByPhoneType(id,
+				ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+
+		Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
+				Toast.LENGTH_LONG).show();
+
+		Intent i = new Intent(this, MessageInputActivity.class);
+		i.putExtra("recipient", num);
+
+		startActivity(i);
+	}
+
 	private void scrollToNext() {
 		if (curPosition == mContactList.getCount() - 1)
 			return;
-		curPosition += 1;
-		mContactList.setSelection(curPosition);
-		mContactList.clearFocus();
+		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN));
+		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_DOWN));
+//		curPosition += 1;
+//		mContactList.setSelection(curPosition);
 	}
 
 	private void scrollToPrev() {
 		if (curPosition == 0)
 			return;
-		curPosition -= 1;
-		mContactList.setSelection(curPosition);
-		mContactList.clearFocus();
+		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP));
+		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP));
+
+//		curPosition -= 1;
+//		mContactList.setSelection(curPosition);
 	}
 
 	public String getContactPhoneNumberByPhoneType(long contactId, int type) {
