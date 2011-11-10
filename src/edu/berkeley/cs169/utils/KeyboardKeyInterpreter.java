@@ -20,6 +20,7 @@ public class KeyboardKeyInterpreter {
 	long downKeyDownTimestamp = -1;
 
 	Timer letterTimer, wordTimer;
+	boolean lastLetterOutputted = true;
 
 	public KeyboardKeyInterpreter(KeyboardKeyInterpreterResultListener listener) {
 		this.listener = listener;
@@ -66,6 +67,7 @@ public class KeyboardKeyInterpreter {
 					listener.onKeyInterpreterResult(
 							KeyboardKeyInterpreterResultListener.DASH, null);
 				}
+				lastLetterOutputted = false;
 
 				letterTimer.cancel();
 				letterTimer = new Timer();
@@ -83,6 +85,7 @@ public class KeyboardKeyInterpreter {
 							listener.onKeyInterpreterResult(
 									KeyboardKeyInterpreterResultListener.LAST_LETTER,
 									lastChar);
+							lastLetterOutputted = true;
 						}
 						listener.onKeyInterpreterResult(
 								KeyboardKeyInterpreterResultListener.LETTER_GAP,
@@ -106,6 +109,7 @@ public class KeyboardKeyInterpreter {
 							listener.onKeyInterpreterResult(
 									KeyboardKeyInterpreterResultListener.LAST_LETTER,
 									lastChar);
+							lastLetterOutputted = true;
 						}
 						listener.onKeyInterpreterResult(
 								KeyboardKeyInterpreterResultListener.WORD_GAP,
@@ -121,8 +125,18 @@ public class KeyboardKeyInterpreter {
 
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			letterTimer.cancel();
+			wordTimer.cancel();
 			if (downKeyDownTimestamp != -1) {
-				listener.onKeyInterpreterResult(6, null);
+				if (!lastLetterOutputted) {
+					char lastChar = model.getLastChar();
+					listener.onKeyInterpreterResult(
+							KeyboardKeyInterpreterResultListener.LAST_LETTER,
+							lastChar);
+				}
+
+				listener.onKeyInterpreterResult(
+						KeyboardKeyInterpreterResultListener.DONE, null);
 			}
 			return true;
 		}
