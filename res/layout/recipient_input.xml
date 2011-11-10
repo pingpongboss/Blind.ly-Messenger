@@ -8,6 +8,6 @@
     		  android:text="My Contacts" 
     		  android:textSize="32dip"/>
     <ListView android:layout_width="fill_parent"
-              android:id="@+id/contactList"
+              android:id="@id/android:list"
               android:layout_height="fill_parent"/>
 </LinearLayout>

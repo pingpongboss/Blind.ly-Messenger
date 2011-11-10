@@ -1,22 +1,20 @@
 package edu.berkeley.cs169;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.KeyEvent;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.Utils;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.utils.Utils;
 
-public class RecipientInputActivity extends Activity implements
+public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
-	private ListView mContactList;
 	private boolean mShowInvisible, mNumbersOnly;
 	private NavigationKeyInterpreter keyInterpreter;
 
@@ -24,8 +22,6 @@ public class RecipientInputActivity extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recipient_input);
-
-		mContactList = (ListView) findViewById(R.id.contactList);
 
 		// Initialize class properties
 		mShowInvisible = false;
@@ -42,7 +38,8 @@ public class RecipientInputActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 
-		String alert = getResources().getString(R.string.recipient_input_shortcode);
+		String alert = getResources().getString(
+				R.string.recipient_input_shortcode);
 		Utils.textToVibration(alert, this);
 	}
 
@@ -102,7 +99,7 @@ public class RecipientInputActivity extends Activity implements
 	}
 
 	private void passPhoneNumber() {
-		Cursor c = (Cursor) mContactList.getSelectedItem();
+		Cursor c = (Cursor) getListView().getSelectedItem();
 		if (c != null) {
 			long id = Long.parseLong(c.getString(0));
 			String num = getContactPhoneNumberByPhoneType(id);
@@ -152,7 +149,7 @@ public class RecipientInputActivity extends Activity implements
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 				R.layout.contact_entry, cursor, fields,
 				new int[] { R.id.contactEntryText });
-		mContactList.setAdapter(adapter);
+		setListAdapter(adapter);
 	}
 
 	private Cursor getContacts() {

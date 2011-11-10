@@ -2,9 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
-    <TextView android:text="@+id/contactEntryText"
-       		  android:textSize="20dip"
-              android:id="@+id/contactEntryText"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:src="@drawable/stub" />
+
+    <TextView
+        android:id="@+id/contactEntryText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@+id/contactEntryText"
+        android:textSize="20dip" />
+
 </LinearLayout>
