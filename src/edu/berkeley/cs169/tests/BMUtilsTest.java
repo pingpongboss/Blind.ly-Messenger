@@ -202,20 +202,4 @@ public class BMUtilsTest {
 
 		assertEquals(Utils.morseToText(Utils.textToMorse("AB C")), "AB C");
 	}
-
-	@Test
-	public void testLastChar() {
-		String text = "HELLO";
-		MorseCodeModel morse = Utils.textToMorse(text);
-		assertEquals(morse.getLastChar(), 'O');
-	}
-
-	@Test
-	public void testLastChar2() {
-		String text = "A ";
-		MorseCodeModel morse = Utils.textToMorse(text);
-		assertEquals(morse.getLastChar(), ' ');
-	}
-	
-
 }
