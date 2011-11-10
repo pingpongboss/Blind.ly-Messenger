@@ -34,7 +34,6 @@ public class KeyboardKeyInterpreter {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP:
-
 			if (upKeyUpTimestamp != -1) {
 				letterTimer.cancel();
 				wordTimer.cancel();

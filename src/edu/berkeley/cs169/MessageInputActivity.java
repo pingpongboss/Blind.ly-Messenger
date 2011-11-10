@@ -2,9 +2,13 @@ package edu.berkeley.cs169;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +23,7 @@ public class MessageInputActivity extends Activity implements
 	EditText edit;
 	ScrollView scroll;
 	TextView visualizer;
+	ImageView overlay;
 
 	ContactModel recipient;
 
@@ -34,7 +39,25 @@ public class MessageInputActivity extends Activity implements
 
 		edit = (EditText) findViewById(R.id.edit);
 		scroll = (ScrollView) findViewById(R.id.scroll);
+		scroll.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					dispatchKeyEvent(new KeyEvent(SystemClock.uptimeMillis(),
+							SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN,
+							KeyEvent.KEYCODE_VOLUME_UP, 0));
+				else if (event.getAction() == MotionEvent.ACTION_UP)
+					dispatchKeyEvent(new KeyEvent(SystemClock.uptimeMillis(),
+							SystemClock.uptimeMillis(), KeyEvent.ACTION_UP,
+							KeyEvent.KEYCODE_VOLUME_UP, 0));
+				return true;
+			}
+		});
 		visualizer = (TextView) findViewById(R.id.visualizer);
+
+		overlay = (ImageView) findViewById(R.id.overlay);
+		overlay.setAlpha(0);
 
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
 		recipientTextView.setText(String.format("%s\n%s", recipient.getName(),
@@ -57,6 +80,8 @@ public class MessageInputActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+			overlay.setAlpha(255);
 		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
 		return super.onKeyDown(keyCode, event);
@@ -64,6 +89,8 @@ public class MessageInputActivity extends Activity implements
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+			overlay.setAlpha(0);
 		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
@@ -95,11 +122,14 @@ public class MessageInputActivity extends Activity implements
 					break;
 				case DONE:
 					String message = edit.getText().toString();
-					Utils.sendSMSHelper(recipient.getNumber(), message);
-					Toast.makeText(
-							MessageInputActivity.this,
-							String.format("SMS sent to %s: \"%s\"", recipient,
-									message), Toast.LENGTH_SHORT).show();
+					if (message != null && !message.equals("")) {
+						Utils.sendSMSHelper(recipient.getNumber(), message);
+						Toast.makeText(
+								MessageInputActivity.this,
+								String.format("SMS sent to %s: \"%s\"",
+										recipient, message), Toast.LENGTH_SHORT)
+								.show();
+					}
 					break;
 				}
 

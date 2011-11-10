@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -21,10 +21,10 @@
             android:id="@+id/recipient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minLines="2"
             android:text="Large Text"
             android:textSize="32sp"
-            android:textStyle="bold" android:minLines="2"/>
-
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,27 +38,41 @@
             android:id="@+id/edit"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:editable="false"
             android:gravity="center"
-            android:hint="@string/message_edit_hint" android:layout_weight="1" android:textSize="50sp">
+            android:hint="@string/message_edit_hint"
+            android:textSize="50sp" >
 
             <requestFocus />
         </EditText>
 
-        <ScrollView
-            android:id="@+id/scroll"
+        <FrameLayout
+            android:id="@+id/keyboard"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" >
+            android:layout_weight="1" android:clickable="true">
 
-        <TextView
-            android:id="@+id/visualizer"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textSize="50sp"
-            android:textStyle="bold" android:gravity="center"/>
-        </ScrollView>
+            <ImageView
+                android:id="@+id/overlay"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="#33fea41d" />
 
+            <ScrollView
+                android:id="@+id/scroll"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:id="@+id/visualizer"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+            </ScrollView>
+        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>
