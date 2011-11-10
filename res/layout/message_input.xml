@@ -8,7 +8,7 @@
         android:id="@+id/recipient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text" android:textSize="32sp"/>
+        android:text="Large Text" android:textSize="32sp" android:textStyle="bold"/>
 
     <LinearLayout
         android:id="@+id/linearLayout1"

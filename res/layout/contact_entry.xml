@@ -16,7 +16,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="@+id/contactEntryText"
-        android:textSize="20dip" />
+        android:text="Name"
+        android:textSize="30sp" />
 
 </LinearLayout>
