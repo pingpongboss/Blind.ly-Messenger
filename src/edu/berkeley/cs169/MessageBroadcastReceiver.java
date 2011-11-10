@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
  
-public class smsNotification extends BroadcastReceiver
+public class MessageBroadcastReceiver extends BroadcastReceiver
 {
     @Override
     public void onReceive(Context context, Intent intent) 

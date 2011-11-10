@@ -37,7 +37,7 @@
             android:screenOrientation="nosensor" >
         </activity>
 
-        <receiver android:name=".smsNotification" >
+        <receiver android:name=".MessageBroadcastReceiver" >
             <intent-filter >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
