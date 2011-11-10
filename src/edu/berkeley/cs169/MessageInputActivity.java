@@ -63,6 +63,7 @@ public class MessageInputActivity extends Activity implements
 	}
 
 	public void onKeyInterpreterResult(int resultCode, Object result) {
+		final Object copy = result;
 		switch (resultCode) {
 		case DOT:
 			break;
@@ -74,7 +75,14 @@ public class MessageInputActivity extends Activity implements
 			break;
 		case LAST_LETTER:
 			Log.d("MessageInputActivity", result.toString());
-			edit.setText(edit.getText().toString() + result);
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					edit.setText(edit.getText().toString() + copy);
+					edit.setSelection(edit.length());
+				}
+			});
 			break;
 		case DONE:
 			String message = edit.getText().toString();
@@ -86,5 +94,4 @@ public class MessageInputActivity extends Activity implements
 			break;
 		}
 	}
-
 }

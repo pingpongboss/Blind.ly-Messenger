@@ -1,12 +1,12 @@
 package edu.berkeley.cs169;
 
-import edu.berkeley.cs169.utils.Utils;
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.widget.TextView;
+import edu.berkeley.cs169.utils.Utils;
 
 public class ReadMessageActivity extends Activity {
 	String msg = "";

@@ -68,9 +68,11 @@ public class Utils {
 			}
 
 		}
+		if (!word.equals(""))
+			output += word;
 		if (!tempWord.equals("")) { // if ended without last letter/word being
 									// added.
-			output += word + morseWordToText(tempWord);
+			output += morseWordToText(tempWord);
 		}
 		return output;
 	}
