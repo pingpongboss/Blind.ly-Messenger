@@ -7,6 +7,7 @@ public class NavigationKeyInterpreter {
 
 	NavigationKeyInterpreterResultListener listener;
 
+	long keyRepeatThreshold = -1;
 	long upKeyDownTimestamp = -1;
 	long downKeyDownTimestamp = -1;
 
@@ -15,16 +16,37 @@ public class NavigationKeyInterpreter {
 		this.listener = listener;
 	}
 
+	public NavigationKeyInterpreter(
+			NavigationKeyInterpreterResultListener listener,
+			long keyRepeatThreshold) {
+		this.listener = listener;
+		this.keyRepeatThreshold = keyRepeatThreshold;
+	}
+
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_UP:
+		case KeyEvent.KEYCODE_VOLUME_UP: {
+			long dt = event.getEventTime() - upKeyDownTimestamp;
 			if (upKeyDownTimestamp == -1)
 				upKeyDownTimestamp = event.getEventTime();
+			else if (keyRepeatThreshold > 0 && dt > keyRepeatThreshold
+					&& downKeyDownTimestamp == -1) {
+				upKeyDownTimestamp = event.getEventTime();
+				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP);
+			}
 			return true;
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
+		}
+		case KeyEvent.KEYCODE_VOLUME_DOWN: {
+			long dt = event.getEventTime() - downKeyDownTimestamp;
 			if (downKeyDownTimestamp == -1)
 				downKeyDownTimestamp = event.getEventTime();
+			else if (keyRepeatThreshold > 0 && dt > keyRepeatThreshold
+					&& upKeyDownTimestamp == -1) {
+				downKeyDownTimestamp = event.getEventTime();
+				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP);
+			}
 			return true;
+		}
 		}
 		return false;
 	}
