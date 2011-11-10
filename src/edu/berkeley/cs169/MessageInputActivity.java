@@ -62,9 +62,9 @@ public class MessageInputActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyInterpreterResult(int resultCode, Object result) {
+	public void onKeyInterpreterResult(ResultCode code, Object result) {
 		final Object copy = result;
-		switch (resultCode) {
+		switch (code) {
 		case DOT:
 			break;
 		case DASH:

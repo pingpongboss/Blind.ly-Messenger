@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import android.view.KeyEvent;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
+import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
 
 public class KeyboardKeyInterpreter {
 	public static long DOT_DASH_THRESHOLD = 2 * Utils.INPUT_SPEED_BASE;
@@ -60,12 +61,10 @@ public class KeyboardKeyInterpreter {
 			if (upKeyDownTimestamp != -1) {
 				if (dt < DOT_DASH_THRESHOLD) {
 					model.getRawData().add(MorseCodeModel.DOT);
-					listener.onKeyInterpreterResult(
-							KeyboardKeyInterpreterResultListener.DOT, null);
+					listener.onKeyInterpreterResult(ResultCode.DOT, null);
 				} else {
 					model.getRawData().add(MorseCodeModel.DASH);
-					listener.onKeyInterpreterResult(
-							KeyboardKeyInterpreterResultListener.DASH, null);
+					listener.onKeyInterpreterResult(ResultCode.DASH, null);
 				}
 				lastLetterOutputted = false;
 
@@ -78,17 +77,14 @@ public class KeyboardKeyInterpreter {
 						model.getRawData().add(MorseCodeModel.SPACE);
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
-							listener.onKeyInterpreterResult(
-									KeyboardKeyInterpreterResultListener.ERROR,
+							listener.onKeyInterpreterResult(ResultCode.ERROR,
 									null);
 						} else {
 							listener.onKeyInterpreterResult(
-									KeyboardKeyInterpreterResultListener.LAST_LETTER,
-									lastChar);
+									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
 						}
-						listener.onKeyInterpreterResult(
-								KeyboardKeyInterpreterResultListener.LETTER_GAP,
+						listener.onKeyInterpreterResult(ResultCode.LETTER_GAP,
 								null);
 					}
 				}, LETTER_GAP_THRESHOLD);
@@ -102,17 +98,14 @@ public class KeyboardKeyInterpreter {
 						model.getRawData().add(MorseCodeModel.SPACE);
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
-							listener.onKeyInterpreterResult(
-									KeyboardKeyInterpreterResultListener.ERROR,
+							listener.onKeyInterpreterResult(ResultCode.ERROR,
 									null);
 						} else {
 							listener.onKeyInterpreterResult(
-									KeyboardKeyInterpreterResultListener.LAST_LETTER,
-									lastChar);
+									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
 						}
-						listener.onKeyInterpreterResult(
-								KeyboardKeyInterpreterResultListener.WORD_GAP,
+						listener.onKeyInterpreterResult(ResultCode.WORD_GAP,
 								null);
 					}
 				}, WORD_GAP_THRESHOLD);
@@ -130,13 +123,11 @@ public class KeyboardKeyInterpreter {
 			if (downKeyDownTimestamp != -1) {
 				if (!lastLetterOutputted) {
 					char lastChar = model.getLastChar();
-					listener.onKeyInterpreterResult(
-							KeyboardKeyInterpreterResultListener.LAST_LETTER,
+					listener.onKeyInterpreterResult(ResultCode.LAST_LETTER,
 							lastChar);
 				}
 
-				listener.onKeyInterpreterResult(
-						KeyboardKeyInterpreterResultListener.DONE, null);
+				listener.onKeyInterpreterResult(ResultCode.DONE, null);
 			}
 			return true;
 		}
@@ -144,16 +135,12 @@ public class KeyboardKeyInterpreter {
 	}
 
 	public interface KeyboardKeyInterpreterResultListener {
-		public static final int ERROR = -1;
-		public static final int DOT = 1;
-		public static final int DASH = 2;
-		public static final int LETTER_GAP = 3;
-		public static final int WORD_GAP = 4;
-		public static final int LAST_LETTER = 5;
-		public static final int DONE = 6;
+		public enum ResultCode {
+			ERROR, DOT, DASH, LETTER_GAP, WORD_GAP, LAST_LETTER, DONE
+		}
 
 		// May be called from a non-UI thread
-		public void onKeyInterpreterResult(int resultCode, Object result);
+		public void onKeyInterpreterResult(ResultCode code, Object result);
 
 		public boolean onKeyDown(int keyCode, KeyEvent event);
 

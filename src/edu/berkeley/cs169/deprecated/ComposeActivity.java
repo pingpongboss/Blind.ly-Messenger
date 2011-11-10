@@ -45,8 +45,8 @@ public class ComposeActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyInterpreterResult(int resultCode) {
-		switch (resultCode) {
+	public void onKeyInterpreterResult(ResultCode result) {
+		switch (result) {
 		case UP: // up
 			editRecipient();
 			break;
@@ -56,7 +56,7 @@ public class ComposeActivity extends Activity implements
 		case UP_AND_DOWN: // up && down
 			// TODO send the SMS
 			break;
-		case UP_AND_DOWN_HOLD: // hold up && down
+		case UP_AND_DOWN_LONG: // hold up && down
 			startHelp();
 			break;
 		}

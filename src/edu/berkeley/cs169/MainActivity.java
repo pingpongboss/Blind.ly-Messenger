@@ -61,8 +61,8 @@ public class MainActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyInterpreterResult(int resultCode) {
-		switch (resultCode) {
+	public void onKeyInterpreterResult(ResultCode code) {
+		switch (code) {
 		case UP:
 			startCompose();
 			break;
@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements
 		case UP_AND_DOWN:
 			// nothing to do
 			break;
-		case UP_AND_DOWN_HOLD:
+		case UP_AND_DOWN_LONG:
 			startHelp();
 			break;
 		}

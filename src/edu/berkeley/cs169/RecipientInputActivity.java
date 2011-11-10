@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.Utils;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class RecipientInputActivity extends Activity implements
@@ -18,7 +19,6 @@ public class RecipientInputActivity extends Activity implements
 	private ListView mContactList;
 	private boolean mShowInvisible, mNumbersOnly;
 	private NavigationKeyInterpreter keyInterpreter;
-	public static int PHONE_NUM_OK = 293847;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,18 @@ public class RecipientInputActivity extends Activity implements
 		mNumbersOnly = true;
 
 		// Register handler for UI elements
-		keyInterpreter = new NavigationKeyInterpreter(this, 200);
+		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 
 		// Populate the contact list
 		populateContactList();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String alert = getResources().getString(R.string.recipient_input_shortcode);
+		Utils.textToVibration(alert, this);
 	}
 
 	@Override
@@ -54,22 +62,40 @@ public class RecipientInputActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyInterpreterResult(int resultCode) {
-		switch (resultCode) {
+	public void onKeyInterpreterResult(ResultCode code) {
+		switch (code) {
 		case UP:
+		case UP_REPEAT:
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 					KeyEvent.KEYCODE_DPAD_UP));
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 					KeyEvent.KEYCODE_DPAD_UP));
+			break;
+		case UP_REPEAT_LONG:
+			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_UP));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_UP));
+			}
 			break;
 		case DOWN:
+		case DOWN_REPEAT:
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 					KeyEvent.KEYCODE_DPAD_DOWN));
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 					KeyEvent.KEYCODE_DPAD_DOWN));
 			break;
+		case DOWN_REPEAT_LONG:
+			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+			}
+			break;
 		case UP_AND_DOWN:
-		case UP_AND_DOWN_HOLD:
+		case UP_AND_DOWN_LONG:
 			passPhoneNumber();
 			break;
 		}
