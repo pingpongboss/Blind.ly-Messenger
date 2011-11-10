@@ -63,16 +63,16 @@ public class MainActivity extends Activity implements
 
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
-		case UP: // up
+		case UP:
 			startCompose();
 			break;
-		case DOWN: // down
+		case DOWN: 
 			startRead();
 			break;
-		case UP_AND_DOWN: // up && down
+		case UP_AND_DOWN: 
 			// nothing to do
 			break;
-		case UP_AND_DOWN_HOLD: // hold up && down
+		case UP_AND_DOWN_HOLD: 
 			startHelp();
 			break;
 		}

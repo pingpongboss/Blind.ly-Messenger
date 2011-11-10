@@ -5,21 +5,23 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.VolumeKeysRepeater;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class RecipientInputActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	private ListView mContactList;
 	private boolean mShowInvisible, mNumbersOnly;
-	NavigationKeyInterpreter keyInterpreter;
-	int curPosition = 0;
-	int padding = 0;
+	private Handler handler;
+	private VolumeKeysRepeater volKeyRepeater;
+	private NavigationKeyInterpreter keyInterpreter;
 	public static int PHONE_NUM_OK = 293847;
 
 	@Override
@@ -28,28 +30,40 @@ public class RecipientInputActivity extends Activity implements
 		setContentView(R.layout.contact_manager);
 
 		mContactList = (ListView) findViewById(R.id.contactList);
-		
+
 		// Initialize class properties
 		mShowInvisible = false;
 		mNumbersOnly = true;
 
 		// Register handler for UI elements
+		handler = new Handler();
+		volKeyRepeater = new VolumeKeysRepeater(this, handler);
 		keyInterpreter = new NavigationKeyInterpreter(this);
 
 		// Populate the contact list
 		populateContactList();
-		
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+			volKeyRepeater.handleVolDown();
+		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+			volKeyRepeater.handleVolUp();
+		}
 		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
 		return super.onKeyDown(keyCode, event);
 	}
 
+
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+			volKeyRepeater.handleVolDownUp();
+		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+			volKeyRepeater.handleVolUpUp();
+		}
 		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
@@ -57,50 +71,30 @@ public class RecipientInputActivity extends Activity implements
 
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
-		case 2: // power
+		case UP_AND_DOWN:
 			passPhoneNumber();
-			break;
-		case 0: // up
-			scrollToPrev();
-			break;
-		case 1: // down
-			scrollToNext();
 			break;
 		}
 	}
 
 	private void passPhoneNumber() {
-		Cursor c = (Cursor) mContactList.getItemAtPosition(curPosition);
-		long id = Long.parseLong(c.getString(0));
-		String num = getContactPhoneNumberByPhoneType(id,
-				ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+		Cursor c = (Cursor) mContactList.getSelectedItem();
+		if (c != null) {
+			long id = Long.parseLong(c.getString(0));
+			String num = getContactPhoneNumberByPhoneType(id,
+					ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
 
-		Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
-				Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
+					Toast.LENGTH_LONG).show();
 
-		Intent i = new Intent(this, MessageInputActivity.class);
-		i.putExtra("recipient", num);
+			Intent i = new Intent(this, MessageInputActivity.class);
+			i.putExtra("recipient", num);
 
-		startActivity(i);
-	}
-
-	private void scrollToNext() {
-		if (curPosition == mContactList.getCount() - 1)
-			return;
-		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN));
-		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_DOWN));
-//		curPosition += 1;
-//		mContactList.setSelection(curPosition);
-	}
-
-	private void scrollToPrev() {
-		if (curPosition == 0)
-			return;
-		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP));
-		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP));
-
-//		curPosition -= 1;
-//		mContactList.setSelection(curPosition);
+			startActivity(i);
+		} else {
+			Toast.makeText(getApplicationContext(), "nothing selected",
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public String getContactPhoneNumberByPhoneType(long contactId, int type) {
@@ -142,7 +136,6 @@ public class RecipientInputActivity extends Activity implements
 	}
 
 	private Cursor getContacts() {
-		// Run query
 		Uri uri = ContactsContract.Contacts.CONTENT_URI;
 		String[] projection = new String[] { ContactsContract.Contacts._ID,
 				ContactsContract.Contacts.DISPLAY_NAME };
