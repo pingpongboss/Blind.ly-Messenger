@@ -9,6 +9,7 @@ import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import edu.berkeley.cs169.datamodels.ContactModel;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
@@ -103,12 +104,11 @@ public class RecipientInputActivity extends ListActivity implements
 		if (c != null) {
 			long id = Long.parseLong(c.getString(0));
 			String num = getContactPhoneNumberByPhoneType(id);
-
-			Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
-					Toast.LENGTH_LONG).show();
+			
+			ContactModel recipient = new ContactModel(c.getString(1), num);
 
 			Intent i = new Intent(this, MessageInputActivity.class);
-			i.putExtra("recipient", num);
+			i.putExtra("recipient", recipient);
 
 			startActivity(i);
 		} else {

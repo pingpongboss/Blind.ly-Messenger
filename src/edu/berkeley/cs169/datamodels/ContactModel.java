@@ -1,6 +1,9 @@
 package edu.berkeley.cs169.datamodels;
 
-public class ContactModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ContactModel implements Parcelable {
 	private String name;
 	private String number;
 
@@ -24,5 +27,31 @@ public class ContactModel {
 
 	public void setNumber(String newnumber) {
 		number = newnumber;
+	}
+
+	public static final Parcelable.Creator<ContactModel> CREATOR = new Parcelable.Creator<ContactModel>() {
+		public ContactModel createFromParcel(Parcel in) {
+			return new ContactModel(in);
+		}
+
+		public ContactModel[] newArray(int size) {
+			return new ContactModel[size];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(name);
+		dest.writeString(number);
+	}
+
+	private ContactModel(Parcel in) {
+		name = in.readString();
+		number = in.readString();
 	}
 }

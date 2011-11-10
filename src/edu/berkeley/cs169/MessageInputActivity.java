@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.berkeley.cs169.datamodels.ContactModel;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
@@ -20,7 +20,7 @@ public class MessageInputActivity extends Activity implements
 	ScrollView scroll;
 	TextView visualizer;
 
-	String recipient;
+	ContactModel recipient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +30,15 @@ public class MessageInputActivity extends Activity implements
 
 		keyInterpreter = new KeyboardKeyInterpreter(this);
 
-		recipient = getIntent().getStringExtra("recipient");
+		recipient = getIntent().getParcelableExtra("recipient");
 
 		edit = (EditText) findViewById(R.id.edit);
 		scroll = (ScrollView) findViewById(R.id.scroll);
 		visualizer = (TextView) findViewById(R.id.visualizer);
 
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
-		recipientTextView.setText("To: " + recipient);
+		recipientTextView.setText(String.format("%s\n%s", recipient.getName(),
+				recipient.getNumber()));
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class MessageInputActivity extends Activity implements
 					break;
 				case DONE:
 					String message = edit.getText().toString();
-					Utils.sendSMSHelper(recipient, message);
+					Utils.sendSMSHelper(recipient.getNumber(), message);
 					Toast.makeText(
 							MessageInputActivity.this,
 							String.format("SMS sent to %s: \"%s\"", recipient,
