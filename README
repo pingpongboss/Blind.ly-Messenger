@@ -16,7 +16,16 @@ This project needs the following prereqs:
  * Android 2.1 (API 7) (Min SDK version)
  * Eclipse ADT Plugin (Android Development Tools v14.0.0.v201110171935-205994)
  
-To test/run this project do the following:
+To run this project do the following:
  * Create a new Android AVD. Target [Android 2.1 - API Level 7]
- * Right click the project in Eclipse and choose Run As -> Android Application
- * The Android emulator does not vibrate. To test fully, copy bin/Blind.ly-Messenger.apk onto an Android phone, install, and run the app 
+ * Import our Eclipse project into your workspace
+ * Right click the Blind.ly-Messenger project in Eclipse and choose Run As -> Android Application
+ * The Android emulator does not vibrate. To test fully, install bin/Blind.ly-Messenger.apk onto an Android phone
+ * Make sure at least 1 contact exists on the phone. Make sure that contact has a phone number saved
+ * Use the VOLUME_UP key to navigate to COMPOSE
+ * Use the VOLUME keys to select a contact. Press and release both VOLUME_UP and VOLUME_DOWN at the same time to select a contact
+ * Use the VOLUME_UP key to input Morse Code. Short tap for DOT, long hold for DASH, and don't press anything for the end of the character and the end of the word
+ * Use the VOLUME_DOWN key to send the message to the selected recipient
+ 
+ To test this project, first follow all steps above, then do the following:
+ * Right click AllTests.java and choose Run As -> JUnit Test. Make sure you run it as an Eclipse JUnit Test

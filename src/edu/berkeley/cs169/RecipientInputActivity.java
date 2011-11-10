@@ -69,6 +69,7 @@ public class RecipientInputActivity extends Activity implements
 					KeyEvent.KEYCODE_DPAD_DOWN));
 			break;
 		case UP_AND_DOWN:
+		case UP_AND_DOWN_HOLD:
 			passPhoneNumber();
 			break;
 		}
