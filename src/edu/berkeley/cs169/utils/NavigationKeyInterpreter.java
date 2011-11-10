@@ -7,9 +7,11 @@ public class NavigationKeyInterpreter {
 
 	NavigationKeyInterpreterResultListener listener;
 
-	long keyRepeatThreshold = -1;
 	long upKeyDownTimestamp = -1;
 	long downKeyDownTimestamp = -1;
+
+	long keyRepeatThreshold = -1;
+	boolean keyRepeated = false;
 
 	public NavigationKeyInterpreter(
 			NavigationKeyInterpreterResultListener listener) {
@@ -27,23 +29,27 @@ public class NavigationKeyInterpreter {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP: {
 			long dt = event.getEventTime() - upKeyDownTimestamp;
-			if (upKeyDownTimestamp == -1)
+			if (upKeyDownTimestamp == -1) {
 				upKeyDownTimestamp = event.getEventTime();
-			else if (keyRepeatThreshold > 0 && dt > keyRepeatThreshold
+				keyRepeated = false;
+			} else if (keyRepeatThreshold > 0 && dt > keyRepeatThreshold
 					&& downKeyDownTimestamp == -1) {
 				upKeyDownTimestamp = event.getEventTime();
 				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP);
+				keyRepeated = true;
 			}
 			return true;
 		}
 		case KeyEvent.KEYCODE_VOLUME_DOWN: {
 			long dt = event.getEventTime() - downKeyDownTimestamp;
-			if (downKeyDownTimestamp == -1)
+			if (downKeyDownTimestamp == -1) {
 				downKeyDownTimestamp = event.getEventTime();
-			else if (keyRepeatThreshold > 0 && dt > keyRepeatThreshold
+				keyRepeated = false;
+			} else if (keyRepeatThreshold > 0 && dt > keyRepeatThreshold
 					&& upKeyDownTimestamp == -1) {
 				downKeyDownTimestamp = event.getEventTime();
-				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP);
+				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.DOWN);
+				keyRepeated = true;
 			}
 			return true;
 		}
@@ -57,16 +63,18 @@ public class NavigationKeyInterpreter {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP:
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			if (upKeyDownTimestamp != -1 && downKeyDownTimestamp != -1) {
-				if (upDt > HOLD_THRESHOLD && downDt > HOLD_THRESHOLD) {
-					listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP_AND_DOWN_HOLD);
-				} else {
-					listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP_AND_DOWN);
+			if (!keyRepeated) {
+				if (upKeyDownTimestamp != -1 && downKeyDownTimestamp != -1) {
+					if (upDt > HOLD_THRESHOLD && downDt > HOLD_THRESHOLD) {
+						listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP_AND_DOWN_HOLD);
+					} else {
+						listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP_AND_DOWN);
+					}
+				} else if (upKeyDownTimestamp != -1) {
+					listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP);
+				} else if (downKeyDownTimestamp != -1) {
+					listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.DOWN);
 				}
-			} else if (upKeyDownTimestamp != -1) {
-				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.UP);
-			} else if (downKeyDownTimestamp != -1) {
-				listener.onKeyInterpreterResult(NavigationKeyInterpreterResultListener.DOWN);
 			}
 			upKeyDownTimestamp = -1;
 			downKeyDownTimestamp = -1;

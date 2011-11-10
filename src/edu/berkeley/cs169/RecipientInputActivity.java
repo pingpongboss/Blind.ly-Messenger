@@ -5,22 +5,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.VolumeKeysRepeater;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class RecipientInputActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	private ListView mContactList;
 	private boolean mShowInvisible, mNumbersOnly;
-	private Handler handler;
-	private VolumeKeysRepeater volKeyRepeater;
 	private NavigationKeyInterpreter keyInterpreter;
 	public static int PHONE_NUM_OK = 293847;
 
@@ -36,9 +32,7 @@ public class RecipientInputActivity extends Activity implements
 		mNumbersOnly = true;
 
 		// Register handler for UI elements
-		handler = new Handler();
-		volKeyRepeater = new VolumeKeysRepeater(this, handler);
-		keyInterpreter = new NavigationKeyInterpreter(this);
+		keyInterpreter = new NavigationKeyInterpreter(this, 200);
 
 		// Populate the contact list
 		populateContactList();
@@ -47,11 +41,6 @@ public class RecipientInputActivity extends Activity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
-			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-				volKeyRepeater.handleVolDown();
-			} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-				volKeyRepeater.handleVolUp();
-			}
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -60,11 +49,6 @@ public class RecipientInputActivity extends Activity implements
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyUp(keyCode, event)) {
-			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-				volKeyRepeater.handleVolDownUp();
-			} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-				volKeyRepeater.handleVolUpUp();
-			}
 			return true;
 		}
 		return super.onKeyUp(keyCode, event);
@@ -72,6 +56,18 @@ public class RecipientInputActivity extends Activity implements
 
 	public void onKeyInterpreterResult(int resultCode) {
 		switch (resultCode) {
+		case UP:
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+					KeyEvent.KEYCODE_DPAD_UP));
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+					KeyEvent.KEYCODE_DPAD_UP));
+			break;
+		case DOWN:
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+					KeyEvent.KEYCODE_DPAD_DOWN));
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+					KeyEvent.KEYCODE_DPAD_DOWN));
+			break;
 		case UP_AND_DOWN:
 			passPhoneNumber();
 			break;
@@ -103,8 +99,7 @@ public class RecipientInputActivity extends Activity implements
 		String[] whereArgs = new String[] { String.valueOf(contactId) };
 
 		Cursor cursor = getApplicationContext().getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-				null,
+				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
 				ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
 				whereArgs, null);
 
