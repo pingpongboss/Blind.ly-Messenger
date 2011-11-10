@@ -2,9 +2,11 @@ package edu.berkeley.cs169;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
@@ -15,6 +17,8 @@ public class MessageInputActivity extends Activity implements
 		KeyboardKeyInterpreterResultListener {
 	KeyboardKeyInterpreter keyInterpreter;
 	EditText edit;
+	ScrollView scroll;
+	TextView visualizer;
 
 	String recipient;
 
@@ -29,6 +33,8 @@ public class MessageInputActivity extends Activity implements
 		recipient = getIntent().getStringExtra("recipient");
 
 		edit = (EditText) findViewById(R.id.edit);
+		scroll = (ScrollView) findViewById(R.id.scroll);
+		visualizer = (TextView) findViewById(R.id.visualizer);
 
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
 		recipientTextView.setText("To: " + recipient);
@@ -63,35 +69,41 @@ public class MessageInputActivity extends Activity implements
 	}
 
 	public void onKeyInterpreterResult(ResultCode code, Object result) {
-		final Object copy = result;
-		switch (code) {
-		case DOT:
-			break;
-		case DASH:
-			break;
-		case LETTER_GAP:
-			break;
-		case WORD_GAP:
-			break;
-		case LAST_LETTER:
-			Log.d("MessageInputActivity", result.toString());
-			runOnUiThread(new Runnable() {
+		final ResultCode copyCode = code;
+		final Object copyResult = result;
+		runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					edit.setText(edit.getText().toString() + copy);
+			@Override
+			public void run() {
+				switch (copyCode) {
+				case DOT:
+					visualizer.setText(visualizer.getText().toString() + ".");
+					break;
+				case DASH:
+					visualizer.setText(visualizer.getText().toString() + "-");
+					break;
+				case LETTER_GAP:
+					visualizer.setText(visualizer.getText().toString() + " ");
+					break;
+				case WORD_GAP:
+					visualizer.setText(visualizer.getText().toString() + "\n");
+					break;
+				case LAST_LETTER:
+					edit.setText(edit.getText().toString() + copyResult);
 					edit.setSelection(edit.length());
+					break;
+				case DONE:
+					String message = edit.getText().toString();
+					Utils.sendSMSHelper(recipient, message);
+					Toast.makeText(
+							MessageInputActivity.this,
+							String.format("SMS sent to %s: \"%s\"", recipient,
+									message), Toast.LENGTH_SHORT).show();
+					break;
 				}
-			});
-			break;
-		case DONE:
-			String message = edit.getText().toString();
-			Utils.sendSMSHelper(recipient, message);
-			Toast.makeText(
-					this,
-					String.format("SMS sent to %s: \"%s\"", recipient, message),
-					Toast.LENGTH_SHORT).show();
-			break;
-		}
+
+				scroll.fullScroll(View.FOCUS_DOWN);
+			}
+		});
 	}
 }

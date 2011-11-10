@@ -9,9 +9,9 @@ import edu.berkeley.cs169.datamodels.MorseCodeModel;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
 
 public class KeyboardKeyInterpreter {
-	public static long DOT_DASH_THRESHOLD = 2 * Utils.INPUT_SPEED_BASE;
-	public static long LETTER_GAP_THRESHOLD = 3 * Utils.INPUT_SPEED_BASE;
-	public static long WORD_GAP_THRESHOLD = 7 * Utils.INPUT_SPEED_BASE;
+	public static long DOT_DASH_THRESHOLD = 3 * Utils.INPUT_SPEED_BASE;
+	public static long LETTER_GAP_THRESHOLD = 4 * Utils.INPUT_SPEED_BASE;
+	public static long WORD_GAP_THRESHOLD = 10 * Utils.INPUT_SPEED_BASE;
 
 	KeyboardKeyInterpreterResultListener listener;
 	MorseCodeModel model;
