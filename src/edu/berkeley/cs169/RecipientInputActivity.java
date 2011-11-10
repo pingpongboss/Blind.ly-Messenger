@@ -27,7 +27,7 @@ public class RecipientInputActivity extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.contact_manager);
+		setContentView(R.layout.recipient_input);
 
 		mContactList = (ListView) findViewById(R.id.contactList);
 
@@ -46,26 +46,27 @@ public class RecipientInputActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-			volKeyRepeater.handleVolDown();
-		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-			volKeyRepeater.handleVolUp();
-		}
-		if (keyInterpreter.onKeyDown(keyCode, event))
+		if (keyInterpreter.onKeyDown(keyCode, event)) {
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+				volKeyRepeater.handleVolDown();
+			} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+				volKeyRepeater.handleVolUp();
+			}
 			return true;
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 
-
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-			volKeyRepeater.handleVolDownUp();
-		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-			volKeyRepeater.handleVolUpUp();
-		}
-		if (keyInterpreter.onKeyUp(keyCode, event))
+		if (keyInterpreter.onKeyUp(keyCode, event)) {
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+				volKeyRepeater.handleVolDownUp();
+			} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+				volKeyRepeater.handleVolUpUp();
+			}
 			return true;
+		}
 		return super.onKeyUp(keyCode, event);
 	}
 
@@ -81,8 +82,7 @@ public class RecipientInputActivity extends Activity implements
 		Cursor c = (Cursor) mContactList.getSelectedItem();
 		if (c != null) {
 			long id = Long.parseLong(c.getString(0));
-			String num = getContactPhoneNumberByPhoneType(id,
-					ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+			String num = getContactPhoneNumberByPhoneType(id);
 
 			Toast.makeText(getApplicationContext(), c.getString(1) + " " + num,
 					Toast.LENGTH_LONG).show();
@@ -97,17 +97,15 @@ public class RecipientInputActivity extends Activity implements
 		}
 	}
 
-	public String getContactPhoneNumberByPhoneType(long contactId, int type) {
+	public String getContactPhoneNumberByPhoneType(long contactId) {
 		String phoneNumber = null;
 
-		String[] whereArgs = new String[] { String.valueOf(contactId),
-				String.valueOf(type) };
+		String[] whereArgs = new String[] { String.valueOf(contactId) };
 
 		Cursor cursor = getApplicationContext().getContentResolver().query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 				null,
-				ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? and "
-						+ ContactsContract.CommonDataKinds.Phone.TYPE + " = ?",
+				ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
 				whereArgs, null);
 
 		int phoneNumberIndex = cursor
