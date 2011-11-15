@@ -1,7 +1,5 @@
 package edu.berkeley.cs169;
 
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +14,7 @@ import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterprete
 import edu.berkeley.cs169.utils.Utils;
 
 public class MainActivity extends Activity implements
-		NavigationKeyInterpreterResultListener, OnInitListener {
+		NavigationKeyInterpreterResultListener {
 	
 	NavigationKeyInterpreter keyInterpreter;
 	private TextToSpeech mTts;
@@ -44,10 +42,12 @@ public class MainActivity extends Activity implements
 			}
 		});
 
-		// text to speech
-		mTts = new TextToSpeech(this, this);
-		mTts.speak("Welcome to Blindly Messenger", TextToSpeech.QUEUE_FLUSH, null);
-		// end text to speech
+		mTts = new TextToSpeech(this, new OnInitListener() {
+			
+			public void onInit(int status) {
+				mTts.speak("Welcome to Blindly Messenger", TextToSpeech.QUEUE_FLUSH, null);
+			}
+		});
 	}
 
 	@Override
@@ -56,7 +56,6 @@ public class MainActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.main_shortcode);
 		Utils.textToVibration(alert, this);
-
 	}
 
 	@Override
