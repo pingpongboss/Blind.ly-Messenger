@@ -42,7 +42,6 @@ public class MessageInputActivity extends Activity implements
 		scroll = (ScrollView) findViewById(R.id.scroll);
 		scroll.setOnTouchListener(new OnTouchListener() {
 
-			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN)
 					dispatchKeyEvent(new KeyEvent(SystemClock.uptimeMillis(),
@@ -104,7 +103,6 @@ public class MessageInputActivity extends Activity implements
 		final Object copyResult = result;
 		runOnUiThread(new Runnable() {
 
-			@Override
 			public void run() {
 				status.setVisibility(View.GONE);
 				String sentText = getResources().getString(

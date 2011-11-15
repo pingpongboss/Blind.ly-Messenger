@@ -12,13 +12,13 @@ public class MessageBroadcastReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent) 
     {
-        //---get the SMS message passed in---
+        //get the SMS message passed in
         Bundle bundle = intent.getExtras();        
         SmsMessage[] msgs = null;
         String str = "";            
         if (bundle != null)
         {
-            //---retrieve the SMS message received---
+            //retrieve the SMS message received
             Object[] pdus = (Object[]) bundle.get("pdus");
             msgs = new SmsMessage[pdus.length];            
             for (int i=0; i<msgs.length; i++){
@@ -28,7 +28,7 @@ public class MessageBroadcastReceiver extends BroadcastReceiver
                 str += msgs[i].getMessageBody().toString();
                 str += "\n";        
             }
-            //---display the new SMS message---
+            //display the new SMS message
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
         }                         
     }

@@ -39,15 +39,18 @@ public class ReadMessageActivity extends Activity {
 		    content = body[0];
 		    name = getContactNameFromNumber(number[0]);
 		    msg = name + ": " + body[0];
+		    //display the newest message
 		    view.setText(msg);
 		    setContentView(view);
 		    readMessage();
 		    }
 	}
+	
+	//playback the message
 	private void readMessage() {
 		Utils.textToVibration(content, this);
 	}
-	
+	// find the name in the contact list by number
 	private String getContactNameFromNumber(String number) {
 		String[] projection = new String[] {
 				Contacts.Phones.DISPLAY_NAME,
@@ -64,7 +67,7 @@ public class ReadMessageActivity extends Activity {
 			return name;
 		}
  
-		// return the original number if no match was found
+		//return the original number if no match was found
 		return number;
 	}
 }
