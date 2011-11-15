@@ -1,9 +1,12 @@
 package edu.berkeley.cs169.utils;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Context;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.telephony.SmsManager;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 
