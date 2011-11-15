@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import edu.berkeley.cs169.datamodels.ContactModel;
+import edu.berkeley.cs169.datamodels.MorseCodeModel;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.utils.Utils;
@@ -24,6 +24,7 @@ public class MessageInputActivity extends Activity implements
 	ScrollView scroll;
 	TextView visualizer;
 	ImageView overlay;
+	TextView status;
 
 	ContactModel recipient;
 
@@ -62,6 +63,8 @@ public class MessageInputActivity extends Activity implements
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
 		recipientTextView.setText(String.format("%s\n%s", recipient.getName(),
 				recipient.getNumber()));
+
+		status = (TextView) findViewById(R.id.status);
 	}
 
 	@Override
@@ -103,32 +106,39 @@ public class MessageInputActivity extends Activity implements
 
 			@Override
 			public void run() {
+				status.setVisibility(View.GONE);
+				String sentText = getResources().getString(
+						R.string.message_input_sent);
+				String existingText = visualizer.getText().toString();
+				if (existingText.equals(sentText))
+					existingText = "";
+
 				switch (copyCode) {
 				case DOT:
-					visualizer.setText(visualizer.getText().toString() + ".");
+					visualizer.setText(existingText + ".");
 					break;
 				case DASH:
-					visualizer.setText(visualizer.getText().toString() + "-");
+					visualizer.setText(existingText + "-");
 					break;
 				case LETTER_GAP:
-					visualizer.setText(visualizer.getText().toString() + " ");
+					visualizer.setText(existingText + " ");
 					break;
 				case WORD_GAP:
-					visualizer.setText(visualizer.getText().toString() + "\n");
+					visualizer.setText(existingText.trim() + "\n");
 					break;
 				case LAST_LETTER:
 					edit.setText(edit.getText().toString() + copyResult);
 					edit.setSelection(edit.length());
 					break;
 				case DONE:
-					String message = edit.getText().toString();
+					String message = Utils
+							.morseToText((MorseCodeModel) copyResult);
 					if (message != null && !message.equals("")) {
 						Utils.sendSMSHelper(recipient.getNumber(), message);
-						Toast.makeText(
-								MessageInputActivity.this,
-								String.format("SMS sent to %s: \"%s\"",
-										recipient, message), Toast.LENGTH_SHORT)
-								.show();
+						visualizer.setText(sentText);
+						edit.setText("");
+						status.setVisibility(View.VISIBLE);
+						status.setText(message);
 					}
 					break;
 				}

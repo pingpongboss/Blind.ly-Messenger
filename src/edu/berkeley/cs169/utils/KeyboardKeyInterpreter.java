@@ -126,7 +126,7 @@ public class KeyboardKeyInterpreter {
 							lastChar);
 				}
 
-				listener.onKeyInterpreterResult(ResultCode.DONE, null);
+				listener.onKeyInterpreterResult(ResultCode.DONE, model);
 			}
 			return true;
 		}
