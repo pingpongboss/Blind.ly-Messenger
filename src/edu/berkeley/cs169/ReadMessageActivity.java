@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.widget.TextView;
 import edu.berkeley.cs169.utils.Utils;
 
@@ -12,6 +14,7 @@ public class ReadMessageActivity extends Activity {
 	String msg = "";
 	String content = "";
 	String name = "";
+	private TextToSpeech mTts;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,12 +47,21 @@ public class ReadMessageActivity extends Activity {
 		    setContentView(view);
 		    readMessage();
 		    }
+		    
+		    mTts = new TextToSpeech(this, new OnInitListener() {
+				
+				public void onInit(int status) {
+					mTts.speak("Read Messages", TextToSpeech.QUEUE_FLUSH, null);
+				}
+			});
 	}
 	
 	//playback the message
 	private void readMessage() {
 		Utils.textToVibration(content, this);
+		//mTts.speak(content, TextToSpeech.QUEUE_FLUSH, null);
 	}
+	
 	// find the name in the contact list by number
 	private String getContactNameFromNumber(String number) {
 		String[] projection = new String[] {

@@ -56,6 +56,7 @@ public class MainActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.main_shortcode);
 		Utils.textToVibration(alert, this);
+		mTts.speak("Welcome to Blindly Messenger", TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class MainActivity extends Activity implements
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.main_help);
 		Utils.textToVibration(alert, this);
-		mTts.speak("press volume up for compose and volume down for read", TextToSpeech.QUEUE_FLUSH, null);
+		mTts.speak(alert, TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	protected void startCompose() {
