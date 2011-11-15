@@ -3,8 +3,6 @@ package edu.berkeley.cs169;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,13 +19,14 @@ import edu.berkeley.cs169.utils.Utils;
 
 public class MessageInputActivity extends Activity implements
 		KeyboardKeyInterpreterResultListener {
+	BlindlyMessenger app;
+
 	KeyboardKeyInterpreter keyInterpreter;
 	EditText edit;
 	ScrollView scroll;
 	TextView visualizer;
 	ImageView overlay;
 	TextView status;
-	private TextToSpeech mTts;
 
 	ContactModel recipient;
 
@@ -36,6 +35,8 @@ public class MessageInputActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.message_input);
+
+		app = (BlindlyMessenger) getApplication();
 
 		keyInterpreter = new KeyboardKeyInterpreter(this);
 
@@ -67,14 +68,6 @@ public class MessageInputActivity extends Activity implements
 				recipient.getNumber()));
 
 		status = (TextView) findViewById(R.id.status);
-		
-		mTts = new TextToSpeech(this, new OnInitListener() {
-			
-			public void onInit(int status) {
-				mTts.speak(recipient.getName() + "selected. compose message.", TextToSpeech.QUEUE_FLUSH, null);
-
-			}
-		});
 	}
 
 	@Override
@@ -83,14 +76,15 @@ public class MessageInputActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.compose_shortcode);
 		Utils.textToVibration(alert, this);
-		mTts.speak("compose message to " + recipient.getName(), TextToSpeech.QUEUE_FLUSH, null);
+
+		app.speak(recipient.getName() + "selected. compose message.");
 	}
 
 	protected void vibrateHelp() {
 		String alert = getResources().getString(R.string.compose_help);
 
 		Utils.textToVibration(alert, this);
-		mTts.speak(alert, TextToSpeech.QUEUE_FLUSH, null);
+		app.speak(alert);
 	}
 
 	@Override
@@ -150,7 +144,9 @@ public class MessageInputActivity extends Activity implements
 						edit.setText("");
 						status.setVisibility(View.VISIBLE);
 						status.setText(message);
-						mTts.speak("S M S message sent to " + recipient.getName() + ". your message says:" + message, TextToSpeech.QUEUE_FLUSH, null);
+						app.speak("S M S message sent to "
+								+ recipient.getName() + ". your message says:"
+								+ message);
 					}
 					break;
 				}

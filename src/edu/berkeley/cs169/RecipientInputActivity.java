@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.KeyEvent;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -18,14 +16,17 @@ import edu.berkeley.cs169.utils.Utils;
 
 public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
+	BlindlyMessenger app;
+
 	private boolean mShowInvisible, mNumbersOnly;
 	private NavigationKeyInterpreter keyInterpreter;
-	private TextToSpeech mTts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recipient_input);
+
+		app = (BlindlyMessenger) getApplication();
 
 		// Initialize class properties
 		mShowInvisible = false;
@@ -36,13 +37,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 		// Populate the contact list
 		populateContactList();
-		
-		 mTts = new TextToSpeech(this, new OnInitListener() {
-				
-				public void onInit(int status) {
-					mTts.speak("Select Message Recipient", TextToSpeech.QUEUE_FLUSH, null);
-				}
-			});
 	}
 
 	@Override
@@ -52,7 +46,8 @@ public class RecipientInputActivity extends ListActivity implements
 		String alert = getResources().getString(
 				R.string.recipient_input_shortcode);
 		Utils.textToVibration(alert, this);
-		mTts.speak("Select Message Recipient", TextToSpeech.QUEUE_FLUSH, null);
+
+		app.speak("Select Message Recipient");
 	}
 
 	@Override
@@ -115,7 +110,7 @@ public class RecipientInputActivity extends ListActivity implements
 		if (c != null) {
 			long id = Long.parseLong(c.getString(0));
 			String num = getContactPhoneNumberByPhoneType(id);
-			
+
 			ContactModel recipient = new ContactModel(c.getString(1), num);
 			Intent i = new Intent(this, MessageInputActivity.class);
 			i.putExtra("recipient", recipient);

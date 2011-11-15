@@ -3,8 +3,6 @@ package edu.berkeley.cs169;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,17 +13,18 @@ import edu.berkeley.cs169.utils.Utils;
 
 public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
-	
+	BlindlyMessenger app;
 	NavigationKeyInterpreter keyInterpreter;
-	private TextToSpeech mTts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		app = (BlindlyMessenger) getApplication();
+
 		keyInterpreter = new NavigationKeyInterpreter(this);
-		
+
 		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
 		layoutUp.setOnClickListener(new OnClickListener() {
 
@@ -41,13 +40,6 @@ public class MainActivity extends Activity implements
 				startRead();
 			}
 		});
-
-		mTts = new TextToSpeech(this, new OnInitListener() {
-			
-			public void onInit(int status) {
-				mTts.speak("Welcome to Blindly Messenger", TextToSpeech.QUEUE_FLUSH, null);
-			}
-		});
 	}
 
 	@Override
@@ -56,7 +48,8 @@ public class MainActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.main_shortcode);
 		Utils.textToVibration(alert, this);
-		mTts.speak("Welcome to Blindly Messenger", TextToSpeech.QUEUE_FLUSH, null);
+
+		app.speak("Welcome to Blindly Messenger");
 	}
 
 	@Override
@@ -93,7 +86,7 @@ public class MainActivity extends Activity implements
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.main_help);
 		Utils.textToVibration(alert, this);
-		mTts.speak(alert, TextToSpeech.QUEUE_FLUSH, null);
+		app.speak(alert);
 	}
 
 	protected void startCompose() {
@@ -103,8 +96,4 @@ public class MainActivity extends Activity implements
 	protected void startRead() {
 		startActivity(new Intent(this, ReadMessageActivity.class));
 	}
-
-	// Implements TextToSpeech.OnInitListener.
-    public void onInit(int status) {
-    }
 }
