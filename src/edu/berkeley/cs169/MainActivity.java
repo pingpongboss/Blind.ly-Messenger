@@ -1,8 +1,12 @@
 package edu.berkeley.cs169;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,8 +16,10 @@ import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterprete
 import edu.berkeley.cs169.utils.Utils;
 
 public class MainActivity extends Activity implements
-		NavigationKeyInterpreterResultListener {
+		NavigationKeyInterpreterResultListener, OnInitListener {
+	
 	NavigationKeyInterpreter keyInterpreter;
+	private TextToSpeech mTts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +27,7 @@ public class MainActivity extends Activity implements
 		setContentView(R.layout.main);
 
 		keyInterpreter = new NavigationKeyInterpreter(this);
-
+		
 		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
 		layoutUp.setOnClickListener(new OnClickListener() {
 
@@ -37,6 +43,11 @@ public class MainActivity extends Activity implements
 				startRead();
 			}
 		});
+
+		// text to speech
+		mTts = new TextToSpeech(this, this);
+		mTts.speak("Welcome to Blindly Messenger", TextToSpeech.QUEUE_FLUSH, null);
+		// end text to speech
 	}
 
 	@Override
@@ -45,6 +56,7 @@ public class MainActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.main_shortcode);
 		Utils.textToVibration(alert, this);
+
 	}
 
 	@Override
@@ -81,6 +93,7 @@ public class MainActivity extends Activity implements
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.main_help);
 		Utils.textToVibration(alert, this);
+		mTts.speak("press volume up for compose and volume down for read", TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	protected void startCompose() {
@@ -90,4 +103,8 @@ public class MainActivity extends Activity implements
 	protected void startRead() {
 		startActivity(new Intent(this, ReadMessageActivity.class));
 	}
+
+	// Implements TextToSpeech.OnInitListener.
+    public void onInit(int status) {
+    }
 }
