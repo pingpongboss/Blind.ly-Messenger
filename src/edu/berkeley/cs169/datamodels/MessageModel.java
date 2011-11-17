@@ -14,6 +14,14 @@ public class MessageModel implements Parcelable {
 		this.to = to;
 	}
 
+	@Override
+	public String toString() {
+		String name = from.getName();
+		return String.format("Message from %s: %s",
+				name == null || name.equals("") ? from.getNumber() : name,
+				content);
+	}
+
 	public String getContent() {
 		return content;
 	}

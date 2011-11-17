@@ -12,4 +12,6 @@
     <string name="message_edit_hint">Compose message body</string>
     <string name="recipient_input_shortcode">r</string>
     <string name="message_input_sent">Message\nSent</string>
+    <string name="popup_shortcode">p</string>
+    <string name="popup_help">UP to listen DOWN to reply</string>
 </resources>

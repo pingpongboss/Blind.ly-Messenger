@@ -30,7 +30,8 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-        <activity android:name="PopupActivity" android:screenOrientation="nosensor"></activity>
+        <activity android:name="PopupActivity" android:screenOrientation="nosensor" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" >
