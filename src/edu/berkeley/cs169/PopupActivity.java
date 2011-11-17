@@ -63,7 +63,8 @@ public class PopupActivity extends Activity implements
 		String alert = getResources().getString(R.string.popup_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak(String.format("Message from %s", mMessage.getFrom()));
+		String greeting = getResources().getString(R.string.popup_tts);
+		app.speak(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
 
 	protected void startListen() {

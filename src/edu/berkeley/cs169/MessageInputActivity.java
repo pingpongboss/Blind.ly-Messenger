@@ -64,8 +64,7 @@ public class MessageInputActivity extends Activity implements
 		overlay.setAlpha(0);
 
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
-		recipientTextView.setText(String.format("%s\n%s", mRecipient.getName(),
-				mRecipient.getNumber()));
+		recipientTextView.setText(mRecipient.toString());
 
 		status = (TextView) findViewById(R.id.status);
 	}
@@ -74,14 +73,16 @@ public class MessageInputActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 
-		String alert = getResources().getString(R.string.compose_shortcode);
+		String alert = getResources().getString(
+				R.string.message_input_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak(String.format("Compose to %s", mRecipient.getName()));
+		String greeting = getResources().getString(R.string.message_input_tts);
+		app.speak(String.format("%s %s", greeting, mRecipient));
 	}
 
 	protected void vibrateHelp() {
-		String alert = getResources().getString(R.string.compose_help);
+		String alert = getResources().getString(R.string.message_input_help);
 
 		Utils.textToVibration(alert, this);
 		app.speak(alert);
@@ -132,8 +133,11 @@ public class MessageInputActivity extends Activity implements
 					visualizer.setText(existingText.trim() + "\n");
 					break;
 				case LAST_LETTER:
-					edit.setText(edit.getText().toString() + copyResult);
+					String character = copyResult.toString();
+					edit.setText(edit.getText().toString() + character);
 					edit.setSelection(edit.length());
+
+					app.speak(character);
 					break;
 				case DONE:
 					String message = Utils

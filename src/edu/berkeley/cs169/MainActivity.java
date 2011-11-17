@@ -49,7 +49,8 @@ public class MainActivity extends Activity implements
 		String alert = getResources().getString(R.string.main_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak("Welcome to Blindly Messenger");
+		String greeting = getResources().getString(R.string.main_tts);
+		app.speak(greeting);
 	}
 
 	@Override

@@ -47,7 +47,9 @@ public class RecipientInputActivity extends ListActivity implements
 				R.string.recipient_input_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak("Select Message Recipient");
+		String greeting = getResources()
+				.getString(R.string.recipient_input_tts);
+		app.speak(greeting);
 	}
 
 	@Override
@@ -99,10 +101,19 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-		case UP_AND_DOWN_LONG:
 			passPhoneNumber();
 			break;
+		case UP_AND_DOWN_LONG:
+			starthelp();
+			break;
 		}
+	}
+
+	private void starthelp() {
+		String alert = getResources().getString(R.string.recipient_input_help);
+
+		Utils.textToVibration(alert, this);
+		app.speak(alert);
 	}
 
 	private void passPhoneNumber() {

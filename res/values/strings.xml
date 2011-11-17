@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Blind.ly Messenger</string>
-    <string name="main_up">COMPOSE</string>
-    <string name="main_down">READ</string>
-    <string name="main_help">UP to compose DOWN to read</string>
-    <string name="main_shortcode">m</string>
-    <string name="compose_help">UP for recipient DOWN for message</string>
-    <string name="compose_shortcode">c</string>
-    <string name="compose_recipient_hint">Enter recipient</string>
-    <string name="compose_message_hint">Compose message body</string>
-    <string name="message_edit_hint">Compose message body</string>
-    <string name="recipient_input_shortcode">r</string>
-    <string name="message_input_sent">Message\nSent</string>
-    <string name="popup_shortcode">p</string>
-    <string name="popup_help">UP to listen DOWN to reply</string>
-    <string name="name_self">Me</string>
+    
+    
+    <string name="main_shortcode">m</string><string name="main_help">Tap UP to compose, tap DOWN to read</string>
+    
+    <string name="main_tts">Welcome to Blindly Messenger.</string><string name="main_up">COMPOSE</string><string name="main_down">READ</string><string name="recipient_input_shortcode">r</string><string name="recipient_input_help">TODO</string><string name="recipient_input_tts">Select recipient.</string><string name="recipient_input_hint">Enter recipient</string>
+    
+    
+    
+    
+    
+    <string name="message_input_shortcode">m</string><string name="message_input_help">Tap UP for DOT, hold UP for DASH, press DOWN to send</string><string name="message_input_tts">Compose message to</string>
+    <string name="message_input_sent">Message\nSent</string><string name="message_input_hint">Compose message body</string><string name="popup_shortcode">p</string>
+    <string name="popup_help">Tap UP to listen, tap DOWN to reply</string>
+    <string name="popup_tts">New message from</string><string name="name_self">Me</string>
+    
+    
+    
+    
+
 </resources>
