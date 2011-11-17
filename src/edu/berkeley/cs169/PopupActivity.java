@@ -1,16 +1,16 @@
 package edu.berkeley.cs169;
 
-import edu.berkeley.cs169.datamodels.MessageModel;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.Utils;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import edu.berkeley.cs169.datamodels.MessageModel;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.utils.Utils;
 
 public class PopupActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
@@ -67,12 +67,14 @@ public class PopupActivity extends Activity implements
 	}
 
 	protected void startListen() {
+		Utils.textToVibration(mMessage.toString(), this);
 		app.speak(mMessage.toString());
 	}
 
 	protected void startReply() {
-		// TODO
-		Log.d("PopupActivity", "startReply()");
+		Intent i = new Intent(this, MessageInputActivity.class);
+		i.putExtra("recipient", mMessage.getFrom());
+		startActivity(i);
 	}
 
 	protected void startHelp() {

@@ -28,7 +28,7 @@ public class MessageInputActivity extends Activity implements
 	ImageView overlay;
 	TextView status;
 
-	ContactModel recipient;
+	ContactModel mRecipient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MessageInputActivity extends Activity implements
 
 		keyInterpreter = new KeyboardKeyInterpreter(this);
 
-		recipient = getIntent().getParcelableExtra("recipient");
+		mRecipient = getIntent().getParcelableExtra("recipient");
 
 		edit = (EditText) findViewById(R.id.edit);
 		scroll = (ScrollView) findViewById(R.id.scroll);
@@ -64,8 +64,8 @@ public class MessageInputActivity extends Activity implements
 		overlay.setAlpha(0);
 
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
-		recipientTextView.setText(String.format("%s\n%s", recipient.getName(),
-				recipient.getNumber()));
+		recipientTextView.setText(String.format("%s\n%s", mRecipient.getName(),
+				mRecipient.getNumber()));
 
 		status = (TextView) findViewById(R.id.status);
 	}
@@ -77,7 +77,7 @@ public class MessageInputActivity extends Activity implements
 		String alert = getResources().getString(R.string.compose_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak(recipient.getName() + "selected. compose message.");
+		app.speak(String.format("Compose to %s", mRecipient.getName()));
 	}
 
 	protected void vibrateHelp() {
@@ -139,13 +139,13 @@ public class MessageInputActivity extends Activity implements
 					String message = Utils
 							.morseToText((MorseCodeModel) copyResult);
 					if (message != null && !message.equals("")) {
-						Utils.sendSMSHelper(recipient.getNumber(), message);
+						Utils.sendSMSHelper(mRecipient.getNumber(), message);
 						visualizer.setText(sentText);
 						edit.setText("");
 						status.setVisibility(View.VISIBLE);
 						status.setText(message);
 						app.speak("S M S message sent to "
-								+ recipient.getName() + ". your message says:"
+								+ mRecipient.getName() + ". your message says:"
 								+ message);
 					}
 					break;

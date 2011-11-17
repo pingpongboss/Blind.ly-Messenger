@@ -28,7 +28,8 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 						app.getMyContact());
 
 				Intent i = new Intent(context, PopupActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+						| Intent.FLAG_ACTIVITY_NO_HISTORY);
 				i.putExtra("message", message);
 
 				Log.d("MessageBroadcastReceiver", "Received text");
