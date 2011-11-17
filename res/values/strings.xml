@@ -14,4 +14,5 @@
     <string name="message_input_sent">Message\nSent</string>
     <string name="popup_shortcode">p</string>
     <string name="popup_help">UP to listen DOWN to reply</string>
+    <string name="name_self">Me</string>
 </resources>

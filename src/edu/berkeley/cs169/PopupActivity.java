@@ -63,7 +63,7 @@ public class PopupActivity extends Activity implements
 		String alert = getResources().getString(R.string.popup_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak("Popup screen");
+		app.speak(String.format("Message from %s", mMessage.getFrom()));
 	}
 
 	protected void startListen() {
@@ -71,6 +71,7 @@ public class PopupActivity extends Activity implements
 	}
 
 	protected void startReply() {
+		// TODO
 		Log.d("PopupActivity", "startReply()");
 	}
 
