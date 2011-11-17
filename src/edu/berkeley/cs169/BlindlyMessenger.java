@@ -1,5 +1,6 @@
 package edu.berkeley.cs169;
 
+import edu.berkeley.cs169.datamodels.ContactModel;
 import android.app.Application;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -34,5 +35,15 @@ public class BlindlyMessenger extends Application {
 		}
 
 		mTextToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null);
+	}
+
+	public String getNameForNumber(String number) {
+		// TODO get name from contacts
+		return "";
+	}
+
+	public ContactModel getMyContact() {
+		// TODO return the phone owner's name and number
+		return new ContactModel("Mark", "7144084066");
 	}
 }

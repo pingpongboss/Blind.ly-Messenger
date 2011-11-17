@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".MessageInputActivity" android:screenOrientation="nosensor">
         </activity>
-        <activity android:name=".RecipientInputActivity">
+        <activity android:name=".RecipientInputActivity" android:screenOrientation="nosensor">
         </activity>
         <activity android:name=".ReadMessageActivity" android:screenOrientation="nosensor">
         </activity>
@@ -30,6 +30,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+        <activity android:name="PopupActivity" android:screenOrientation="nosensor"></activity>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" >

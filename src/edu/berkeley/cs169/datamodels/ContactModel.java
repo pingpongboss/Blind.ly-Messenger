@@ -8,7 +8,6 @@ public class ContactModel implements Parcelable {
 	private String number;
 
 	public ContactModel(String name, String number) {
-		super();
 		this.name = name;
 		this.number = number;
 	}

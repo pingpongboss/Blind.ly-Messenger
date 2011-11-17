@@ -1,6 +1,9 @@
 package edu.berkeley.cs169.datamodels;
 
-public class MessageModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MessageModel implements Parcelable {
 	private String content;
 	private ContactModel from;
 	private ContactModel to;
@@ -33,5 +36,33 @@ public class MessageModel {
 
 	public void setTo(ContactModel t) {
 		to = t;
+	}
+
+	public static final Parcelable.Creator<MessageModel> CREATOR = new Parcelable.Creator<MessageModel>() {
+		public MessageModel createFromParcel(Parcel in) {
+			return new MessageModel(in);
+		}
+
+		public MessageModel[] newArray(int size) {
+			return new MessageModel[size];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(content);
+		dest.writeParcelable(from, 0);
+		dest.writeParcelable(to, 0);
+	}
+
+	private MessageModel(Parcel in) {
+		content = in.readString();
+		from = in.readParcelable(ContactModel.class.getClassLoader());
+		to = in.readParcelable(ContactModel.class.getClassLoader());
 	}
 }
