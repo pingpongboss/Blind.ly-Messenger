@@ -34,7 +34,6 @@ public class PopupActivity extends Activity implements
 
 		listen.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				startListen();
 			}
@@ -42,7 +41,6 @@ public class PopupActivity extends Activity implements
 
 		reply.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				startReply();
 			}
@@ -98,7 +96,6 @@ public class PopupActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	@Override
 	public void onKeyInterpreterResult(ResultCode code) {
 		switch (code) {
 		case UP:

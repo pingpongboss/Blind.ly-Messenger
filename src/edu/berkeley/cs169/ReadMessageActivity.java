@@ -1,69 +1,78 @@
 package edu.berkeley.cs169;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class ReadMessageActivity extends Activity {
+public class ReadMessageActivity extends ListActivity {
 	String msg = "";
 	String content = "";
 	String name = "";
-	private TextToSpeech mTts;
 
 	BlindlyMessenger app;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		app = (BlindlyMessenger) getApplication();
-
-		TextView view = new TextView(this);
-		Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"),
-				null, null, null, null);
+		setContentView(R.layout.message_list);
+		
+		Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"),null,null,null, null);
 		startManagingCursor(c);
-
+		app = (BlindlyMessenger) getApplication();
+		
 		int smsEntriesCount = c.getCount();
 
-		String[] body = new String[smsEntriesCount];
-		String[] number = new String[smsEntriesCount];
-		if (c.moveToFirst() == true) {
-			if (c.moveToFirst()) {
-				for (int i = 0; i < smsEntriesCount; i++) {
-					body[i] = c.getString(c.getColumnIndexOrThrow("body"))
-							.toString();
-					number[i] = c.getString(c.getColumnIndexOrThrow("address"))
-							.toString();
-					c.moveToNext();
-				}
-			}
-			c.close();
-			content = body[0];
-			name = getContactNameFromNumber(number[0]);
-			msg = name + ": " + body[0];
-			// display the newest message
-			view.setText(msg);
-			setContentView(view);
-			readMessage();
-		}
+		
+		    String[] body = new String[smsEntriesCount];
+		    String[] number = new String[smsEntriesCount];
+		    if (c.moveToFirst() == true){
+		    if (c.moveToFirst()) 
+		    {
+		    	for (int i = 0; i < smsEntriesCount; i++) 
+		    	{
+		    		body[i] = c.getString(c.getColumnIndexOrThrow("body")).toString();
+		    		number[i] = c.getString(c.getColumnIndexOrThrow("address")).toString();
+		    		c.moveToNext();
+		    	}
+		    }
+		    
+		    String[] columns = new String[] {null, null}; // TODO: find column names
+		    int[] to = new int[] {R.id.message_entry_name, R.id.message_entry_body};
+		    SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this, R.layout.message_entry, c, columns, to);
+		    
+		    this.setListAdapter(mAdapter);
+		    
+		    /*
+		    c.close();
+		    content = body[0];
+		    name = getContactNameFromNumber(number[0]);
+		    msg = name + ": " + body[0];
+		    //display the newest message
+		    view.setText(msg);
+		    setContentView(view);
+		    */
+		    //readMessage();
+		    }
 
-		mTts = new TextToSpeech(this, new OnInitListener() {
+	BlindlyMessenger app;
 
-			public void onInit(int status) {
-				mTts.speak("Read Messages", TextToSpeech.QUEUE_FLUSH, null);
-			}
-		});
 	}
 
 	// playback the message
 	private void readMessage() {
-		app.vibrate(content);
-		app.speak(content);
+
+		//Utils.textToVibration(content, this);
+
+		//app.vibrate(content);
+
+		//app.speak(content);
 	}
 
 	// find the name in the contact list by number
