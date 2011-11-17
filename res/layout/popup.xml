@@ -49,8 +49,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="Message"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="Message could potentiall be super long very very long. Even longer than this"
+            android:textAppearance="?android:attr/textAppearanceMedium" android:maxLines="2" android:ellipsize="end"/>
 
     </RelativeLayout>
 
