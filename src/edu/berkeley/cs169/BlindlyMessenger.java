@@ -16,7 +16,6 @@ public class BlindlyMessenger extends Application {
 
 		mTextToSpeech = new TextToSpeech(this, new OnInitListener() {
 
-			@Override
 			public void onInit(int status) {
 				if (savedText != null) {
 					speak(savedText);

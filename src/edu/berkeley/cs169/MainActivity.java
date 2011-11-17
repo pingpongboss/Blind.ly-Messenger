@@ -15,6 +15,10 @@ public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	BlindlyMessenger app;
 	NavigationKeyInterpreter keyInterpreter;
+	
+	String greeting;
+	String help;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,10 @@ public class MainActivity extends Activity implements
 				startRead();
 			}
 		});
+		
+		greeting = getResources().getString(R.string.TTS_main);
+		help = getResources().getString(R.string.TTS_main_help);
+		app.speak(greeting + help);
 	}
 
 	@Override
@@ -48,8 +56,9 @@ public class MainActivity extends Activity implements
 
 		String alert = getResources().getString(R.string.main_shortcode);
 		Utils.textToVibration(alert, this);
-
-		app.speak("Welcome to Blindly Messenger");
+		
+		greeting = getResources().getString(R.string.TTS_main);
+		app.speak(greeting);
 	}
 
 	@Override

@@ -29,6 +29,9 @@ public class MessageInputActivity extends Activity implements
 	TextView status;
 
 	ContactModel recipient;
+	
+	String greeting;
+	String help;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,10 @@ public class MessageInputActivity extends Activity implements
 				recipient.getNumber()));
 
 		status = (TextView) findViewById(R.id.status);
+		
+		greeting = getResources().getString(R.string.TTS_compose);
+		help = getResources().getString(R.string.TTS_compose_help);
+		app.speak(recipient.getName() + greeting + help);
 	}
 
 	@Override
@@ -77,7 +84,8 @@ public class MessageInputActivity extends Activity implements
 		String alert = getResources().getString(R.string.compose_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak(recipient.getName() + "selected. compose message.");
+		greeting = getResources().getString(R.string.TTS_compose);
+		app.speak(recipient.getName() + greeting);
 	}
 
 	protected void vibrateHelp() {

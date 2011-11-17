@@ -20,6 +20,9 @@ public class RecipientInputActivity extends ListActivity implements
 
 	private boolean mShowInvisible, mNumbersOnly;
 	private NavigationKeyInterpreter keyInterpreter;
+	
+	String greeting;
+	String help;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,10 @@ public class RecipientInputActivity extends ListActivity implements
 
 		// Populate the contact list
 		populateContactList();
+		
+		greeting = getResources().getString(R.string.TTS_select_recipient);
+		help = getResources().getString(R.string.TTS_select_recipient_help);
+		app.speak(greeting);
 	}
 
 	@Override
@@ -47,7 +54,8 @@ public class RecipientInputActivity extends ListActivity implements
 				R.string.recipient_input_shortcode);
 		Utils.textToVibration(alert, this);
 
-		app.speak("Select Message Recipient");
+		greeting = getResources().getString(R.string.TTS_select_recipient);
+		app.speak(greeting);
 	}
 
 	@Override

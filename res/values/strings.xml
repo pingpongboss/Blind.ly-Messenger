@@ -12,4 +12,10 @@
     <string name="message_edit_hint">Compose message body</string>
     <string name="recipient_input_shortcode">r</string>
     <string name="message_input_sent">Message\nSent</string>
+    <string name="TTS_main">Welcome to Blindly Messenger.</string>
+    <string name="TTS_main_help">press volume up to compose a message, press volume down to read messages</string>
+    <string name="TTS_select_recipient">Select recipient.</string>
+    <string name="TTS_select_recipient_help"> use volume up and volume down to peruse contacts. press volume up and volume down together to select.</string>
+    <string name="TTS_compose"> selected. compose message.</string>
+    <string name="TTS_compose_help">tap volume up for dot, hold for dash. press volume down to send.</string>
 </resources>
