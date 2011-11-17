@@ -50,7 +50,7 @@
         <activity
             android:name="PopupActivity"
             android:screenOrientation="nosensor"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" android:finishOnTaskLaunch="true" android:noHistory="true" android:clearTaskOnLaunch="true" android:finishOnCloseSystemDialogs="true">
         </activity>
     </application>
 

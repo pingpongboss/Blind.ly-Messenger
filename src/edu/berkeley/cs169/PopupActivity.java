@@ -21,6 +21,14 @@ public class PopupActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Don't allow launching this Activity from Recent Apps
+		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
+			Intent i = new Intent(this, MainActivity.class);
+			startActivity(i);
+			finish();
+		}
+
 		setContentView(R.layout.popup);
 
 		app = (BlindlyMessenger) getApplication();
