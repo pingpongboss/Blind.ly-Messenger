@@ -16,10 +16,7 @@ public class MessageModel implements Parcelable {
 
 	@Override
 	public String toString() {
-		String name = from.getName();
-		return String.format("Message from %s: %s",
-				name == null || name.equals("") ? from.getNumber() : name,
-				content);
+		return String.format("Message from %s: %s", from, content);
 	}
 
 	public String getContent() {

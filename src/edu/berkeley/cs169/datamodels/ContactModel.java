@@ -12,6 +12,14 @@ public class ContactModel implements Parcelable {
 		this.number = number;
 	}
 
+	@Override
+	public String toString() {
+		if (name == null || name.equals(""))
+			return number;
+		else
+			return name;
+	}
+
 	public String getName() {
 		return name;
 	}

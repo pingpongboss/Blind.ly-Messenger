@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 public class PopupActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
@@ -47,6 +48,12 @@ public class PopupActivity extends Activity implements
 				startReply();
 			}
 		});
+
+		TextView sender = (TextView) findViewById(R.id.sender);
+		TextView message = (TextView) findViewById(R.id.message);
+
+		sender.setText(mMessage.getFrom().toString());
+		message.setText(mMessage.getContent());
 	}
 
 	@Override

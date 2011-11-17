@@ -30,6 +30,25 @@
             android:layout_toRightOf="@+id/popup_bottom_left"
             android:src="@drawable/popup_bottom_right" />
 
+        <TextView
+            android:id="@+id/sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Sender"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Message"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
     </RelativeLayout>
 
 </RelativeLayout>
