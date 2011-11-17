@@ -10,12 +10,12 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import edu.berkeley.cs169.utils.Utils;
 
 public class ReadMessageActivity extends ListActivity {
 	String msg = "";
 	String content = "";
 	String name = "";
+
 	BlindlyMessenger app;
 	
 	@Override
@@ -60,33 +60,39 @@ public class ReadMessageActivity extends ListActivity {
 		    */
 		    //readMessage();
 		    }
+
+	BlindlyMessenger app;
+
 	}
-	
-	//playback the message
+
+	// playback the message
 	private void readMessage() {
-		Utils.textToVibration(content, this);
-		app.speak(content);
+
+		//Utils.textToVibration(content, this);
+
+		//app.vibrate(content);
+
+		//app.speak(content);
 	}
-	
+
 	// find the name in the contact list by number
 	private String getContactNameFromNumber(String number) {
-		String[] projection = new String[] {
-				Contacts.Phones.DISPLAY_NAME,
+		String[] projection = new String[] { Contacts.Phones.DISPLAY_NAME,
 				Contacts.Phones.NUMBER };
-		
-		Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL, Uri.encode(number));
- 
+
+		Uri contactUri = Uri.withAppendedPath(
+				Contacts.Phones.CONTENT_FILTER_URL, Uri.encode(number));
+
 		Cursor c = getContentResolver().query(contactUri, projection, null,
 				null, null);
- 
+
 		if (c.moveToFirst()) {
 			String name = c.getString(c
 					.getColumnIndex(Contacts.Phones.DISPLAY_NAME));
 			return name;
 		}
- 
-		//return the original number if no match was found
+
+		// return the original number if no match was found
 		return number;
 	}
 }
-

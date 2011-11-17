@@ -9,16 +9,11 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.utils.Utils;
 
 public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	BlindlyMessenger app;
 	NavigationKeyInterpreter keyInterpreter;
-	
-	String greeting;
-	String help;
-	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,10 +39,6 @@ public class MainActivity extends Activity implements
 				startRead();
 			}
 		});
-		
-		greeting = getResources().getString(R.string.TTS_main);
-		help = getResources().getString(R.string.TTS_main_help);
-		app.speak(greeting + help);
 	}
 
 	@Override
@@ -55,9 +46,9 @@ public class MainActivity extends Activity implements
 		super.onResume();
 
 		String alert = getResources().getString(R.string.main_shortcode);
-		Utils.textToVibration(alert, this);
-		
-		greeting = getResources().getString(R.string.TTS_main);
+		app.vibrate(alert);
+
+		String greeting = getResources().getString(R.string.main_tts);
 		app.speak(greeting);
 	}
 
@@ -94,7 +85,7 @@ public class MainActivity extends Activity implements
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.main_help);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 		app.speak(alert);
 	}
 

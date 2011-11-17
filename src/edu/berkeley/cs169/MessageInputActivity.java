@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import edu.berkeley.cs169.datamodels.ContactModel;
+import edu.berkeley.cs169.datamodels.MessageModel;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
@@ -28,10 +29,7 @@ public class MessageInputActivity extends Activity implements
 	ImageView overlay;
 	TextView status;
 
-	ContactModel recipient;
-	
-	String greeting;
-	String help;
+	ContactModel mRecipient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,7 @@ public class MessageInputActivity extends Activity implements
 
 		keyInterpreter = new KeyboardKeyInterpreter(this);
 
-		recipient = getIntent().getParcelableExtra("recipient");
+		mRecipient = getIntent().getParcelableExtra("recipient");
 
 		edit = (EditText) findViewById(R.id.edit);
 		scroll = (ScrollView) findViewById(R.id.scroll);
@@ -67,31 +65,27 @@ public class MessageInputActivity extends Activity implements
 		overlay.setAlpha(0);
 
 		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
-		recipientTextView.setText(String.format("%s\n%s", recipient.getName(),
-				recipient.getNumber()));
+		recipientTextView.setText(mRecipient.toString());
 
 		status = (TextView) findViewById(R.id.status);
-		
-		greeting = getResources().getString(R.string.TTS_compose);
-		help = getResources().getString(R.string.TTS_compose_help);
-		app.speak(recipient.getName() + greeting + help);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		String alert = getResources().getString(R.string.compose_shortcode);
-		Utils.textToVibration(alert, this);
+		String alert = getResources().getString(
+				R.string.message_input_shortcode);
+		app.vibrate(alert);
 
-		greeting = getResources().getString(R.string.TTS_compose);
-		app.speak(recipient.getName() + greeting);
+		String greeting = getResources().getString(R.string.message_input_tts);
+		app.speak(String.format("%s %s", greeting, mRecipient));
 	}
 
 	protected void vibrateHelp() {
-		String alert = getResources().getString(R.string.compose_help);
+		String alert = getResources().getString(R.string.message_input_help);
 
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 		app.speak(alert);
 	}
 
@@ -140,21 +134,24 @@ public class MessageInputActivity extends Activity implements
 					visualizer.setText(existingText.trim() + "\n");
 					break;
 				case LAST_LETTER:
-					edit.setText(edit.getText().toString() + copyResult);
+					String character = copyResult.toString();
+					edit.setText(edit.getText().toString() + character);
 					edit.setSelection(edit.length());
+
+					app.speak(character);
 					break;
 				case DONE:
 					String message = Utils
 							.morseToText((MorseCodeModel) copyResult);
 					if (message != null && !message.equals("")) {
-						Utils.sendSMSHelper(recipient.getNumber(), message);
+						Utils.sendSMSHelper(mRecipient.getNumber(), message);
 						visualizer.setText(sentText);
 						edit.setText("");
 						status.setVisibility(View.VISIBLE);
 						status.setText(message);
-						app.speak("S M S message sent to "
-								+ recipient.getName() + ". your message says:"
-								+ message);
+						MessageModel messageModel = new MessageModel(message,
+								app.getMyContact(), mRecipient);
+						app.speak(messageModel.toString());
 					}
 					break;
 				}

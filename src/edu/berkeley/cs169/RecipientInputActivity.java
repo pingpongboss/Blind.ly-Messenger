@@ -12,7 +12,6 @@ import android.widget.Toast;
 import edu.berkeley.cs169.datamodels.ContactModel;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.utils.Utils;
 
 public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
@@ -20,9 +19,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 	private boolean mShowInvisible, mNumbersOnly;
 	private NavigationKeyInterpreter keyInterpreter;
-	
-	String greeting;
-	String help;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,10 +36,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 		// Populate the contact list
 		populateContactList();
-		
-		greeting = getResources().getString(R.string.TTS_select_recipient);
-		help = getResources().getString(R.string.TTS_select_recipient_help);
-		app.speak(greeting);
 	}
 
 	@Override
@@ -52,9 +44,10 @@ public class RecipientInputActivity extends ListActivity implements
 
 		String alert = getResources().getString(
 				R.string.recipient_input_shortcode);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 
-		greeting = getResources().getString(R.string.TTS_select_recipient);
+		String greeting = getResources()
+				.getString(R.string.recipient_input_tts);
 		app.speak(greeting);
 	}
 
@@ -107,10 +100,19 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-		case UP_AND_DOWN_LONG:
 			passPhoneNumber();
 			break;
+		case UP_AND_DOWN_LONG:
+			starthelp();
+			break;
 		}
+	}
+
+	private void starthelp() {
+		String alert = getResources().getString(R.string.recipient_input_help);
+
+		app.vibrate(alert);
+		app.speak(alert);
 	}
 
 	private void passPhoneNumber() {

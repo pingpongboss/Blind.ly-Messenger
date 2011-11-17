@@ -16,7 +16,7 @@ public class MessageModel implements Parcelable {
 
 	@Override
 	public String toString() {
-		return String.format("Message from %s: %s", from, content);
+		return String.format("Message from %s to %s: %s", from, to, content);
 	}
 
 	public String getContent() {

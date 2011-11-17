@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/button_up"
         android:drawablePadding="20dp"
-        android:hint="@string/compose_recipient_hint"
+        android:hint="@string/recipient_input_hint"
         android:minHeight="90dp"
         android:padding="10dp" android:editable="false">
 
@@ -30,7 +30,7 @@
         android:layout_marginTop="30dp"
         android:drawableLeft="@drawable/button_down"
         android:drawablePadding="20dp"
-        android:hint="@string/compose_message_hint"
+        android:hint="@string/message_input_hint"
         android:minLines="5"
         android:padding="10dp" android:editable="false"/>
 

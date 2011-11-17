@@ -1,16 +1,15 @@
 package edu.berkeley.cs169;
 
-import edu.berkeley.cs169.datamodels.MessageModel;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.Utils;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import edu.berkeley.cs169.datamodels.MessageModel;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
+import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class PopupActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
@@ -59,23 +58,27 @@ public class PopupActivity extends Activity implements
 		super.onResume();
 
 		String alert = getResources().getString(R.string.popup_shortcode);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 
-		app.speak(String.format("Message from %s", mMessage.getFrom()));
+		String greeting = getResources().getString(R.string.popup_tts);
+		app.speak(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
 
 	protected void startListen() {
-		app.speak(mMessage.toString());
+		String alert = mMessage.toString();
+		app.vibrate(alert);
+		app.speak(alert);
 	}
 
 	protected void startReply() {
-		// TODO
-		Log.d("PopupActivity", "startReply()");
+		Intent i = new Intent(this, MessageInputActivity.class);
+		i.putExtra("recipient", mMessage.getFrom());
+		startActivity(i);
 	}
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.popup_help);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 		app.speak(alert);
 	}
 
