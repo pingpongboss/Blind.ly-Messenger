@@ -10,7 +10,6 @@ import android.widget.TextView;
 import edu.berkeley.cs169.datamodels.MessageModel;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.utils.Utils;
 
 public class PopupActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
@@ -61,15 +60,16 @@ public class PopupActivity extends Activity implements
 		super.onResume();
 
 		String alert = getResources().getString(R.string.popup_shortcode);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 
 		String greeting = getResources().getString(R.string.popup_tts);
 		app.speak(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
 
 	protected void startListen() {
-		Utils.textToVibration(mMessage.toString(), this);
-		app.speak(mMessage.toString());
+		String alert = mMessage.toString();
+		app.vibrate(alert);
+		app.speak(alert);
 	}
 
 	protected void startReply() {
@@ -80,7 +80,7 @@ public class PopupActivity extends Activity implements
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.popup_help);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 		app.speak(alert);
 	}
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import edu.berkeley.cs169.datamodels.ContactModel;
+import edu.berkeley.cs169.datamodels.MessageModel;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
@@ -75,7 +76,7 @@ public class MessageInputActivity extends Activity implements
 
 		String alert = getResources().getString(
 				R.string.message_input_shortcode);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 
 		String greeting = getResources().getString(R.string.message_input_tts);
 		app.speak(String.format("%s %s", greeting, mRecipient));
@@ -84,7 +85,7 @@ public class MessageInputActivity extends Activity implements
 	protected void vibrateHelp() {
 		String alert = getResources().getString(R.string.message_input_help);
 
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 		app.speak(alert);
 	}
 
@@ -148,9 +149,9 @@ public class MessageInputActivity extends Activity implements
 						edit.setText("");
 						status.setVisibility(View.VISIBLE);
 						status.setText(message);
-						app.speak("S M S message sent to "
-								+ mRecipient.getName() + ". your message says:"
-								+ message);
+						MessageModel messageModel = new MessageModel(message,
+								app.getMyContact(), mRecipient);
+						app.speak(messageModel.toString());
 					}
 					break;
 				}

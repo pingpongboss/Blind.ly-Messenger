@@ -2,8 +2,6 @@ package edu.berkeley.cs169.utils;
 
 import java.util.ArrayList;
 
-import android.content.Context;
-import android.os.Vibrator;
 import android.telephony.SmsManager;
 import edu.berkeley.cs169.datamodels.MorseCodeModel;
 
@@ -76,15 +74,6 @@ public class Utils {
 			output += morseWordToText(tempWord);
 		}
 		return output;
-	}
-
-	public static void textToVibration(String text, Context context) {
-		long[] data = pattern(text);
-
-		Vibrator vibrator = (Vibrator) context
-				.getSystemService(Context.VIBRATOR_SERVICE);
-
-		vibrator.vibrate(data, -1);
 	}
 
 	public static String morseWordToText(String input) {
@@ -167,7 +156,7 @@ public class Utils {
 	}
 
 	/** Return the pattern data for a given character */
-	private static long[] pattern(char c) {
+	private static long[] vibratePattern(char c) {
 		if (c >= 'A' && c <= 'Z') {
 			return VibrateConstants.LETTERS[c - 'A'];
 		}
@@ -180,7 +169,7 @@ public class Utils {
 		}
 	}
 
-	private static long[] pattern(String str) {
+	public static long[] vibratePattern(String str) {
 		boolean lastWasWhitespace;
 		int strlen = str.length();
 
@@ -199,7 +188,7 @@ public class Utils {
 					len++;
 				}
 				lastWasWhitespace = false;
-				len += pattern(c).length;
+				len += vibratePattern(c).length;
 			}
 		}
 
@@ -225,7 +214,7 @@ public class Utils {
 					pos++;
 				}
 				lastWasWhitespace = false;
-				long[] letter = pattern(c);
+				long[] letter = vibratePattern(c);
 				System.arraycopy(letter, 0, result, pos, letter.length);
 				pos += letter.length;
 			}

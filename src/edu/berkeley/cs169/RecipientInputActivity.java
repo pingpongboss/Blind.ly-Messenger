@@ -12,7 +12,6 @@ import android.widget.Toast;
 import edu.berkeley.cs169.datamodels.ContactModel;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
 import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.utils.Utils;
 
 public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
@@ -45,7 +44,7 @@ public class RecipientInputActivity extends ListActivity implements
 
 		String alert = getResources().getString(
 				R.string.recipient_input_shortcode);
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 
 		String greeting = getResources()
 				.getString(R.string.recipient_input_tts);
@@ -112,7 +111,7 @@ public class RecipientInputActivity extends ListActivity implements
 	private void starthelp() {
 		String alert = getResources().getString(R.string.recipient_input_help);
 
-		Utils.textToVibration(alert, this);
+		app.vibrate(alert);
 		app.speak(alert);
 	}
 
