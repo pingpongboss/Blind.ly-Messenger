@@ -18,4 +18,8 @@
     <string name="TTS_select_recipient_help"> use volume up and volume down to peruse contacts. press volume up and volume down together to select.</string>
     <string name="TTS_compose"> selected. compose message.</string>
     <string name="TTS_compose_help">tap volume up for dot, hold for dash. press volume down to send.</string>
+    <string name="popup_shortcode">p</string>
+    <string name="popup_help">UP to listen DOWN to reply</string>
+    <string name="name_self">Me</string>
+
 </resources>

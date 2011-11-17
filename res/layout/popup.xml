@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="#4b000000">
+    android:layout_height="fill_parent" android:background="#7f000000">
 
-    <ImageView
-        android:id="@+id/imageView1"
+    <RelativeLayout
+        android:id="@+id/popup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/popup" />
+        android:layout_centerInParent="true" >
+
+        <ImageView
+            android:id="@+id/popup_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/popup_top" />
+
+        <ImageView
+            android:id="@+id/popup_bottom_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/popup_top"
+            android:src="@drawable/popup_bottom_left" android:layout_alignLeft="@id/popup_top"/>
+
+        <ImageView
+            android:id="@+id/popup_bottom_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/popup_bottom_left"
+            android:layout_toRightOf="@+id/popup_bottom_left"
+            android:src="@drawable/popup_bottom_right" />
+
+        <TextView
+            android:id="@+id/sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Sender"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Message"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

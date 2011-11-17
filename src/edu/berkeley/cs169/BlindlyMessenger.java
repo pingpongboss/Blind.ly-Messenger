@@ -1,9 +1,14 @@
 package edu.berkeley.cs169;
 
-import edu.berkeley.cs169.datamodels.ContactModel;
 import android.app.Application;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract.PhoneLookup;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.telephony.TelephonyManager;
+import edu.berkeley.cs169.datamodels.ContactModel;
 
 public class BlindlyMessenger extends Application {
 	private TextToSpeech mTextToSpeech;
@@ -37,12 +42,28 @@ public class BlindlyMessenger extends Application {
 	}
 
 	public String getNameForNumber(String number) {
-		// TODO get name from contacts
+		try {
+			Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
+					Uri.encode(number));
+			Cursor c = getContentResolver()
+					.query(uri, new String[] { PhoneLookup.DISPLAY_NAME },
+							null, null, null);
+
+			if (c.moveToFirst()) {
+				return c.getString(c.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return "";
 	}
 
 	public ContactModel getMyContact() {
-		// TODO return the phone owner's name and number
-		return new ContactModel("Mark", "7144084066");
+		TelephonyManager phoneManager = (TelephonyManager) getApplicationContext()
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		String number = phoneManager.getLine1Number();
+		String name = getResources().getString(R.string.name_self);
+		return new ContactModel(name, number);
 	}
 }
