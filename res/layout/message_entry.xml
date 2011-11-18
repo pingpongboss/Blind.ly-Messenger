@@ -8,14 +8,14 @@
         android:id="@+id/message_entry_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Medium Text"
+        android:text="Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/message_entry_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Small Text"
+        android:text="Content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
