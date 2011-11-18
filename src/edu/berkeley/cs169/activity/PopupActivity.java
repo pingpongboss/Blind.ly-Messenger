@@ -42,13 +42,6 @@ public class PopupActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 
-		// Don't allow launching this Activity from Recent Apps
-		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
-			Intent i = new Intent(this, MainActivity.class);
-			startActivity(i);
-			finish();
-		}
-
 		MessageModel message = getIntent().getParcelableExtra("message");
 
 		if (message == null)
@@ -84,12 +77,6 @@ public class PopupActivity extends Activity implements
 
 		String greeting = getResources().getString(R.string.popup_tts);
 		app.speak(String.format("%s %s", greeting, mMessage.getFrom()));
-	}
-	
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
 	}
 
 	protected void startListen() {
