@@ -1,4 +1,4 @@
-package edu.berkeley.cs169;
+package edu.berkeley.cs169.activity;
 
 import android.app.ListActivity;
 import android.database.Cursor;
@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.SimpleCursorAdapter;
-import edu.berkeley.cs169.datamodels.ContactModel;
-import edu.berkeley.cs169.datamodels.MessageModel;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.BlindlyMessenger;
+import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class ReadMessageActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {

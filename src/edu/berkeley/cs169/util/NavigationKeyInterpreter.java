@@ -1,7 +1,7 @@
-package edu.berkeley.cs169.utils;
+package edu.berkeley.cs169.util;
 
 import android.view.KeyEvent;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode;
 
 public class NavigationKeyInterpreter {
 	public static long HOLD_THRESHOLD = 3 * Utils.INPUT_SPEED_BASE;

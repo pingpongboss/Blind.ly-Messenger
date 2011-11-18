@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.util.Log;
-import edu.berkeley.cs169.datamodels.ContactModel;
-import edu.berkeley.cs169.datamodels.MessageModel;
+import edu.berkeley.cs169.activity.PopupActivity;
+import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.model.MessageModel;
 
 public class MessageBroadcastReceiver extends BroadcastReceiver {
 	@Override
@@ -29,10 +29,10 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 
 				Intent i = new Intent(context, PopupActivity.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-						| Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+						| Intent.FLAG_ACTIVITY_SINGLE_TOP
+						| Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 				i.putExtra("message", message);
 
-				Log.d("MessageBroadcastReceiver", "Received text");
 				context.startActivity(i);
 			}
 		}

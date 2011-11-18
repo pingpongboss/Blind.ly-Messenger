@@ -1,4 +1,4 @@
-package edu.berkeley.cs169;
+package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,8 +7,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.BlindlyMessenger;
+import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {

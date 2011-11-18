@@ -1,4 +1,4 @@
-package edu.berkeley.cs169;
+package edu.berkeley.cs169.activity;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -9,9 +9,11 @@ import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
-import edu.berkeley.cs169.datamodels.ContactModel;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.BlindlyMessenger;
+import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {

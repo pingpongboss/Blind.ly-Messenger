@@ -1,12 +1,12 @@
-package edu.berkeley.cs169.utils;
+package edu.berkeley.cs169.util;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.view.KeyEvent;
-import edu.berkeley.cs169.datamodels.MorseCodeModel;
-import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
+import edu.berkeley.cs169.model.MorseCodeModel;
+import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
 
 public class KeyboardKeyInterpreter {
 	public static long DOT_DASH_THRESHOLD = 3 * Utils.INPUT_SPEED_BASE;

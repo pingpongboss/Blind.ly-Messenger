@@ -1,9 +1,9 @@
-package edu.berkeley.cs169.datamodels;
+package edu.berkeley.cs169.model;
 
 import java.util.ArrayList;
 
-import edu.berkeley.cs169.utils.Utils;
-import edu.berkeley.cs169.utils.VibrateConstants;
+import edu.berkeley.cs169.util.Utils;
+import edu.berkeley.cs169.util.VibrateConstants;
 
 public class MorseCodeModel {
 	// use SPACE to separate letters, two SPACEs to separate words

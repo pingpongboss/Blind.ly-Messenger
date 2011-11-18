@@ -1,4 +1,4 @@
-package edu.berkeley.cs169.utils;
+package edu.berkeley.cs169.util;
 
 /**
  * Refactored

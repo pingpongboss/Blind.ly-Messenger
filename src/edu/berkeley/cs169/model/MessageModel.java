@@ -1,4 +1,4 @@
-package edu.berkeley.cs169.datamodels;
+package edu.berkeley.cs169.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

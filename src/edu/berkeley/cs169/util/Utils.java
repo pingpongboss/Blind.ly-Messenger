@@ -1,9 +1,9 @@
-package edu.berkeley.cs169.utils;
+package edu.berkeley.cs169.util;
 
 import java.util.ArrayList;
 
 import android.telephony.SmsManager;
-import edu.berkeley.cs169.datamodels.MorseCodeModel;
+import edu.berkeley.cs169.model.MorseCodeModel;
 
 public class Utils {
 	public static final long INPUT_SPEED_BASE = 100;

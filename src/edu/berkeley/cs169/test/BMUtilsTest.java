@@ -1,4 +1,4 @@
-package edu.berkeley.cs169.tests;
+package edu.berkeley.cs169.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import edu.berkeley.cs169.datamodels.MorseCodeModel;
-import edu.berkeley.cs169.utils.Utils;
+import edu.berkeley.cs169.model.MorseCodeModel;
+import edu.berkeley.cs169.util.Utils;
 
 public class BMUtilsTest {
 

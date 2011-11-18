@@ -1,4 +1,4 @@
-package edu.berkeley.cs169.tests;
+package edu.berkeley.cs169.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

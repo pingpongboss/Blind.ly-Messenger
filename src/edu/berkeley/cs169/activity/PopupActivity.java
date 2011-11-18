@@ -1,4 +1,4 @@
-package edu.berkeley.cs169;
+package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,9 +7,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import edu.berkeley.cs169.datamodels.MessageModel;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter;
-import edu.berkeley.cs169.utils.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.BlindlyMessenger;
+import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class PopupActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
@@ -22,6 +24,24 @@ public class PopupActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		setContentView(R.layout.popup);
+
+		app = (BlindlyMessenger) getApplication();
+
+		keyInterpreter = new NavigationKeyInterpreter(this);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		setIntent(intent);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
 		// Don't allow launching this Activity from Recent Apps
 		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
 			Intent i = new Intent(this, MainActivity.class);
@@ -29,13 +49,12 @@ public class PopupActivity extends Activity implements
 			finish();
 		}
 
-		setContentView(R.layout.popup);
+		MessageModel message = getIntent().getParcelableExtra("message");
 
-		app = (BlindlyMessenger) getApplication();
+		if (message == null)
+			return;
 
-		keyInterpreter = new NavigationKeyInterpreter(this);
-
-		mMessage = getIntent().getParcelableExtra("message");
+		mMessage = message;
 
 		View listen = findViewById(R.id.popup_bottom_left);
 		View reply = findViewById(R.id.popup_bottom_right);
@@ -55,21 +74,22 @@ public class PopupActivity extends Activity implements
 		});
 
 		TextView sender = (TextView) findViewById(R.id.sender);
-		TextView message = (TextView) findViewById(R.id.message);
+		TextView body = (TextView) findViewById(R.id.message);
 
 		sender.setText(mMessage.getFrom().toString());
-		message.setText(mMessage.getContent());
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
+		body.setText(mMessage.getContent());
 
 		String alert = getResources().getString(R.string.popup_shortcode);
 		app.vibrate(alert);
 
 		String greeting = getResources().getString(R.string.popup_tts);
 		app.speak(String.format("%s %s", greeting, mMessage.getFrom()));
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
 	}
 
 	protected void startListen() {
@@ -82,6 +102,7 @@ public class PopupActivity extends Activity implements
 		Intent i = new Intent(this, MessageInputActivity.class);
 		i.putExtra("recipient", mMessage.getFrom());
 		startActivity(i);
+		finish();
 	}
 
 	protected void startHelp() {

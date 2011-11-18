@@ -1,4 +1,4 @@
-package edu.berkeley.cs169;
+package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,12 +11,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import edu.berkeley.cs169.datamodels.ContactModel;
-import edu.berkeley.cs169.datamodels.MessageModel;
-import edu.berkeley.cs169.datamodels.MorseCodeModel;
-import edu.berkeley.cs169.utils.KeyboardKeyInterpreter;
-import edu.berkeley.cs169.utils.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
-import edu.berkeley.cs169.utils.Utils;
+import edu.berkeley.cs169.BlindlyMessenger;
+import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.model.MorseCodeModel;
+import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
+import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class MessageInputActivity extends Activity implements
 		KeyboardKeyInterpreterResultListener {

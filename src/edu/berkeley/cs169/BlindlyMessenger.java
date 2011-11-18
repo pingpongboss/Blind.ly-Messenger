@@ -9,8 +9,8 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.telephony.TelephonyManager;
-import edu.berkeley.cs169.datamodels.ContactModel;
-import edu.berkeley.cs169.utils.Utils;
+import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.util.Utils;
 
 public class BlindlyMessenger extends Application {
 	private TextToSpeech mTextToSpeech;
