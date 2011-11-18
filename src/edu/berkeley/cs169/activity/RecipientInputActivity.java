@@ -7,10 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.KeyEvent;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.adapter.ContactCursorAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
@@ -19,7 +19,7 @@ public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 	BlindlyMessenger app;
 
-	private boolean mShowInvisible, mNumbersOnly;
+	private boolean mShowInvisible;
 	private NavigationKeyInterpreter keyInterpreter;
 
 	@Override
@@ -31,13 +31,12 @@ public class RecipientInputActivity extends ListActivity implements
 
 		// Initialize class properties
 		mShowInvisible = false;
-		mNumbersOnly = true;
 
 		// Register handler for UI elements
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 
-		// Populate the contact list
-		populateContactList();
+		Cursor cursor = getContacts();
+		setListAdapter(new ContactCursorAdapter(this, cursor));
 	}
 
 	@Override
@@ -120,10 +119,13 @@ public class RecipientInputActivity extends ListActivity implements
 	private void passPhoneNumber() {
 		Cursor c = (Cursor) getListView().getSelectedItem();
 		if (c != null) {
-			long id = Long.parseLong(c.getString(0));
-			String num = getContactPhoneNumberByPhoneType(id);
-
-			ContactModel recipient = new ContactModel(c.getString(1), num);
+			String name = c
+					.getString(c
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+			String number = c
+					.getString(c
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+			ContactModel recipient = new ContactModel(name, number);
 			Intent i = new Intent(this, MessageInputActivity.class);
 			i.putExtra("recipient", recipient);
 
@@ -134,54 +136,19 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 	}
 
-	public String getContactPhoneNumberByPhoneType(long contactId) {
-		String phoneNumber = null;
-
-		String[] whereArgs = new String[] { String.valueOf(contactId) };
-
-		Cursor cursor = getApplicationContext().getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-				ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-				whereArgs, null);
-
-		int phoneNumberIndex = cursor
-				.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER);
-
-		if (cursor != null) {
-			try {
-				if (cursor.moveToNext()) {
-					phoneNumber = cursor.getString(phoneNumberIndex);
-				}
-			} finally {
-				cursor.close();
-			}
-		}
-
-		return phoneNumber;
-	}
-
-	private void populateContactList() {
-		Cursor cursor = getContacts();
-		String[] fields = new String[] { ContactsContract.Data.DISPLAY_NAME };
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.contact_entry, cursor, fields,
-				new int[] { R.id.contactEntryText });
-		setListAdapter(adapter);
-	}
-
 	private Cursor getContacts() {
-		Uri uri = ContactsContract.Contacts.CONTENT_URI;
-		String[] projection = new String[] { ContactsContract.Contacts._ID,
-				ContactsContract.Contacts.DISPLAY_NAME };
-		String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '"
-				+ (mShowInvisible ? "0" : "1") + "'" + " AND "
-				+ ContactsContract.Data.HAS_PHONE_NUMBER + " = '"
-				+ (mNumbersOnly ? "1" : "0") + "'";
-		String[] selectionArgs = null;
+		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+		String[] projection = new String[] {
+				ContactsContract.CommonDataKinds.Phone._ID,
+				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+				ContactsContract.CommonDataKinds.Phone.NUMBER };
+		String selection = String.format("%s = '%s'",
+				ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
+				mShowInvisible ? "0" : "1");
+
 		String sortOrder = ContactsContract.Contacts.DISPLAY_NAME
 				+ " COLLATE LOCALIZED ASC";
 
-		return managedQuery(uri, projection, selection, selectionArgs,
-				sortOrder);
+		return managedQuery(uri, projection, selection, null, sortOrder);
 	}
 }

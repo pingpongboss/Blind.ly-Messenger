@@ -66,8 +66,10 @@ public class MessageInputActivity extends Activity implements
 		overlay = (ImageView) findViewById(R.id.overlay);
 		overlay.setAlpha(0);
 
-		TextView recipientTextView = (TextView) findViewById(R.id.recipient);
-		recipientTextView.setText(mRecipient.toString());
+		TextView name = (TextView) findViewById(R.id.name);
+		TextView number = (TextView) findViewById(R.id.number);
+		name.setText(mRecipient.getName());
+		number.setText(mRecipient.getNumber());
 
 		status = (TextView) findViewById(R.id.status);
 	}

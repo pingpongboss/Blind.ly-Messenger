@@ -109,7 +109,7 @@ public class ReadMessageActivity extends ListActivity implements
 		
 		//TODO make our own subclass so we can use app.getNameFromNumber()
 		SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this,
-				R.layout.message_entry, c, columns, to);
+				R.layout.message_list_item, c, columns, to);
 		setListAdapter(mAdapter);
 	}
 

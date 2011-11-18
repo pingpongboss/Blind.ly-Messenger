@@ -6,8 +6,8 @@
 
     <ListView android:layout_width="fill_parent"
               android:id="@id/android:list"
-              android:layout_height="fill_parent">
-        <!-- Preview: listitem=@layout/message_entry -->
+              android:layout_height="fill_parent" android:fastScrollEnabled="true">
+        <!-- Preview: listitem=@layout/message_list_item -->
     </ListView>
 
 </LinearLayout>

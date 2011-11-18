@@ -4,34 +4,29 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Name"
+        android:textSize="32sp"
+        android:textStyle="bold" android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To: "
-            android:textSize="32sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/recipient"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contact"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Number"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="20dp"
-        android:orientation="vertical" >
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" android:layout_marginLeft="20dp" android:layout_marginRight="20dp" android:layout_marginBottom="20dp">
 
         <EditText
             android:id="@+id/edit"
@@ -50,7 +45,8 @@
             android:id="@+id/keyboard"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" android:clickable="true">
+            android:layout_weight="1"
+            android:clickable="true" >
 
             <ImageView
                 android:id="@+id/overlay"
@@ -61,7 +57,8 @@
             <ScrollView
                 android:id="@+id/scroll"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:scrollbars="none">
+                android:layout_height="fill_parent"
+                android:scrollbars="none" >
 
                 <TextView
                     android:id="@+id/visualizer"
@@ -77,8 +74,10 @@
             android:id="@+id/status"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall" android:text="Status" android:visibility="gone" android:gravity="center"/>
-
+            android:gravity="center"
+            android:text="Status"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>
