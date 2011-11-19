@@ -3,12 +3,10 @@ package edu.berkeley.cs169.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.activity.RecipientInputActivity.ContactCursor;
@@ -40,8 +38,6 @@ public class ContactCursorAdapter extends CursorAdapter {
 		}
 
 		if (fauxPosition != -1) {
-			Log.d("RIA", "fauxposition is " + fauxPosition);
-	
 			if (mCursor.moveToPosition(fauxPosition)) {
 				holder.name
 						.setText(mCursor.getString(mCursor
