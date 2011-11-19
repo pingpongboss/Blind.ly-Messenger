@@ -7,9 +7,19 @@
     		  android:layout_height="wrap_content"
     		  android:text="My Contacts" 
     		  android:textSize="32sp" android:textStyle="bold"/>
+    <EditText 
+        android:id="@+id/search_box" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="type to filter"
+        android:inputType="text"
+        android:maxLines="1"
+        android:nextFocusDown="@id/android:list"/>
     <ListView android:layout_width="fill_parent"
               android:id="@id/android:list"
-              android:layout_height="fill_parent" android:fastScrollEnabled="true">
+              android:layout_height="0dip" 
+              android:layout_weight="1"
+              android:fastScrollEnabled="true">
         <!-- Preview: listitem=@layout/recipient_input_item -->
     </ListView>
 </LinearLayout>

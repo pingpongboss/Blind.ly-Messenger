@@ -1,6 +1,5 @@
 package edu.berkeley.cs169.adapter;
 
-import edu.berkeley.cs169.R;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import edu.berkeley.cs169.R;
 
 public class ContactCursorAdapter extends CursorAdapter {
 	LayoutInflater mInflater;
@@ -36,14 +36,21 @@ public class ContactCursorAdapter extends CursorAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		mCursor.moveToPosition(position);
+		String display_name = "";
+		String number = "0000000000";
+		if (mCursor.moveToPosition(position)) {
+			display_name = mCursor.getString(mCursor
+					.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+			number = mCursor
+					.getString(mCursor
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+		} else {
+			// cursor failed to move to position
+		}
 
-		holder.name
-				.setText(mCursor.getString(mCursor
-						.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
-		holder.number
-				.setText(mCursor.getString(mCursor
-						.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+		holder.name.setText(display_name);
+		holder.number.setText(number);
+
 		return convertView;
 	}
 
@@ -54,6 +61,10 @@ public class ContactCursorAdapter extends CursorAdapter {
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		return null;
+	}
+
+	public void setCursor(Cursor cursor) {
+		mCursor = cursor;
 	}
 
 	static class ViewHolder {

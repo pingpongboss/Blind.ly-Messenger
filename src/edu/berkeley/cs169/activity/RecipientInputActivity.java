@@ -6,7 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
@@ -19,14 +23,25 @@ public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 	BlindlyMessenger app;
 
+	private EditText filterText;
+	ContactCursorAdapter adapter;
+	Cursor cursor;
+
 	private boolean mShowInvisible;
 	private NavigationKeyInterpreter keyInterpreter;
+
+	String defaultSelection = String.format("%s = '%s'",
+			ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
+			mShowInvisible ? "0" : "1");
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recipient_input);
-
+		filterText = (EditText) findViewById(R.id.search_box);
+		filterText.addTextChangedListener(filterTextWatcher);
+		filterText.requestFocus();
+		
 		app = (BlindlyMessenger) getApplication();
 
 		// Initialize class properties
@@ -35,8 +50,25 @@ public class RecipientInputActivity extends ListActivity implements
 		// Register handler for UI elements
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 
-		Cursor cursor = getContacts();
-		setListAdapter(new ContactCursorAdapter(this, cursor));
+		cursor = getContacts(defaultSelection);
+		adapter = new ContactCursorAdapter(this, cursor);
+		adapter.setFilterQueryProvider(new FilterQueryProvider() {
+
+			@Override
+			public Cursor runQuery(CharSequence constraint) {
+				String selection = String.format("%s = '%s' AND %s LIKE '%%%s%%'",
+						ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
+						mShowInvisible ? "0" : "1",
+						ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+						constraint.toString());
+				// maintain reference to new updated cursor
+				cursor = getContacts(selection);
+				// update reference of cursor in our ContactCursorAdapter
+				adapter.setCursor(cursor);
+				return cursor;
+			}
+		});
+		setListAdapter(adapter);
 	}
 
 	@Override
@@ -52,6 +84,12 @@ public class RecipientInputActivity extends ListActivity implements
 		app.speak(greeting);
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		cursor.close();
+	}
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
@@ -136,19 +174,34 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 	}
 
-	private Cursor getContacts() {
+	private Cursor getContacts(String selection) {
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone._ID,
 				ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
 				ContactsContract.CommonDataKinds.Phone.NUMBER };
-		String selection = String.format("%s = '%s'",
-				ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
-				mShowInvisible ? "0" : "1");
 
 		String sortOrder = ContactsContract.Contacts.DISPLAY_NAME
 				+ " COLLATE LOCALIZED ASC";
 
-		return managedQuery(uri, projection, selection, null, sortOrder);
+		return getContentResolver().query(uri, projection, selection, null, sortOrder);
 	}
+
+	private TextWatcher filterTextWatcher = new TextWatcher() {
+
+		public void afterTextChanged(Editable s) {
+		}
+
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			if (adapter != null) {
+				adapter.getFilter().filter(s);
+			}
+		}
+
+	};
 }

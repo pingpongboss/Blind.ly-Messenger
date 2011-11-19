@@ -34,6 +34,7 @@
         </activity>
         <activity
             android:name=".activity.RecipientInputActivity"
+            android:windowSoftInputMode="stateUnchanged"
             android:screenOrientation="nosensor" >
         </activity>
         <activity
