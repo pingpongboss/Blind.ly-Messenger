@@ -60,10 +60,10 @@ public class KeyboardKeyInterpreter {
 			if (upKeyDownTimestamp != -1) {
 				if (dt < DOT_DASH_THRESHOLD) {
 					model.getRawData().add(MorseCodeModel.DOT);
-					listener.onKeyInterpreterResult(ResultCode.DOT, null);
+					listener.onKeyboardKeyInterpreterResult(ResultCode.DOT, null);
 				} else {
 					model.getRawData().add(MorseCodeModel.DASH);
-					listener.onKeyInterpreterResult(ResultCode.DASH, null);
+					listener.onKeyboardKeyInterpreterResult(ResultCode.DASH, null);
 				}
 				lastLetterOutputted = false;
 
@@ -76,14 +76,14 @@ public class KeyboardKeyInterpreter {
 						model.getRawData().add(MorseCodeModel.SPACE);
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
-							listener.onKeyInterpreterResult(ResultCode.ERROR,
+							listener.onKeyboardKeyInterpreterResult(ResultCode.ERROR,
 									null);
 						} else {
-							listener.onKeyInterpreterResult(
+							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
 						}
-						listener.onKeyInterpreterResult(ResultCode.LETTER_GAP,
+						listener.onKeyboardKeyInterpreterResult(ResultCode.LETTER_GAP,
 								null);
 					}
 				}, LETTER_GAP_THRESHOLD);
@@ -97,14 +97,14 @@ public class KeyboardKeyInterpreter {
 						model.getRawData().add(MorseCodeModel.SPACE);
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
-							listener.onKeyInterpreterResult(ResultCode.ERROR,
+							listener.onKeyboardKeyInterpreterResult(ResultCode.ERROR,
 									null);
 						} else {
-							listener.onKeyInterpreterResult(
+							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
 						}
-						listener.onKeyInterpreterResult(ResultCode.WORD_GAP,
+						listener.onKeyboardKeyInterpreterResult(ResultCode.WORD_GAP,
 								null);
 					}
 				}, WORD_GAP_THRESHOLD);
@@ -122,11 +122,11 @@ public class KeyboardKeyInterpreter {
 			if (downKeyDownTimestamp != -1) {
 				if (!lastLetterOutputted) {
 					char lastChar = model.getLastChar();
-					listener.onKeyInterpreterResult(ResultCode.LAST_LETTER,
+					listener.onKeyboardKeyInterpreterResult(ResultCode.LAST_LETTER,
 							lastChar);
 				}
 
-				listener.onKeyInterpreterResult(ResultCode.DONE, model);
+				listener.onKeyboardKeyInterpreterResult(ResultCode.DONE, model);
 			}
 			return true;
 		}
@@ -139,7 +139,7 @@ public class KeyboardKeyInterpreter {
 		}
 
 		// May be called from a non-UI thread
-		public void onKeyInterpreterResult(ResultCode code, Object result);
+		public void onKeyboardKeyInterpreterResult(ResultCode code, Object result);
 
 		public boolean onKeyDown(int keyCode, KeyEvent event);
 

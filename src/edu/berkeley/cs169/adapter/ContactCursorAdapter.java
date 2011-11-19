@@ -3,18 +3,21 @@ package edu.berkeley.cs169.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.activity.RecipientInputActivity.ContactCursor;
 
 public class ContactCursorAdapter extends CursorAdapter {
 	LayoutInflater mInflater;
-	Cursor mCursor;
+	ContactCursor mCursor;
 
-	public ContactCursorAdapter(Context context, Cursor c) {
+	public ContactCursorAdapter(Context context, ContactCursor c) {
 		super(context, c);
 		mInflater = LayoutInflater.from(context);
 		mCursor = c;
@@ -22,10 +25,10 @@ public class ContactCursorAdapter extends CursorAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		int fauxPosition = position - 1;
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.recipient_input_item,
-					parent, false);
+			convertView = mInflater.inflate(R.layout.recipient_input_item, parent, false);
 			holder = new ViewHolder();
 
 			holder.name = (TextView) convertView.findViewById(R.id.name);
@@ -36,21 +39,21 @@ public class ContactCursorAdapter extends CursorAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		String display_name = "";
-		String number = "0000000000";
-		if (mCursor.moveToPosition(position)) {
-			display_name = mCursor.getString(mCursor
-					.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-			number = mCursor
-					.getString(mCursor
-							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+		if (fauxPosition != -1) {
+			Log.d("RIA", "fauxposition is " + fauxPosition);
+	
+			if (mCursor.moveToPosition(fauxPosition)) {
+				holder.name
+						.setText(mCursor.getString(mCursor
+								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+				holder.number
+						.setText(mCursor.getString(mCursor
+								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+			} else {
+				// cursor failed to move to position
+			}
 		} else {
-			// cursor failed to move to position
 		}
-
-		holder.name.setText(display_name);
-		holder.number.setText(number);
-
 		return convertView;
 	}
 
@@ -63,7 +66,7 @@ public class ContactCursorAdapter extends CursorAdapter {
 		return null;
 	}
 
-	public void setCursor(Cursor cursor) {
+	public void setCursor(ContactCursor cursor) {
 		mCursor = cursor;
 	}
 

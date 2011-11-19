@@ -15,6 +15,7 @@
     <string name="message_input_sent">Message\nSent</string><string name="message_input_hint">Compose message body</string><string name="popup_shortcode">p</string>
     <string name="popup_help">Tap UP to listen, tap DOWN to reply</string>
     <string name="popup_tts">New message from</string><string name="name_self">Me</string>
+    <string name="filter_hint">select recipient using morse code</string>
     
     
     

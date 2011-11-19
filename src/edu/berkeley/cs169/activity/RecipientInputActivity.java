@@ -3,32 +3,40 @@ package edu.berkeley.cs169.activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.ListView;
 import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ContactCursorAdapter;
 import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
+import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class RecipientInputActivity extends ListActivity implements
-		NavigationKeyInterpreterResultListener {
+		NavigationKeyInterpreterResultListener,
+		KeyboardKeyInterpreterResultListener {
 	BlindlyMessenger app;
 
 	private EditText filterText;
+	private ListView contactsList;
 	ContactCursorAdapter adapter;
-	Cursor cursor;
+	ContactCursor cursor;
 
-	private boolean mShowInvisible;
-	private NavigationKeyInterpreter keyInterpreter;
+	private boolean mShowInvisible, firstVolDown;
+	private NavigationKeyInterpreter navKeyInterpreter;
+	private KeyboardKeyInterpreter keyKeyInterpreter;
 
 	String defaultSelection = String.format("%s = '%s'",
 			ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
@@ -41,14 +49,16 @@ public class RecipientInputActivity extends ListActivity implements
 		filterText = (EditText) findViewById(R.id.search_box);
 		filterText.addTextChangedListener(filterTextWatcher);
 		filterText.requestFocus();
-		
+		contactsList = (ListView) findViewById(android.R.id.list);
+
 		app = (BlindlyMessenger) getApplication();
 
 		// Initialize class properties
 		mShowInvisible = false;
 
 		// Register handler for UI elements
-		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
+		navKeyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
+		keyKeyInterpreter = new KeyboardKeyInterpreter(this);
 
 		cursor = getContacts(defaultSelection);
 		adapter = new ContactCursorAdapter(this, cursor);
@@ -56,15 +66,18 @@ public class RecipientInputActivity extends ListActivity implements
 
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				String selection = String.format("%s = '%s' AND %s LIKE '%%%s%%'",
-						ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
-						mShowInvisible ? "0" : "1",
-						ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-						constraint.toString());
-				// maintain reference to new updated cursor
-				cursor = getContacts(selection);
-				// update reference of cursor in our ContactCursorAdapter
-				adapter.setCursor(cursor);
+				if (!(constraint == null)) {
+					String selection = String
+							.format("%s = '%s' AND %s LIKE '%%%s%%'",
+									ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
+									mShowInvisible ? "0" : "1",
+									ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+									constraint.toString());
+					// maintain reference to new updated cursor
+					cursor = getContacts(selection);
+					// update reference of cursor in our ContactCursorAdapter
+					adapter.setCursor(cursor);
+				}
 				return cursor;
 			}
 		});
@@ -75,6 +88,7 @@ public class RecipientInputActivity extends ListActivity implements
 	protected void onResume() {
 		super.onResume();
 
+		firstVolDown = true;
 		String alert = getResources().getString(
 				R.string.recipient_input_shortcode);
 		app.vibrate(alert);
@@ -89,65 +103,45 @@ public class RecipientInputActivity extends ListActivity implements
 		super.onDestroy();
 		cursor.close();
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyInterpreter.onKeyDown(keyCode, event)) {
-			return true;
+
+		if (contactsList.isFocused()) {
+			if (navKeyInterpreter.onKeyDown(keyCode, event)) {
+				return true;
+			}
+		}
+		if (filterText.isFocused()) {
+			if (keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) {
+				if (keyKeyInterpreter.onKeyDown(keyCode, event)) {
+					return true;
+				}
+			} else {
+				contactsList.requestFocus();
+				if (navKeyInterpreter.onKeyDown(keyCode, event)) {
+					return true;
+				}
+			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyInterpreter.onKeyUp(keyCode, event)) {
-			return true;
+		if (contactsList.isFocused()) {
+			if (navKeyInterpreter.onKeyUp(keyCode, event)) {
+				return true;
+			}
+		} else if (filterText.isFocused()) {
+			if (keyKeyInterpreter.onKeyUp(keyCode, event)) {
+				return true;
+			}
 		}
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyInterpreterResult(ResultCode code) {
-		switch (code) {
-		case UP:
-		case UP_REPEAT:
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-					KeyEvent.KEYCODE_DPAD_UP));
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-					KeyEvent.KEYCODE_DPAD_UP));
-			break;
-		case UP_REPEAT_LONG:
-			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-						KeyEvent.KEYCODE_DPAD_UP));
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-						KeyEvent.KEYCODE_DPAD_UP));
-			}
-			break;
-		case DOWN:
-		case DOWN_REPEAT:
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-					KeyEvent.KEYCODE_DPAD_DOWN));
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-					KeyEvent.KEYCODE_DPAD_DOWN));
-			break;
-		case DOWN_REPEAT_LONG:
-			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-						KeyEvent.KEYCODE_DPAD_DOWN));
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-						KeyEvent.KEYCODE_DPAD_DOWN));
-			}
-			break;
-		case UP_AND_DOWN:
-			passPhoneNumber();
-			break;
-		case UP_AND_DOWN_LONG:
-			starthelp();
-			break;
-		}
-	}
-
-	private void starthelp() {
+	private void startHelp() {
 		String alert = getResources().getString(R.string.recipient_input_help);
 
 		app.vibrate(alert);
@@ -174,7 +168,7 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 	}
 
-	private Cursor getContacts(String selection) {
+	private ContactCursor getContacts(String selection) {
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 		String[] projection = new String[] {
 				ContactsContract.CommonDataKinds.Phone._ID,
@@ -184,7 +178,8 @@ public class RecipientInputActivity extends ListActivity implements
 		String sortOrder = ContactsContract.Contacts.DISPLAY_NAME
 				+ " COLLATE LOCALIZED ASC";
 
-		return getContentResolver().query(uri, projection, selection, null, sortOrder);
+		return new ContactCursor(getContentResolver().query(uri, projection,
+				selection, null, sortOrder));
 	}
 
 	private TextWatcher filterTextWatcher = new TextWatcher() {
@@ -204,4 +199,105 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 
 	};
+
+	@Override
+	public void onKeyboardKeyInterpreterResult(
+			edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode code,
+			Object result) {
+		final edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode copyCode = code;
+		final Object copyResult = result;
+		runOnUiThread(new Runnable() {
+
+			public void run() {
+				switch (copyCode) {
+				case DOT:
+					break;
+				case DASH:
+					break;
+				case LETTER_GAP:
+					break;
+				case WORD_GAP:
+					break;
+				case LAST_LETTER:
+					String character = copyResult.toString();
+					filterText.setText(filterText.getText().toString()
+							+ character);
+					filterText.setSelection(filterText.length());
+					break;
+				case DONE:
+					break;
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onNavKeyInterpreterResult(
+			edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode code) {
+		switch (code) {
+		case UP:
+		case UP_REPEAT:
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+					KeyEvent.KEYCODE_DPAD_UP));
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+					KeyEvent.KEYCODE_DPAD_UP));
+			if (contactsList.getSelectedItemPosition() == 0) {
+				// move focus back up to filterText
+				filterText.setText(""); // clear text so user can re-filter
+				filterText.requestFocus();
+			}
+			break;
+		case UP_REPEAT_LONG:
+			for (int i = 0; i < navKeyInterpreter.getKeyRepeatLongThreshold(); i++) {
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_UP));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_UP));
+			}
+			break;
+		case DOWN:
+		case DOWN_REPEAT:
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+					KeyEvent.KEYCODE_DPAD_DOWN));
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+					KeyEvent.KEYCODE_DPAD_DOWN));
+			if (firstVolDown) {
+				firstVolDown = false;
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+			}
+			break;
+		case DOWN_REPEAT_LONG:
+			for (int i = 0; i < navKeyInterpreter.getKeyRepeatLongThreshold(); i++) {
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+			}
+			break;
+		case UP_AND_DOWN:
+			passPhoneNumber();
+			break;
+		case UP_AND_DOWN_LONG:
+			startHelp();
+			break;
+		}
+	}
+
+	public static class ContactCursor extends CursorWrapper {
+		private Cursor mCursor;
+
+		public ContactCursor(Cursor cursor) {
+			super(cursor);
+			mCursor = cursor;
+		}
+
+		@Override
+		public int getCount() {
+			return mCursor.getCount() + 1;
+		}
+
+	}
 }

@@ -11,7 +11,7 @@
         android:id="@+id/search_box" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="type to filter"
+        android:hint="@string/filter_hint"
         android:inputType="text"
         android:maxLines="1"
         android:nextFocusDown="@id/android:list"/>
@@ -19,7 +19,8 @@
               android:id="@id/android:list"
               android:layout_height="0dip" 
               android:layout_weight="1"
-              android:fastScrollEnabled="true">
+              android:fastScrollEnabled="true"
+              android:listSelector="@android:color/transparent">
         <!-- Preview: listitem=@layout/recipient_input_item -->
     </ListView>
 </LinearLayout>

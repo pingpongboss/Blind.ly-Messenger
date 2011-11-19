@@ -50,7 +50,7 @@ public class ReadMessageActivity extends ListActivity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyInterpreterResult(ResultCode code) {
+	public void onNavKeyInterpreterResult(ResultCode code) {
 		switch (code) {
 		case UP:
 		case UP_REPEAT:

@@ -50,9 +50,9 @@ public class NavigationKeyInterpreter {
 					&& downKeyDownTimestamp == -1) {
 				upKeyDownTimestamp = event.getEventTime();
 				if (keyRepeated < keyRepeatLongThreshold)
-					listener.onKeyInterpreterResult(ResultCode.UP_REPEAT);
+					listener.onNavKeyInterpreterResult(ResultCode.UP_REPEAT);
 				else
-					listener.onKeyInterpreterResult(ResultCode.UP_REPEAT_LONG);
+					listener.onNavKeyInterpreterResult(ResultCode.UP_REPEAT_LONG);
 				keyRepeated++;
 			}
 			return true;
@@ -66,9 +66,9 @@ public class NavigationKeyInterpreter {
 					&& upKeyDownTimestamp == -1) {
 				downKeyDownTimestamp = event.getEventTime();
 				if (keyRepeated < keyRepeatLongThreshold)
-					listener.onKeyInterpreterResult(ResultCode.DOWN_REPEAT);
+					listener.onNavKeyInterpreterResult(ResultCode.DOWN_REPEAT);
 				else
-					listener.onKeyInterpreterResult(ResultCode.DOWN_REPEAT_LONG);
+					listener.onNavKeyInterpreterResult(ResultCode.DOWN_REPEAT_LONG);
 				keyRepeated++;
 			}
 			return true;
@@ -86,14 +86,14 @@ public class NavigationKeyInterpreter {
 			if (keyRepeated == 0) {
 				if (upKeyDownTimestamp != -1 && downKeyDownTimestamp != -1) {
 					if (upDt > HOLD_THRESHOLD && downDt > HOLD_THRESHOLD) {
-						listener.onKeyInterpreterResult(ResultCode.UP_AND_DOWN_LONG);
+						listener.onNavKeyInterpreterResult(ResultCode.UP_AND_DOWN_LONG);
 					} else {
-						listener.onKeyInterpreterResult(ResultCode.UP_AND_DOWN);
+						listener.onNavKeyInterpreterResult(ResultCode.UP_AND_DOWN);
 					}
 				} else if (upKeyDownTimestamp != -1) {
-					listener.onKeyInterpreterResult(ResultCode.UP);
+					listener.onNavKeyInterpreterResult(ResultCode.UP);
 				} else if (downKeyDownTimestamp != -1) {
-					listener.onKeyInterpreterResult(ResultCode.DOWN);
+					listener.onNavKeyInterpreterResult(ResultCode.DOWN);
 				}
 			}
 			upKeyDownTimestamp = -1;
@@ -109,7 +109,7 @@ public class NavigationKeyInterpreter {
 		}
 
 		// May be called from a non-UI thread
-		public void onKeyInterpreterResult(ResultCode code);
+		public void onNavKeyInterpreterResult(ResultCode code);
 
 		public boolean onKeyDown(int keyCode, KeyEvent event);
 
