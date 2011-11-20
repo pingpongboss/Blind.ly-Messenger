@@ -53,6 +53,7 @@
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" android:taskAffinity='edu.berkeley.cs169.blindly.popup'>
         </activity>
+        <activity android:name=".activity.MainPreferenceActivity" android:screenOrientation="nosensor"></activity>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" >
