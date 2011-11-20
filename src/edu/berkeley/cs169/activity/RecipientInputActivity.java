@@ -10,7 +10,9 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
@@ -22,10 +24,10 @@ import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ContactCursorAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
-import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener,
@@ -53,11 +55,13 @@ public class RecipientInputActivity extends ListActivity implements
 		filterText.addTextChangedListener(filterTextWatcher);
 		filterText.requestFocus();
 		contactsList = (ListView) findViewById(android.R.id.list);
+		contactsList.setClickable(false);
 
 		app = (BlindlyMessenger) getApplication();
 
 		// Initialize class properties
 		mShowInvisible = false;
+		firstVolDown = false;
 
 		// Register handler for UI elements
 		navKeyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
@@ -66,8 +70,6 @@ public class RecipientInputActivity extends ListActivity implements
 		cursor = getContacts(defaultSelection);
 		adapter = new ContactCursorAdapter(this, cursor);
 		adapter.setFilterQueryProvider(new FilterQueryProvider() {
-
-			
 			public Cursor runQuery(CharSequence constraint) {
 				if (constraint != null) {
 					constraint = constraint.toString().trim();
@@ -88,15 +90,14 @@ public class RecipientInputActivity extends ListActivity implements
 
 		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
-				ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
-						.getSelectedItem());
-
-				app.output(recipient.toString());
+				if (contactsList.getSelectedItemPosition() != 0) {
+					ContactModel recipient = getContactModelAtCursorPosition((Cursor) contactsList
+							.getItemAtPosition(getSelectedItemPosition() - 1));
+					app.output(recipient.toString());
+				}
 			}
-
 
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
@@ -104,6 +105,20 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 		});
 
+		if (!app.isTouch()) {
+			filterText.setOnTouchListener(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+			contactsList.setOnTouchListener(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
 		setListAdapter(adapter);
 	}
 
@@ -168,9 +183,11 @@ public class RecipientInputActivity extends ListActivity implements
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Cursor c = ((ContactCursorAdapter) getListAdapter()).getCursor();
-		c.moveToPosition(position);
-		passPhoneNumberAtCursorPosition(c);
+		if (app.isTouch()) {
+			if (position != 0) {
+				passPhoneNumberAtCursorPosition(position);
+			}
+		}
 	}
 
 	private void startHelp() {
@@ -181,10 +198,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 	private ContactModel getContactModelAtCursorPosition(Cursor c) {
 		if (c != null) {
-
-			// TODO figure out why this hack is needed. Has to do with Jesse's
-			// adapter having a dummy row
-			c.moveToPrevious();
 			String name = c
 					.getString(c
 							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
@@ -197,7 +210,9 @@ public class RecipientInputActivity extends ListActivity implements
 		return null;
 	}
 
-	private void passPhoneNumberAtCursorPosition(Cursor c) {
+	private void passPhoneNumberAtCursorPosition(int position) {
+		Cursor c = ((ContactCursorAdapter) getListAdapter()).getCursor();
+		c.moveToPosition(position - 1);
 		ContactModel recipient = getContactModelAtCursorPosition(c);
 		if (recipient != null) {
 			Intent i = new Intent(this, MessageInputActivity.class);
@@ -242,7 +257,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 	};
 
-
 	public void onKeyboardKeyInterpreterResult(
 			edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode code,
 			Object result) {
@@ -272,7 +286,6 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 		});
 	}
-
 
 	public void onNavKeyInterpreterResult(
 			edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode code) {
@@ -320,8 +333,8 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumberAtCursorPosition((Cursor) getListView()
-					.getSelectedItem());
+			passPhoneNumberAtCursorPosition(contactsList
+					.getSelectedItemPosition());
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();

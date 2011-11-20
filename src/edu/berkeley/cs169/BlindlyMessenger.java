@@ -54,14 +54,21 @@ public class BlindlyMessenger extends Application {
 	}
 
 	public void vibrate(String text) {
-		long[] data = Utils.vibratePattern(text);
 
 		Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("vibrate", true))
+		if (prefs.getBoolean("vibrate", true)) {
+			long[] data = Utils.vibratePattern(text);
+			int baseSpeed = Integer.parseInt(prefs.getString("vibrate_speed",
+					"100"));
+
+			for (int i = 0; i < data.length; i++) {
+				data[i] *= baseSpeed;
+			}
 			vibrator.vibrate(data, -1);
+		}
 	}
 
 	public String getNameForNumber(String number) {
@@ -88,5 +95,18 @@ public class BlindlyMessenger extends Application {
 		String number = phoneManager.getLine1Number();
 		String name = getResources().getString(R.string.name_self);
 		return new ContactModel(name, number);
+	}
+
+	public int getInputSpeedBase() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		return Integer.parseInt(prefs.getString("input_speed", "100"));
+	}
+
+	public boolean isTouch() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		return prefs.getBoolean("touch", true)
+				&& !prefs.getBoolean("blank", false);
 	}
 }
