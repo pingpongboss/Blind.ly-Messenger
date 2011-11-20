@@ -11,6 +11,7 @@ import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class ReadMessageActivity extends ListActivity implements
@@ -39,6 +40,8 @@ public class ReadMessageActivity extends ListActivity implements
 		super.onResume();
 
 		// TODO vibrate shortcode and speak greeting
+
+		Utils.blankScreen(this);
 	}
 
 	@Override

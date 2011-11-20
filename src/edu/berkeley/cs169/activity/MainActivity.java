@@ -14,6 +14,7 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class MainActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
@@ -55,6 +56,8 @@ public class MainActivity extends Activity implements
 
 		String greeting = getResources().getString(R.string.main_tts);
 		app.speak(greeting);
+
+		Utils.blankScreen(this);
 	}
 
 	@Override

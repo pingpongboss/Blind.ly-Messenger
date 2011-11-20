@@ -1,83 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Name"
-        android:textSize="32sp"
-        android:textStyle="bold" android:layout_marginTop="10dp"/>
-
-    <TextView
-        android:id="@+id/number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Number"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:layout_height="fill_parent" >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical" android:layout_marginLeft="20dp" android:layout_marginRight="20dp" android:layout_marginBottom="20dp">
-
-        <EditText
-            android:id="@+id/edit"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:editable="false"
-            android:gravity="top"
-            android:hint="@string/message_input_hint"
-            android:textSize="40sp" >
-
-            <requestFocus />
-        </EditText>
-
-        <FrameLayout
-            android:id="@+id/keyboard"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clickable="true" >
-
-            <ImageView
-                android:id="@+id/overlay"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:src="#33fea41d" />
-
-            <ScrollView
-                android:id="@+id/scroll"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:scrollbars="none" >
-
-                <TextView
-                    android:id="@+id/visualizer"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"
-                    android:textSize="50sp"
-                    android:textStyle="bold" />
-            </ScrollView>
-        </FrameLayout>
+        android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/status"
-            android:layout_width="fill_parent"
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Status"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:visibility="gone" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Name"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Number"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/edit"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:editable="false"
+                android:gravity="top"
+                android:hint="@string/message_input_hint"
+                android:textSize="40sp" >
+
+                <requestFocus />
+            </EditText>
+
+            <FrameLayout
+                android:id="@+id/keyboard"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clickable="true" >
+
+                <ImageView
+                    android:id="@+id/overlay"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:src="#33fea41d" />
+
+                <ScrollView
+                    android:id="@+id/scroll"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:scrollbars="none" >
+
+                    <TextView
+                        android:id="@+id/visualizer"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:textSize="50sp"
+                        android:textStyle="bold" />
+                </ScrollView>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Status"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+    <View
+        android:id="@+id/black"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#000000"
+        android:visibility="gone" />
+
+</FrameLayout>

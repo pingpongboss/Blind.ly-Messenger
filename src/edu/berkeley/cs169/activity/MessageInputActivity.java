@@ -84,6 +84,8 @@ public class MessageInputActivity extends Activity implements
 
 		String greeting = getResources().getString(R.string.message_input_tts);
 		app.speak(String.format("%s %s", greeting, mRecipient));
+
+		Utils.blankScreen(this);
 	}
 
 	protected void vibrateHelp() {

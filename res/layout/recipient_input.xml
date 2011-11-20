@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <TextView android:layout_width="fill_parent"
-    		  android:layout_height="wrap_content"
-    		  android:text="My Contacts" 
-    		  android:textSize="32sp" android:textStyle="bold"/>
-    <EditText 
-        android:id="@+id/search_box" 
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/filter_hint"
-        android:inputType="text"
-        android:maxLines="1"
-        android:nextFocusDown="@id/android:list"/>
-    <ListView android:layout_width="fill_parent"
-              android:id="@id/android:list"
-              android:layout_height="0dip" 
-              android:layout_weight="1"
-              android:fastScrollEnabled="true"
-              android:listSelector="@android:color/transparent">
-        <!-- Preview: listitem=@layout/recipient_input_item -->
-    </ListView>
-</LinearLayout>
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="My Contacts"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/search_box"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/filter_hint"
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusDown="@id/android:list" />
+
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:fastScrollEnabled="true"
+            android:listSelector="@android:color/transparent" >
+
+            <!-- Preview: listitem=@layout/recipient_input_item -->
+        </ListView>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/black"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:background="#000000" android:visibility="gone"/>
+
+</FrameLayout>

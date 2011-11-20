@@ -2,7 +2,12 @@ package edu.berkeley.cs169.util;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
+import android.view.View;
+import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.MorseCodeModel;
 
 public class Utils {
@@ -225,5 +230,12 @@ public class Utils {
 	public static void sendSMSHelper(String phoneNumber, String message) {
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, null, null);
+	}
+
+	public static void blankScreen(Activity activity) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(activity);
+		activity.findViewById(R.id.black).setVisibility(
+				prefs.getBoolean("blank", false) ? View.VISIBLE : View.GONE);
 	}
 }

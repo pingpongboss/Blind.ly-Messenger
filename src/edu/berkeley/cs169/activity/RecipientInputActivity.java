@@ -22,6 +22,7 @@ import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ContactCursorAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
+import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
@@ -118,6 +119,8 @@ public class RecipientInputActivity extends ListActivity implements
 		String greeting = getResources()
 				.getString(R.string.recipient_input_tts);
 		app.speak(greeting);
+
+		Utils.blankScreen(this);
 	}
 
 	@Override
