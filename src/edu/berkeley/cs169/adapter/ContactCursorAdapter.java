@@ -41,7 +41,9 @@ public class ContactCursorAdapter extends CursorAdapter {
 		if (fauxPosition != -1) {
 			if (mCursor.moveToPosition(fauxPosition)) {
 				convertView.setVisibility(View.VISIBLE);
-
+				convertView.findViewById(R.id.picture).setVisibility(View.VISIBLE);
+				holder.name.setVisibility(View.VISIBLE);
+				holder.number.setVisibility(View.VISIBLE);
 				holder.name
 						.setText(mCursor.getString(mCursor
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
@@ -52,7 +54,9 @@ public class ContactCursorAdapter extends CursorAdapter {
 				// cursor failed to move to position
 			}
 		} else {
-			convertView.setVisibility(View.GONE);
+			convertView.findViewById(R.id.picture).setVisibility(View.GONE);
+			holder.name.setVisibility(View.GONE);
+			holder.number.setVisibility(View.GONE);
 		}
 		return convertView;
 	}
