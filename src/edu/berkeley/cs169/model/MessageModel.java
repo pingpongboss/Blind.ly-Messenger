@@ -19,6 +19,16 @@ public class MessageModel implements Parcelable {
 		return String.format("Message from %s to %s: %s", from, to, content);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof MessageModel) {
+			MessageModel m = (MessageModel) o;
+			return content.equals(m.getContent()) && from.equals(m.getFrom())
+					&& to.equals(m.getTo());
+		}
+		return false;
+	}
+
 	public String getContent() {
 		return content;
 	}

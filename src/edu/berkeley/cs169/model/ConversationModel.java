@@ -34,6 +34,16 @@ public class ConversationModel implements Parcelable {
 		return String.format("%s: %s", other, exerpt);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ConversationModel) {
+			ConversationModel c = (ConversationModel) o;
+			return messages.equals(c.getMessages())
+					&& other.equals(c.getOther());
+		}
+		return false;
+	}
+
 	public ConversationModel(Parcel in) {
 		messages = in.createTypedArrayList(MessageModel.CREATOR);
 		other = in.readParcelable(ContactModel.class.getClassLoader());

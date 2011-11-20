@@ -20,6 +20,15 @@ public class ContactModel implements Parcelable {
 			return name;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ContactModel) {
+			ContactModel c = (ContactModel) o;
+			return name.equals(c.getName()) && number.equals(c.getNumber());
+		}
+		return false;
+	}
+
 	public String getName() {
 		return name;
 	}
