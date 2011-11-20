@@ -3,6 +3,7 @@ package edu.berkeley.cs169.activity;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ConversationModel;
+import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import android.app.ListActivity;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.widget.ArrayAdapter;
 import android.widget.SimpleCursorAdapter;
 
 
@@ -42,6 +44,12 @@ public class ConversationViewActivity extends ListActivity implements
 	
 	private void populateConversation() {
 		// populate ListActivity with items from ConversationModel
+		
+		// put messages in a String (hella ghetto)
+		String[] messages = conversation.messagesAsString();
+		
+		// put ConversationModel into a
+		setListAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, messages));
 	}
 
 	@Override

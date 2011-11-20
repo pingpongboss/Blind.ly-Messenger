@@ -31,6 +31,15 @@ public class ConversationModel implements Parcelable {
 		// TODO Auto-generated constructor stub
 	}
 
+	public String[] messagesAsString() {
+		String[] m = new String[messages.size()];
+		for (int i = 0; i < messages.size(); i++) {
+			m[i] = messages.get(i).getFrom().getName() + ":\n" +  messages.get(i).getContent();
+		}
+		
+		return m;
+	}
+	
 	public ContactModel getOther() {
 		return other;
 	}

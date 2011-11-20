@@ -83,7 +83,6 @@ public class MessageInputActivity extends Activity implements
 		send = (Button) findViewById(R.id.send);
 		send.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				sendMessage();
 			}
