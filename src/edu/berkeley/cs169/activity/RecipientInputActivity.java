@@ -68,7 +68,8 @@ public class RecipientInputActivity extends ListActivity implements
 
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				if (!(constraint == null)) {
+				if (constraint != null) {
+					constraint = constraint.toString().trim();
 					String selection = String
 							.format("%s = '%s' AND %s LIKE '%%%s%%'",
 									ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
@@ -181,7 +182,7 @@ public class RecipientInputActivity extends ListActivity implements
 		if (c != null) {
 
 			// TODO figure out why this hack is needed. Has to do with Jesse's
-			// adapter getCount() == 2 I believe
+			// adapter having a dummy row
 			c.moveToPrevious();
 			String name = c
 					.getString(c

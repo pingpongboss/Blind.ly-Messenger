@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.activity.RecipientInputActivity.ContactCursor;
 
-public class ContactCursorAdapter extends CursorAdapter implements Filterable {
+public class ContactCursorAdapter extends CursorAdapter {
 	LayoutInflater mInflater;
 	ContactCursor mCursor;
 
@@ -70,11 +68,6 @@ public class ContactCursorAdapter extends CursorAdapter implements Filterable {
 
 	public void setCursor(ContactCursor cursor) {
 		mCursor = cursor;
-	}
-	
-	@Override
-	public Filter getFilter() {
-		return super.getFilter();
 	}
 
 	static class ViewHolder {
