@@ -2,6 +2,7 @@ package edu.berkeley.cs169.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.telephony.PhoneNumberUtils;
 
 public class ContactModel implements Parcelable {
 	private String name;
@@ -24,7 +25,8 @@ public class ContactModel implements Parcelable {
 	public boolean equals(Object o) {
 		if (o instanceof ContactModel) {
 			ContactModel c = (ContactModel) o;
-			return name.equals(c.getName()) && number.equals(c.getNumber());
+			return name.equals(c.getName())
+					&& PhoneNumberUtils.compare(number, c.getNumber());
 		}
 		return false;
 	}

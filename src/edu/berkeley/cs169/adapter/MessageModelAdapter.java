@@ -53,10 +53,15 @@ public class MessageModelAdapter extends ArrayAdapter<MessageModel> {
 			holder.name.setText(name);
 			holder.content.setText(content);
 
-			if (message.getFrom().equals(mMyContact))
+			if (message.getFrom().equals(mMyContact)) {
 				holder.layout.setGravity(Gravity.LEFT);
-			else
+				holder.name.setGravity(Gravity.LEFT);
+				holder.content.setGravity(Gravity.LEFT);
+			} else {
 				holder.layout.setGravity(Gravity.RIGHT);
+				holder.name.setGravity(Gravity.RIGHT);
+				holder.content.setGravity(Gravity.RIGHT);
+			}
 		}
 
 		return convertView;
