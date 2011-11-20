@@ -2,9 +2,11 @@ package edu.berkeley.cs169;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract.PhoneLookup;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -33,6 +35,11 @@ public class BlindlyMessenger extends Application {
 		});
 	}
 
+	public void output(String text) {
+		speak(text);
+		vibrate(text);
+	}
+
 	public void speak(String text) {
 		// Check if not initialized
 		if (savedText == null) {
@@ -40,14 +47,21 @@ public class BlindlyMessenger extends Application {
 			return;
 		}
 
-		mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (prefs.getBoolean("tts", false))
+			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	public void vibrate(String text) {
 		long[] data = Utils.vibratePattern(text);
 
 		Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		vibrator.vibrate(data, -1);
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (prefs.getBoolean("vibrate", true))
+			vibrator.vibrate(data, -1);
 	}
 
 	public String getNameForNumber(String number) {

@@ -35,6 +35,13 @@ public class ReadMessageActivity extends ListActivity implements
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// TODO vibrate shortcode and speak greeting
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
 			return true;
@@ -94,8 +101,7 @@ public class ReadMessageActivity extends ListActivity implements
 	private void starthelp() {
 		String alert = getResources().getString(R.string.message_input_help);
 
-		app.vibrate(alert);
-		app.speak(alert);
+		app.output(alert);
 	}
 
 	private void populateMessageList() {
@@ -106,8 +112,8 @@ public class ReadMessageActivity extends ListActivity implements
 		startManagingCursor(c);
 		String[] columns = new String[] { "address", "body" };
 		int[] to = new int[] { R.id.message_entry_name, R.id.message_entry_body };
-		
-		//TODO make our own subclass so we can use app.getNameFromNumber()
+
+		// TODO make our own subclass so we can use app.getNameFromNumber()
 		SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this,
 				R.layout.message_list_item, c, columns, to);
 		setListAdapter(mAdapter);
@@ -124,8 +130,7 @@ public class ReadMessageActivity extends ListActivity implements
 			ContactModel me = app.getMyContact();
 			MessageModel messageModel = new MessageModel(body, from, me);
 
-			app.vibrate(messageModel.toString());
-			app.speak(messageModel.toString());
+			app.output(messageModel.toString());
 		}
 	}
 }

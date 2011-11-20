@@ -81,8 +81,7 @@ public class PopupActivity extends Activity implements
 
 	protected void startListen() {
 		String alert = mMessage.toString();
-		app.vibrate(alert);
-		app.speak(alert);
+		app.output(alert);
 	}
 
 	protected void startReply() {
@@ -94,8 +93,7 @@ public class PopupActivity extends Activity implements
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.popup_help);
-		app.vibrate(alert);
-		app.speak(alert);
+		app.output(alert);
 	}
 
 	@Override

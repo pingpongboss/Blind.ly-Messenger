@@ -93,8 +93,7 @@ public class RecipientInputActivity extends ListActivity implements
 				ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
 						.getSelectedItem());
 
-				app.speak(recipient.toString());
-				app.vibrate(recipient.toString());
+				app.output(recipient.toString());
 			}
 
 			@Override
@@ -174,8 +173,7 @@ public class RecipientInputActivity extends ListActivity implements
 	private void startHelp() {
 		String alert = getResources().getString(R.string.recipient_input_help);
 
-		app.vibrate(alert);
-		app.speak(alert);
+		app.output(alert);
 	}
 
 	private ContactModel getContactModelAtCursorPosition(Cursor c) {

@@ -89,8 +89,7 @@ public class MessageInputActivity extends Activity implements
 	protected void vibrateHelp() {
 		String alert = getResources().getString(R.string.message_input_help);
 
-		app.vibrate(alert);
-		app.speak(alert);
+		app.output(alert);
 	}
 
 	@Override
