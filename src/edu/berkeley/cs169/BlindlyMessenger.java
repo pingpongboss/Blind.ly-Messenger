@@ -102,4 +102,11 @@ public class BlindlyMessenger extends Application {
 				.getDefaultSharedPreferences(this);
 		return Integer.parseInt(prefs.getString("input_speed", "100"));
 	}
+
+	public boolean isTouch() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		return prefs.getBoolean("touch", true)
+				&& !prefs.getBoolean("blank", false);
+	}
 }

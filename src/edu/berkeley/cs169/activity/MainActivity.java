@@ -2,9 +2,7 @@ package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,9 +34,7 @@ public class MainActivity extends Activity implements
 		layoutUp.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(MainActivity.this);
-				if (!prefs.getBoolean("touch", true))
+				if (!app.isTouch())
 					return;
 
 				startCompose();
@@ -49,9 +45,7 @@ public class MainActivity extends Activity implements
 		layoutDown.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(MainActivity.this);
-				if (!prefs.getBoolean("touch", true))
+				if (!app.isTouch())
 					return;
 
 				startRead();

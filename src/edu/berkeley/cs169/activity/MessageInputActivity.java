@@ -1,10 +1,8 @@
 package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,9 +54,7 @@ public class MessageInputActivity extends Activity implements
 		scroll.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
-				SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(MessageInputActivity.this);
-				if (!prefs.getBoolean("touch", true))
+				if (!app.isTouch())
 					return false;
 
 				if (event.getAction() == MotionEvent.ACTION_DOWN)
@@ -107,9 +103,7 @@ public class MessageInputActivity extends Activity implements
 
 		Utils.blankScreen(this);
 
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean touch = prefs.getBoolean("touch", true);
+		boolean touch = app.isTouch();
 		edit.setFocusable(touch);
 		send.setVisibility(touch ? View.VISIBLE : View.GONE);
 	}
