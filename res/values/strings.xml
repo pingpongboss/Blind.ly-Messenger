@@ -16,6 +16,7 @@
     <string name="popup_help">Tap UP to listen, tap DOWN to reply</string>
     <string name="popup_tts">New message from</string><string name="name_self">Me</string>
     <string name="filter_hint">select recipient using morse code</string>
+    <string name="message_input_send">Send</string>
     
     
     

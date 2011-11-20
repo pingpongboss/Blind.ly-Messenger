@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Application;
 import android.view.KeyEvent;
+import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.model.MorseCodeModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
 
 public class KeyboardKeyInterpreter {
-	public static long DOT_DASH_THRESHOLD = 3 * Utils.INPUT_SPEED_BASE;
-	public static long LETTER_GAP_THRESHOLD = 4 * Utils.INPUT_SPEED_BASE;
-	public static long WORD_GAP_THRESHOLD = 10 * Utils.INPUT_SPEED_BASE;
+	public static long DOT_DASH_THRESHOLD = 3;
+	public static long LETTER_GAP_THRESHOLD = 4;
+	public static long WORD_GAP_THRESHOLD = 10;
+
+	int speedBase;
 
 	KeyboardKeyInterpreterResultListener listener;
 	MorseCodeModel model;
@@ -24,6 +28,9 @@ public class KeyboardKeyInterpreter {
 	boolean lastLetterOutputted = true;
 
 	public KeyboardKeyInterpreter(KeyboardKeyInterpreterResultListener listener) {
+		speedBase = ((BlindlyMessenger) listener.getApplication())
+				.getInputSpeedBase();
+
 		this.listener = listener;
 		model = new MorseCodeModel(new ArrayList<Long>());
 
@@ -58,12 +65,14 @@ public class KeyboardKeyInterpreter {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP:
 			if (upKeyDownTimestamp != -1) {
-				if (dt < DOT_DASH_THRESHOLD) {
+				if (dt < DOT_DASH_THRESHOLD * speedBase) {
 					model.getRawData().add(MorseCodeModel.DOT);
-					listener.onKeyboardKeyInterpreterResult(ResultCode.DOT, null);
+					listener.onKeyboardKeyInterpreterResult(ResultCode.DOT,
+							null);
 				} else {
 					model.getRawData().add(MorseCodeModel.DASH);
-					listener.onKeyboardKeyInterpreterResult(ResultCode.DASH, null);
+					listener.onKeyboardKeyInterpreterResult(ResultCode.DASH,
+							null);
 				}
 				lastLetterOutputted = false;
 
@@ -76,17 +85,17 @@ public class KeyboardKeyInterpreter {
 						model.getRawData().add(MorseCodeModel.SPACE);
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
-							listener.onKeyboardKeyInterpreterResult(ResultCode.ERROR,
-									null);
+							listener.onKeyboardKeyInterpreterResult(
+									ResultCode.ERROR, null);
 						} else {
 							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
 						}
-						listener.onKeyboardKeyInterpreterResult(ResultCode.LETTER_GAP,
-								null);
+						listener.onKeyboardKeyInterpreterResult(
+								ResultCode.LETTER_GAP, null);
 					}
-				}, LETTER_GAP_THRESHOLD);
+				}, LETTER_GAP_THRESHOLD * speedBase);
 
 				wordTimer.cancel();
 				wordTimer = new Timer();
@@ -97,17 +106,17 @@ public class KeyboardKeyInterpreter {
 						model.getRawData().add(MorseCodeModel.SPACE);
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
-							listener.onKeyboardKeyInterpreterResult(ResultCode.ERROR,
-									null);
+							listener.onKeyboardKeyInterpreterResult(
+									ResultCode.ERROR, null);
 						} else {
 							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
 						}
-						listener.onKeyboardKeyInterpreterResult(ResultCode.WORD_GAP,
-								null);
+						listener.onKeyboardKeyInterpreterResult(
+								ResultCode.WORD_GAP, null);
 					}
-				}, WORD_GAP_THRESHOLD);
+				}, WORD_GAP_THRESHOLD * speedBase);
 			}
 
 			if (upKeyUpTimestamp == -1) {
@@ -122,8 +131,8 @@ public class KeyboardKeyInterpreter {
 			if (downKeyDownTimestamp != -1) {
 				if (!lastLetterOutputted) {
 					char lastChar = model.getLastChar();
-					listener.onKeyboardKeyInterpreterResult(ResultCode.LAST_LETTER,
-							lastChar);
+					listener.onKeyboardKeyInterpreterResult(
+							ResultCode.LAST_LETTER, lastChar);
 				}
 
 				listener.onKeyboardKeyInterpreterResult(ResultCode.DONE, model);
@@ -139,10 +148,13 @@ public class KeyboardKeyInterpreter {
 		}
 
 		// May be called from a non-UI thread
-		public void onKeyboardKeyInterpreterResult(ResultCode code, Object result);
+		public void onKeyboardKeyInterpreterResult(ResultCode code,
+				Object result);
 
 		public boolean onKeyDown(int keyCode, KeyEvent event);
 
 		public boolean onKeyUp(int keyCode, KeyEvent event);
+
+		public Application getApplication();
 	}
 }

@@ -34,6 +34,9 @@ public class MainActivity extends Activity implements
 		layoutUp.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
+				if (!app.isTouch())
+					return;
+
 				startCompose();
 			}
 		});
@@ -42,6 +45,9 @@ public class MainActivity extends Activity implements
 		layoutDown.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
+				if (!app.isTouch())
+					return;
+
 				startRead();
 			}
 		});
