@@ -3,7 +3,9 @@ package edu.berkeley.cs169;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import edu.berkeley.cs169.activity.PopupActivity;
 import edu.berkeley.cs169.model.ContactModel;
@@ -12,6 +14,11 @@ import edu.berkeley.cs169.model.MessageModel;
 public class MessageBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		if (!prefs.getBoolean("popup", true))
+			return;
+
 		// get the SMS message passed in
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
