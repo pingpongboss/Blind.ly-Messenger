@@ -54,14 +54,21 @@ public class BlindlyMessenger extends Application {
 	}
 
 	public void vibrate(String text) {
-		long[] data = Utils.vibratePattern(text);
 
 		Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("vibrate", true))
+		if (prefs.getBoolean("vibrate", true)) {
+			long[] data = Utils.vibratePattern(text);
+			int baseSpeed = Integer.parseInt(prefs.getString("vibrate_speed",
+					"100"));
+
+			for (int i = 0; i < data.length; i++) {
+				data[i] *= baseSpeed;
+			}
 			vibrator.vibrate(data, -1);
+		}
 	}
 
 	public String getNameForNumber(String number) {

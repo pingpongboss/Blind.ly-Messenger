@@ -4,12 +4,11 @@ package edu.berkeley.cs169.util;
  * Refactored
  */
 public class VibrateConstants {
-	public static final long SPEED_BASE = 100;
-	public static final long DOT = SPEED_BASE;
-	public static final long DASH = SPEED_BASE * 3;
-	public static final long GAP = SPEED_BASE;
-	public static final long LETTER_GAP = SPEED_BASE * 3;
-	public static final long WORD_GAP = SPEED_BASE * 7;
+	public static final long DOT = 1;
+	public static final long DASH = 3;
+	public static final long GAP = 1;
+	public static final long LETTER_GAP = 3;
+	public static final long WORD_GAP = 7;
 
 	/** The characters from 'A' to 'Z' */
 	public static final long[][] LETTERS = new long[][] {
