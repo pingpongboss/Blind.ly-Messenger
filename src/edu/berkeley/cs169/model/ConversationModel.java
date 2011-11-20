@@ -6,10 +6,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ConversationModel implements Parcelable {
-	
+
 	private List<MessageModel> messages;
 	private ContactModel other;
-	
+
 	public static final Parcelable.Creator<ConversationModel> CREATOR = new Parcelable.Creator<ConversationModel>() {
 		public ConversationModel createFromParcel(Parcel in) {
 			return new ConversationModel(in);
@@ -20,7 +20,6 @@ public class ConversationModel implements Parcelable {
 		}
 	};
 
-
 	public ConversationModel(List<MessageModel> messages, ContactModel other) {
 		super();
 		this.messages = messages;
@@ -28,26 +27,15 @@ public class ConversationModel implements Parcelable {
 	}
 
 	public ConversationModel(Parcel in) {
-		// TODO Auto-generated constructor stub
-		in.readList(messages, null);
+		messages = in.createTypedArrayList(MessageModel.CREATOR);
 		other = in.readParcelable(ContactModel.class.getClassLoader());
 	}
-	
+
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		dest.writeList(messages);
+		dest.writeTypedList(messages);
 		dest.writeParcelable(other, 0);
 	}
 
-	public String[] messagesAsString() {
-		String[] m = new String[messages.size()];
-		for (int i = 0; i < messages.size(); i++) {
-			m[i] = messages.get(i).getFrom().getName() + ":\n" +  messages.get(i).getContent();
-		}
-		
-		return m;
-	}
-	
 	public ContactModel getOther() {
 		return other;
 	}
@@ -68,6 +56,5 @@ public class ConversationModel implements Parcelable {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 
 }

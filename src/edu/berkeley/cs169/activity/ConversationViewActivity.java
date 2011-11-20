@@ -1,55 +1,56 @@
 package edu.berkeley.cs169.activity;
 
+import java.util.ArrayList;
+
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.widget.ArrayAdapter;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import android.app.ListActivity;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.widget.ArrayAdapter;
-import android.widget.SimpleCursorAdapter;
 
-
-
-public class ConversationViewActivity extends ListActivity implements 
+public class ConversationViewActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
-	
+
 	BlindlyMessenger app;
 	ConversationModel conversation;
 	private NavigationKeyInterpreter keyInterpreter;
-	
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.conversation_list);
-		
+
 		app = (BlindlyMessenger) getApplication();
 
 		// Register handler for UI elements
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
-		
-		conversation = getIntent().getParcelableExtra("conversation"); // talk to Edmond for name
-		
+
+		// talk to Edmond for name
+		conversation = getIntent().getParcelableExtra("conversation");
+
 		populateConversation();
 	}
 
 	protected void onResume() {
 		super.onResume();
 	}
-	
+
 	private void populateConversation() {
 		// populate ListActivity with items from ConversationModel
-		
+
 		// put messages in a String (hella ghetto)
-		String[] messages = conversation.messagesAsString();
-		
+		ArrayList<String> messages = new ArrayList<String>();
+		for (MessageModel m : conversation.getMessages()) {
+			messages.add(m.toString());
+		}
+
 		// put ConversationModel into a
-		setListAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, messages));
+		setListAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, messages));
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class ConversationViewActivity extends ListActivity implements
 		}
 		return super.onKeyUp(keyCode, event);
 	}
-	
+
 	public void onNavKeyInterpreterResult(ResultCode code) {
 		// TODO Auto-generated method stub
 		switch (code) {
