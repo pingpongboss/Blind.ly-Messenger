@@ -9,6 +9,9 @@
     <PreferenceCategory android:title="Output Preferences"><CheckBoxPreference android:title="Text To Speech" android:key="tts" android:summaryOff="No sound for actions and help." android:summaryOn="Allow actions and help to be spoken." android:defaultValue="false"/><CheckBoxPreference android:key="vibrate" android:title="Vibrate Morse Code" android:summaryOn="Use vibrations for navigation and help." android:summaryOff="No vibrations for actions and help." android:defaultValue="true"/>
     <ListPreference android:key="vibrate_speed" android:dependency="vibrate" android:summary="Specify the base speed for vibrating Morse Code." android:title="Vibrate Base Speed" android:entryValues="@array/speed_values" android:entries="@array/speed_names" android:dialogTitle="Choose Base Speed" android:defaultValue="100"/>
 </PreferenceCategory>
+    <PreferenceCategory android:title="Input Preferences">
+        <ListPreference android:key="input_speed" android:summary="Specify the base speed for inputing Morse Code." android:title="Input Base Speed" android:entryValues="@array/speed_values" android:entries="@array/speed_names" android:dialogTitle="Choose Base Speed" android:defaultValue="100"/>
+    </PreferenceCategory>
 
     
 

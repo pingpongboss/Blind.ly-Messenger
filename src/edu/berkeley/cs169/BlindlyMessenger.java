@@ -96,4 +96,10 @@ public class BlindlyMessenger extends Application {
 		String name = getResources().getString(R.string.name_self);
 		return new ContactModel(name, number);
 	}
+
+	public int getInputSpeedBase() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		return Integer.parseInt(prefs.getString("input_speed", "100"));
+	}
 }
