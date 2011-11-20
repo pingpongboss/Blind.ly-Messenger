@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -107,7 +108,7 @@ public class MessageListActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			readMessage();
+			openConversation();
 			break;
 		case UP_AND_DOWN_LONG:
 			starthelp();
@@ -197,8 +198,15 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
-	private void readMessage() {
+	private void openConversation() {
+		ConversationModel conversation = (ConversationModel) getListView()
+				.getSelectedItem();
 
+		if (conversation != null) {
+			Intent i = new Intent(this, ConversationViewActivity.class);
+			i.putExtra("conversation", conversation);
+			startActivity(i);
+		}
 	}
 
 }

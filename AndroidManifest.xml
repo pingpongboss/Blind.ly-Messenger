@@ -51,6 +51,7 @@
         </activity>
         <activity android:name=".activity.MainPreferenceActivity" android:screenOrientation="nosensor"></activity>
         <activity android:name=".activity.MessageListActivity" android:screenOrientation="nosensor"></activity>
+        <activity android:name=".activity.ConversationViewActivity" android:screenOrientation="nosensor"></activity>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" >

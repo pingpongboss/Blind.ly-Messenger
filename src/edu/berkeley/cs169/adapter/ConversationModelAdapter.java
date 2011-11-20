@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ConversationModel;
-import edu.berkeley.cs169.model.MessageModel;
 
 public class ConversationModelAdapter extends ArrayAdapter<ConversationModel> {
 	List<ConversationModel> mConversations;
@@ -41,17 +40,9 @@ public class ConversationModelAdapter extends ArrayAdapter<ConversationModel> {
 
 		ConversationModel conversation = mConversations.get(position);
 		if (conversation != null) {
-			List<MessageModel> messageModel = conversation.getMessages();
-			int recentMsg = messageModel.size() - 1;
-
-			// It's gonna be either the very first message or the last (for the
-			// most recent msg).
-			// gonna try last message. change it to get(0) if it's incorrect.
-			String name = conversation.getOther().getName();
-			String number = conversation.getOther().getNumber();
+			String name = conversation.getOther().toString();
 			String content = conversation.getMessages().get(0).getContent();
-			holder.name
-					.setText(name == null || name.equals("") ? number : name);
+			holder.name.setText(name);
 			holder.content.setText(content);
 		}
 

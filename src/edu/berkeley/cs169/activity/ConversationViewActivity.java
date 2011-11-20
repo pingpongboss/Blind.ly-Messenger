@@ -1,15 +1,12 @@
 package edu.berkeley.cs169.activity;
 
-import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.widget.ArrayAdapter;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.adapter.MessageModelAdapter;
 import edu.berkeley.cs169.model.ConversationModel;
-import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
@@ -22,6 +19,7 @@ public class ConversationViewActivity extends ListActivity implements
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.conversation_list);
 
 		app = (BlindlyMessenger) getApplication();
@@ -32,25 +30,13 @@ public class ConversationViewActivity extends ListActivity implements
 		// talk to Edmond for name
 		conversation = getIntent().getParcelableExtra("conversation");
 
-		populateConversation();
+		setListAdapter(new MessageModelAdapter(this,
+				R.layout.conversation_list_item, conversation,
+				app.getMyContact()));
 	}
 
 	protected void onResume() {
 		super.onResume();
-	}
-
-	private void populateConversation() {
-		// populate ListActivity with items from ConversationModel
-
-		// put messages in a String (hella ghetto)
-		ArrayList<String> messages = new ArrayList<String>();
-		for (MessageModel m : conversation.getMessages()) {
-			messages.add(m.toString());
-		}
-
-		// put ConversationModel into a
-		setListAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, messages));
 	}
 
 	@Override
