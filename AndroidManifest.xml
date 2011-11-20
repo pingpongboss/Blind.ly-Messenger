@@ -37,10 +37,6 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="nosensor" >
         </activity>
-        <activity
-            android:name=".activity.ReadMessageActivity"
-            android:screenOrientation="nosensor" >
-        </activity>
 
         <receiver android:name=".MessageBroadcastReceiver" >
             <intent-filter >
@@ -54,6 +50,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" android:taskAffinity='edu.berkeley.cs169.blindly.popup'>
         </activity>
         <activity android:name=".activity.MainPreferenceActivity" android:screenOrientation="nosensor"></activity>
+        <activity android:name=".activity.MessageListActivity" android:screenOrientation="nosensor"></activity>
     </application>
 
     <uses-permission android:name="android.permission.SEND_SMS" >

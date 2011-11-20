@@ -67,7 +67,7 @@ public class RecipientInputActivity extends ListActivity implements
 		adapter = new ContactCursorAdapter(this, cursor);
 		adapter.setFilterQueryProvider(new FilterQueryProvider() {
 
-			@Override
+			
 			public Cursor runQuery(CharSequence constraint) {
 				if (constraint != null) {
 					constraint = constraint.toString().trim();
@@ -88,7 +88,7 @@ public class RecipientInputActivity extends ListActivity implements
 
 		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
+
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
 				ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
@@ -97,7 +97,7 @@ public class RecipientInputActivity extends ListActivity implements
 				app.output(recipient.toString());
 			}
 
-			@Override
+
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 
@@ -242,7 +242,7 @@ public class RecipientInputActivity extends ListActivity implements
 
 	};
 
-	@Override
+
 	public void onKeyboardKeyInterpreterResult(
 			edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode code,
 			Object result) {
@@ -273,7 +273,7 @@ public class RecipientInputActivity extends ListActivity implements
 		});
 	}
 
-	@Override
+
 	public void onNavKeyInterpreterResult(
 			edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode code) {
 		switch (code) {

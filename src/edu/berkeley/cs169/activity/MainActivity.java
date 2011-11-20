@@ -120,6 +120,6 @@ public class MainActivity extends Activity implements
 	}
 
 	protected void startRead() {
-		startActivity(new Intent(this, ReadMessageActivity.class));
+		startActivity(new Intent(this, MessageListActivity.class));
 	}
 }

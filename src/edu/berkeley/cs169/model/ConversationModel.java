@@ -5,13 +5,19 @@ import java.util.List;
 public class ConversationModel {
 	private List<MessageModel> messages;
 	private ContactModel other;
-	
-	
 
 	public ConversationModel(List<MessageModel> messages, ContactModel other) {
 		super();
 		this.messages = messages;
 		this.other = other;
+	}
+
+	@Override
+	public String toString() {
+		String exerpt = "";
+		if (!messages.isEmpty())
+			exerpt = messages.get(0).getContent();
+		return String.format("%s: %s", other, exerpt);
 	}
 
 	public ContactModel getOther() {
