@@ -9,9 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.ArrayAdapter;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.adapter.ConversationModelAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
@@ -32,8 +32,7 @@ public class MessageListActivity extends ListActivity implements
 
 		app = (BlindlyMessenger) getApplication();
 
-		setContentView(R.layout.list);
-		// ListView list = (ListView) findViewById(R.id.list);
+		setContentView(R.layout.message_list);
 
 		// Register handler for UI elements
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
@@ -46,13 +45,8 @@ public class MessageListActivity extends ListActivity implements
 
 		populateConversationList();
 
-		ArrayList<String> items = new ArrayList<String>();
-		for (ConversationModel model : conversationList) {
-			items.add(model.toString());
-		}
-
-		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, items));
-
+		setListAdapter(new ConversationModelAdapter(this,
+				R.layout.message_list_item, conversationList));
 	}
 
 	@Override

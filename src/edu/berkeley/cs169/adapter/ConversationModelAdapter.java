@@ -48,9 +48,10 @@ public class ConversationModelAdapter extends ArrayAdapter<ConversationModel> {
 			// most recent msg).
 			// gonna try last message. change it to get(0) if it's incorrect.
 			String name = conversation.getOther().getName();
-			String content = conversation.getMessages().get(recentMsg)
-					.getContent();
-			holder.name.setText(name);
+			String number = conversation.getOther().getNumber();
+			String content = conversation.getMessages().get(0).getContent();
+			holder.name
+					.setText(name == null || name.equals("") ? number : name);
 			holder.content.setText(content);
 		}
 
