@@ -9,9 +9,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
@@ -92,11 +93,11 @@ public class RecipientInputActivity extends ListActivity implements
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
-				Log.d("RIA", "selected");
-				ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
-						.getSelectedItem());
-
-				app.output(recipient.toString());
+				if (contactsList.getSelectedItemPosition() != 0) {
+					ContactModel recipient = getContactModelAtCursorPosition((Cursor) contactsList
+							.getItemAtPosition(getSelectedItemPosition() - 1));
+					app.output(recipient.toString());
+				}
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -105,6 +106,22 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 		});
 
+		if (!app.isTouch()) {
+			filterText.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+			contactsList.setOnTouchListener(new OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
 		setListAdapter(adapter);
 	}
 
@@ -170,9 +187,9 @@ public class RecipientInputActivity extends ListActivity implements
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (app.isTouch()) {
-			Cursor c = ((ContactCursorAdapter) getListAdapter()).getCursor();
-			c.moveToPosition(position);
-			passPhoneNumberAtCursorPosition(c);
+			if (position != 0) {
+				passPhoneNumberAtCursorPosition(position);
+			}
 		}
 	}
 
@@ -196,7 +213,9 @@ public class RecipientInputActivity extends ListActivity implements
 		return null;
 	}
 
-	private void passPhoneNumberAtCursorPosition(Cursor c) {
+	private void passPhoneNumberAtCursorPosition(int position) {
+		Cursor c = ((ContactCursorAdapter) getListAdapter()).getCursor();
+		c.moveToPosition(position - 1);
 		ContactModel recipient = getContactModelAtCursorPosition(c);
 		if (recipient != null) {
 			Intent i = new Intent(this, MessageInputActivity.class);
@@ -317,8 +336,8 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumberAtCursorPosition((Cursor) getListView()
-					.getSelectedItem());
+			passPhoneNumberAtCursorPosition(contactsList
+					.getSelectedItemPosition());
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();
