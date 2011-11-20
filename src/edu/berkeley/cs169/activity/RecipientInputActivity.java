@@ -89,7 +89,8 @@ public class RecipientInputActivity extends ListActivity implements
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
-				ContactModel recipient = getSelectedContactModel();
+				ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
+						.getSelectedItem());
 
 				app.speak(recipient.toString());
 				app.vibrate(recipient.toString());
@@ -101,6 +102,7 @@ public class RecipientInputActivity extends ListActivity implements
 
 			}
 		});
+
 		setListAdapter(adapter);
 	}
 
@@ -161,6 +163,13 @@ public class RecipientInputActivity extends ListActivity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Cursor c = ((ContactCursorAdapter) getListAdapter()).getCursor();
+		c.moveToPosition(position);
+		passPhoneNumberAtCursorPosition(c);
+	}
+
 	private void startHelp() {
 		String alert = getResources().getString(R.string.recipient_input_help);
 
@@ -168,9 +177,7 @@ public class RecipientInputActivity extends ListActivity implements
 		app.speak(alert);
 	}
 
-	private ContactModel getSelectedContactModel() {
-		Cursor c = (Cursor) getListView().getSelectedItem();
-
+	private ContactModel getContactModelAtCursorPosition(Cursor c) {
 		if (c != null) {
 
 			// TODO figure out why this hack is needed. Has to do with Jesse's
@@ -188,8 +195,8 @@ public class RecipientInputActivity extends ListActivity implements
 		return null;
 	}
 
-	private void passPhoneNumber() {
-		ContactModel recipient = getSelectedContactModel();
+	private void passPhoneNumberAtCursorPosition(Cursor c) {
+		ContactModel recipient = getContactModelAtCursorPosition(c);
 		if (recipient != null) {
 			Intent i = new Intent(this, MessageInputActivity.class);
 			i.putExtra("recipient", recipient);
@@ -311,7 +318,8 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumber();
+			passPhoneNumberAtCursorPosition((Cursor) getListView()
+					.getSelectedItem());
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();
