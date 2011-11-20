@@ -1,11 +1,16 @@
 package edu.berkeley.cs169.activity;
 
 import edu.berkeley.cs169.BlindlyMessenger;
+import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import android.app.ListActivity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.widget.SimpleCursorAdapter;
 
 
 
@@ -13,14 +18,30 @@ public class ConversationViewActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 	
 	BlindlyMessenger app;
+	ConversationModel conversation;
 	private NavigationKeyInterpreter keyInterpreter;
 	
-	public void onCreate(Bundle savedInstanceState) {
 	
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.conversation_list);
+		
+		app = (BlindlyMessenger) getApplication();
+
+		// Register handler for UI elements
+		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
+		
+		conversation = getIntent().getParcelableExtra("conversation"); // talk to Edmond for name
+		
+		populateConversation();
+	}
+
+	protected void onResume() {
+		super.onResume();
 	}
 	
-	protected void onResume() {
-		
+	private void populateConversation() {
+		// populate ListActivity with items from ConversationModel
 	}
 
 	@Override
@@ -41,7 +62,41 @@ public class ConversationViewActivity extends ListActivity implements
 	
 	public void onNavKeyInterpreterResult(ResultCode code) {
 		// TODO Auto-generated method stub
-		
+		switch (code) {
+		case UP:
+		case UP_REPEAT:
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+					KeyEvent.KEYCODE_DPAD_UP));
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+					KeyEvent.KEYCODE_DPAD_UP));
+			break;
+		case UP_REPEAT_LONG:
+			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_UP));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_UP));
+			}
+			break;
+		case DOWN:
+		case DOWN_REPEAT:
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+					KeyEvent.KEYCODE_DPAD_DOWN));
+			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+					KeyEvent.KEYCODE_DPAD_DOWN));
+			break;
+		case DOWN_REPEAT_LONG:
+			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+						KeyEvent.KEYCODE_DPAD_DOWN));
+			}
+			break;
+		case UP_AND_DOWN:
+			// open up MessageInputActivity
+			break;
+		}
 	}
 
 }

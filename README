@@ -15,6 +15,7 @@ This project needs the following prereqs:
  * Android 4.0 (API 14) (Target SDK version)
  * Android 2.1 (API 7) (Min SDK version)
  * Eclipse ADT Plugin (Android Development Tools v14.0.0.v201110171935-205994)
+ * Java JDK Compliance level 1.6
  
 To run this project do the following:
  * Create a new Android AVD. Target [Android 2.1 - API Level 7]
