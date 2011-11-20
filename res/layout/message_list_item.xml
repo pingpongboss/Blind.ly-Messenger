@@ -9,13 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="@color/list_item_text"/>
 
     <TextView
         android:id="@+id/message_entry_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Content"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/list_item_text"/>
 
 </LinearLayout>
