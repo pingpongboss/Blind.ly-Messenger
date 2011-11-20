@@ -10,6 +10,9 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
@@ -80,6 +83,24 @@ public class RecipientInputActivity extends ListActivity implements
 				return cursor;
 			}
 		});
+
+		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long i) {
+				ContactModel recipient = getSelectedContactModel();
+
+				app.speak(recipient.toString());
+				app.vibrate(recipient.toString());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		setListAdapter(adapter);
 	}
 
@@ -147,9 +168,14 @@ public class RecipientInputActivity extends ListActivity implements
 		app.speak(alert);
 	}
 
-	private void passPhoneNumber() {
+	private ContactModel getSelectedContactModel() {
 		Cursor c = (Cursor) getListView().getSelectedItem();
+
 		if (c != null) {
+
+			// TODO figure out why this hack is needed. Has to do with Jesse's
+			// adapter getCount() == 2 I believe
+			c.moveToPrevious();
 			String name = c
 					.getString(c
 							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
@@ -157,6 +183,14 @@ public class RecipientInputActivity extends ListActivity implements
 					.getString(c
 							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 			ContactModel recipient = new ContactModel(name, number);
+			return recipient;
+		}
+		return null;
+	}
+
+	private void passPhoneNumber() {
+		ContactModel recipient = getSelectedContactModel();
+		if (recipient != null) {
 			Intent i = new Intent(this, MessageInputActivity.class);
 			i.putExtra("recipient", recipient);
 
