@@ -3,7 +3,7 @@
     <PreferenceCategory android:title="Main Preferences">
         
         
-        <CheckBoxPreference android:summaryOff="Do not show any notification for SMS messages." android:key="popup" android:summaryOn="Show pop-up alert on incoming SMS messages." android:title="SMS Notification Alert" android:defaultValue="true"/><CheckBoxPreference android:summaryOff="Screen on for touch navigation." android:key="blank" android:summaryOn="Blanks the screen to save power." android:title="Blank Screen" android:defaultValue="false" android:disableDependentsState="true"/>
+        <CheckBoxPreference android:summaryOff="Show status bar notification for SMS messages." android:key="popup" android:summaryOn="Show pop-up alert on incoming SMS messages." android:title="SMS Pop-up Alert" android:defaultValue="true"/><CheckBoxPreference android:summaryOff="Screen on for touch navigation." android:key="blank" android:summaryOn="Blanks the screen to save power." android:title="Blank Screen" android:defaultValue="false" android:disableDependentsState="true"/>
         <CheckBoxPreference android:key="touch" android:title="Allow Touch Input" android:summaryOff="Only navigate with Volume keys." android:summaryOn="Navigate by touching the screen." android:dependency="blank" android:defaultValue="true"/>
         
     </PreferenceCategory>
