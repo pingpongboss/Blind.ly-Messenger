@@ -94,9 +94,8 @@ public class RecipientInputActivity extends ListActivity implements
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
 				if (contactsList.getSelectedItemPosition() != 0) {
-					ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
-							.getSelectedItem());
-
+					ContactModel recipient = getContactModelAtCursorPosition((Cursor) contactsList
+							.getItemAtPosition(getSelectedItemPosition() - 1));
 					app.output(recipient.toString());
 				}
 			}
@@ -324,7 +323,8 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumberAtCursorPosition(contactsList.getSelectedItemPosition());
+			passPhoneNumberAtCursorPosition(contactsList
+					.getSelectedItemPosition());
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();
