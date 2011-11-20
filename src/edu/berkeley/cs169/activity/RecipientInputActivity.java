@@ -10,7 +10,9 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
@@ -68,8 +70,6 @@ public class RecipientInputActivity extends ListActivity implements
 		cursor = getContacts(defaultSelection);
 		adapter = new ContactCursorAdapter(this, cursor);
 		adapter.setFilterQueryProvider(new FilterQueryProvider() {
-
-			@Override
 			public Cursor runQuery(CharSequence constraint) {
 				if (constraint != null) {
 					constraint = constraint.toString().trim();
@@ -90,24 +90,35 @@ public class RecipientInputActivity extends ListActivity implements
 
 		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
 				if (contactsList.getSelectedItemPosition() != 0) {
-					ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
-							.getSelectedItem());
-
+					ContactModel recipient = getContactModelAtCursorPosition((Cursor) contactsList
+							.getItemAtPosition(getSelectedItemPosition() - 1));
 					app.output(recipient.toString());
 				}
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 
 			}
 		});
 
+		if (!app.isTouch()) {
+			filterText.setOnTouchListener(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+			contactsList.setOnTouchListener(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
 		setListAdapter(adapter);
 	}
 
@@ -246,7 +257,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 	};
 
-	@Override
 	public void onKeyboardKeyInterpreterResult(
 			edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode code,
 			Object result) {
@@ -277,7 +287,6 @@ public class RecipientInputActivity extends ListActivity implements
 		});
 	}
 
-	@Override
 	public void onNavKeyInterpreterResult(
 			edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode code) {
 		switch (code) {
@@ -324,7 +333,8 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumberAtCursorPosition(contactsList.getSelectedItemPosition());
+			passPhoneNumberAtCursorPosition(contactsList
+					.getSelectedItemPosition());
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();
