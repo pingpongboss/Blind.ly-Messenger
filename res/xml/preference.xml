@@ -3,7 +3,8 @@
     <PreferenceCategory android:title="Main Preferences">
         
         
-        <CheckBoxPreference android:summaryOff="Screen on for touch navigation." android:key="blank" android:summaryOn="Blanks the screen to save power." android:title="Blank Screen" android:defaultValue="false"/>
+        <CheckBoxPreference android:summaryOff="Screen on for touch navigation." android:key="blank" android:summaryOn="Blanks the screen to save power." android:title="Blank Screen" android:defaultValue="false" android:disableDependentsState="true"/>
+        <CheckBoxPreference android:key="touch" android:title="Allow Touch Input" android:summaryOff="Only navigate with Volume keys." android:summaryOn="Navigate by touching the screen." android:dependency="blank" android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Output Preferences"><CheckBoxPreference android:title="Text To Speech" android:key="tts" android:summaryOff="No sound for actions and help." android:summaryOn="Allow actions and help to be spoken." android:defaultValue="false"/><CheckBoxPreference android:key="vibrate" android:title="Vibrate Morse Code" android:summaryOn="Use vibrations for navigation and help." android:summaryOff="No vibrations for actions and help." android:defaultValue="true"/>
     <ListPreference android:key="vibrate_speed" android:dependency="vibrate" android:summary="Specify the base speed for vibrating Morse Code." android:title="Vibrate Base Speed" android:entryValues="@array/speed_values" android:entries="@array/speed_names" android:dialogTitle="Choose Base Speed" android:defaultValue="100"/>

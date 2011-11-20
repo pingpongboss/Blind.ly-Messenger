@@ -1,12 +1,16 @@
 package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -15,7 +19,6 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.MessageModel;
-import edu.berkeley.cs169.model.MorseCodeModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
@@ -25,11 +28,13 @@ public class MessageInputActivity extends Activity implements
 	BlindlyMessenger app;
 
 	KeyboardKeyInterpreter keyInterpreter;
+
 	EditText edit;
 	ScrollView scroll;
 	TextView visualizer;
 	ImageView overlay;
 	TextView status;
+	Button send;
 
 	ContactModel mRecipient;
 
@@ -46,10 +51,16 @@ public class MessageInputActivity extends Activity implements
 		mRecipient = getIntent().getParcelableExtra("recipient");
 
 		edit = (EditText) findViewById(R.id.edit);
+
 		scroll = (ScrollView) findViewById(R.id.scroll);
 		scroll.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(MessageInputActivity.this);
+				if (!prefs.getBoolean("touch", true))
+					return false;
+
 				if (event.getAction() == MotionEvent.ACTION_DOWN)
 					dispatchKeyEvent(new KeyEvent(SystemClock.uptimeMillis(),
 							SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN,
@@ -72,6 +83,15 @@ public class MessageInputActivity extends Activity implements
 		number.setText(mRecipient.getNumber());
 
 		status = (TextView) findViewById(R.id.status);
+
+		send = (Button) findViewById(R.id.send);
+		send.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				sendMessage();
+			}
+		});
 	}
 
 	@Override
@@ -86,6 +106,12 @@ public class MessageInputActivity extends Activity implements
 		app.speak(String.format("%s %s", greeting, mRecipient));
 
 		Utils.blankScreen(this);
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean touch = prefs.getBoolean("touch", true);
+		edit.setFocusable(touch);
+		send.setVisibility(touch ? View.VISIBLE : View.GONE);
 	}
 
 	protected void vibrateHelp() {
@@ -146,23 +172,29 @@ public class MessageInputActivity extends Activity implements
 					app.speak(character);
 					break;
 				case DONE:
-					String message = Utils
-							.morseToText((MorseCodeModel) copyResult);
-					if (message != null && !message.equals("")) {
-						Utils.sendSMSHelper(mRecipient.getNumber(), message);
-						visualizer.setText(sentText);
-						edit.setText("");
-						status.setVisibility(View.VISIBLE);
-						status.setText(message);
-						MessageModel messageModel = new MessageModel(message,
-								app.getMyContact(), mRecipient);
-						app.speak(messageModel.toString());
-					}
+					sendMessage();
 					break;
 				}
 
 				scroll.fullScroll(View.FOCUS_DOWN);
 			}
 		});
+	}
+
+	protected void sendMessage() {
+		String message = edit.getText().toString();
+		if (message != null && !message.equals("")) {
+			Utils.sendSMSHelper(mRecipient.getNumber(), message);
+
+			String sentText = getResources().getString(
+					R.string.message_input_sent);
+			visualizer.setText(sentText);
+			edit.setText("");
+			status.setVisibility(View.VISIBLE);
+			status.setText(message);
+			MessageModel messageModel = new MessageModel(message,
+					app.getMyContact(), mRecipient);
+			app.output(messageModel.toString());
+		}
 	}
 }
