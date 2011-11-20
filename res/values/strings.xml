@@ -5,7 +5,7 @@
     
     <string name="main_shortcode">m</string><string name="main_help">Tap UP to compose, tap DOWN to read</string>
     
-    <string name="main_tts">Welcome to Blindly Messenger.</string><string name="main_up">COMPOSE</string><string name="main_down">READ</string><string name="recipient_input_shortcode">r</string><string name="recipient_input_help">TODO</string><string name="recipient_input_tts">Select recipient.</string><string name="recipient_input_hint">Enter recipient</string>
+    <string name="main_tts">Welcome to Blindly Messenger.</string><string name="main_up">COMPOSE</string><string name="main_down">READ</string><string name="recipient_input_shortcode">r</string><string name="recipient_input_help">Use Volume Up to tap out Morse Code. Use Volume Down to start navigating the list. Tap both Volume Up and Down at same time to select.</string><string name="recipient_input_tts">Input recipient name.</string><string name="recipient_input_hint">Enter recipient</string>
     
     
     
