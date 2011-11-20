@@ -29,6 +29,14 @@ public class ConversationModel implements Parcelable {
 
 	public ConversationModel(Parcel in) {
 		// TODO Auto-generated constructor stub
+		in.readList(messages, null);
+		other = in.readParcelable(ContactModel.class.getClassLoader());
+	}
+	
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeList(messages);
+		dest.writeParcelable(other, 0);
 	}
 
 	public String[] messagesAsString() {
@@ -61,8 +69,5 @@ public class ConversationModel implements Parcelable {
 		return 0;
 	}
 
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }
