@@ -26,7 +26,8 @@ public class ContactCursorAdapter extends CursorAdapter {
 		int fauxPosition = position - 1;
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.recipient_input_item, parent, false);
+			convertView = mInflater.inflate(R.layout.recipient_input_item,
+					parent, false);
 			holder = new ViewHolder();
 
 			holder.name = (TextView) convertView.findViewById(R.id.name);
@@ -39,6 +40,8 @@ public class ContactCursorAdapter extends CursorAdapter {
 
 		if (fauxPosition != -1) {
 			if (mCursor.moveToPosition(fauxPosition)) {
+				convertView.setVisibility(View.VISIBLE);
+
 				holder.name
 						.setText(mCursor.getString(mCursor
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
@@ -49,6 +52,7 @@ public class ContactCursorAdapter extends CursorAdapter {
 				// cursor failed to move to position
 			}
 		} else {
+			convertView.setVisibility(View.GONE);
 		}
 		return convertView;
 	}
