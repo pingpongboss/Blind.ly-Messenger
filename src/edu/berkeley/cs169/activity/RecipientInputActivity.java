@@ -10,7 +10,9 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
@@ -94,9 +96,8 @@ public class RecipientInputActivity extends ListActivity implements
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
 				if (contactsList.getSelectedItemPosition() != 0) {
-					ContactModel recipient = getContactModelAtCursorPosition((Cursor) getListView()
-							.getSelectedItem());
-
+					ContactModel recipient = getContactModelAtCursorPosition((Cursor) contactsList
+							.getItemAtPosition(getSelectedItemPosition() - 1));
 					app.output(recipient.toString());
 				}
 			}
@@ -108,6 +109,22 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 		});
 
+		if (!app.isTouch()) {
+			filterText.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+			contactsList.setOnTouchListener(new OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
 		setListAdapter(adapter);
 	}
 
@@ -324,7 +341,8 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumberAtCursorPosition(contactsList.getSelectedItemPosition());
+			passPhoneNumberAtCursorPosition(contactsList
+					.getSelectedItemPosition());
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();
