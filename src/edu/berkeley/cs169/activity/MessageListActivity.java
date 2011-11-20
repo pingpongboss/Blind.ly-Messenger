@@ -44,7 +44,7 @@ public class MessageListActivity extends ListActivity implements
 
 		populateMessageList();
 
-		Log.d("test", "Populated message list");
+		//Log.d("test", "Populated message list");
 
 		populateConversationList();
 
@@ -175,18 +175,26 @@ public class MessageListActivity extends ListActivity implements
 
 		for (int i = 0; i < messageList.size(); i++) {
 			MessageModel message = messageList.get(i);
+			//Log.d("test ", "message" + message.getFrom().toString());
 			ContactModel other;
-			if (message.getFrom().equals(app.getMyContact())) {
+			
+			if (message.getFrom().toString().equals(app.getMyContact().toString())) {
+				//sent
 				other = message.getTo();
+				Log.d("test", "people" + other.toString());
 			} else {
+				//received
 				other = message.getFrom();
 			}
+			//Log.d("test", "ffffffffffffffff");
 			boolean inserted = false;
 			for (int j = 0; j < conversationList.size(); j++) {
 				ConversationModel conversation = conversationList.get(j);
-				if (conversation.getOther().equals(other)) {
+				if (conversation.getOther().toString().equals(other.toString())) {
 					// it belongs here
-					conversation.getMessages().add(message);
+					List<MessageModel> old = conversation.getMessages();
+					old.add(message);
+					conversation.setMessages(old);
 					Log.d("test",
 							"Put into existing: " + conversation.toString());
 					inserted = true;
@@ -201,7 +209,7 @@ public class MessageListActivity extends ListActivity implements
 				ConversationModel conversation = new ConversationModel(
 						messages, other);
 				conversationList.add(conversation);
-				Log.d("test", "Put into new: " + conversation.toString());
+				//Log.d("test", "Put into new: " + conversation.toString());
 			}
 		}
 	}
