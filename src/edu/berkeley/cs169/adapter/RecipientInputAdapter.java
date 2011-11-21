@@ -11,11 +11,11 @@ import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.activity.RecipientInputActivity.ContactCursor;
 
-public class ContactCursorAdapter extends CursorAdapter {
+public class RecipientInputAdapter extends CursorAdapter {
 	LayoutInflater mInflater;
 	ContactCursor mCursor;
 
-	public ContactCursorAdapter(Context context, ContactCursor c) {
+	public RecipientInputAdapter(Context context, ContactCursor c) {
 		super(context, c);
 		mInflater = LayoutInflater.from(context);
 		mCursor = c;

@@ -11,11 +11,11 @@ import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ConversationModel;
 
-public class ConversationModelAdapter extends ArrayAdapter<ConversationModel> {
+public class MessageListAdapter extends ArrayAdapter<ConversationModel> {
 	List<ConversationModel> mConversations;
 	LayoutInflater mInflater;
 
-	public ConversationModelAdapter(Context context, int textViewResourceId,
+	public MessageListAdapter(Context context, int textViewResourceId,
 			List<ConversationModel> objects) {
 		super(context, textViewResourceId, objects);
 		mConversations = objects;
@@ -41,7 +41,9 @@ public class ConversationModelAdapter extends ArrayAdapter<ConversationModel> {
 		ConversationModel conversation = mConversations.get(position);
 		if (conversation != null) {
 			String name = conversation.getOther().toString();
-			String content = conversation.getMessages().get(0).getContent();
+			// show last (newest) message
+			String content = conversation.getMessages()
+					.get(conversation.getMessages().size() - 1).getContent();
 			holder.name.setText(name);
 			holder.content.setText(content);
 		}

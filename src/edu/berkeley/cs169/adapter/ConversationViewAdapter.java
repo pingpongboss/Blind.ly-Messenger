@@ -13,12 +13,12 @@ import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 
-public class MessageModelAdapter extends ArrayAdapter<MessageModel> {
+public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 	ConversationModel mConversation;
 	ContactModel mMyContact;
 	LayoutInflater mInflater;
 
-	public MessageModelAdapter(Context context, int textViewResourceId,
+	public ConversationViewAdapter(Context context, int textViewResourceId,
 			ConversationModel conversation, ContactModel myContact) {
 		super(context, textViewResourceId, conversation.getMessages());
 
@@ -32,7 +32,7 @@ public class MessageModelAdapter extends ArrayAdapter<MessageModel> {
 		ViewHolder holder;
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.conversation_list_item,
+			convertView = mInflater.inflate(R.layout.conversation_view_item,
 					parent, false);
 			holder = new ViewHolder();
 

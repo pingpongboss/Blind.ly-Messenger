@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
-import edu.berkeley.cs169.adapter.ContactCursorAdapter;
+import edu.berkeley.cs169.adapter.RecipientInputAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
@@ -36,7 +36,7 @@ public class RecipientInputActivity extends ListActivity implements
 
 	private EditText filterText;
 	private ListView contactsList;
-	ContactCursorAdapter adapter;
+	RecipientInputAdapter adapter;
 	ContactCursor cursor;
 
 	private boolean mShowInvisible, firstVolDown;
@@ -68,7 +68,7 @@ public class RecipientInputActivity extends ListActivity implements
 		keyKeyInterpreter = new KeyboardKeyInterpreter(this);
 
 		cursor = getContacts(defaultSelection);
-		adapter = new ContactCursorAdapter(this, cursor);
+		adapter = new RecipientInputAdapter(this, cursor);
 		adapter.setFilterQueryProvider(new FilterQueryProvider() {
 			public Cursor runQuery(CharSequence constraint) {
 				if (constraint != null) {
@@ -211,7 +211,7 @@ public class RecipientInputActivity extends ListActivity implements
 	}
 
 	private void passPhoneNumberAtCursorPosition(int position) {
-		Cursor c = ((ContactCursorAdapter) getListAdapter()).getCursor();
+		Cursor c = ((RecipientInputAdapter) getListAdapter()).getCursor();
 		c.moveToPosition(position - 1);
 		ContactModel recipient = getContactModelAtCursorPosition(c);
 		if (recipient != null) {

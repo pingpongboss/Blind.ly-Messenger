@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
-import edu.berkeley.cs169.adapter.ConversationModelAdapter;
+import edu.berkeley.cs169.adapter.MessageListAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
@@ -46,7 +46,7 @@ public class MessageListActivity extends ListActivity implements
 
 		populateConversationList();
 
-		setListAdapter(new ConversationModelAdapter(this,
+		setListAdapter(new MessageListAdapter(this,
 				R.layout.message_list_item, conversationList));
 	}
 
@@ -181,7 +181,7 @@ public class MessageListActivity extends ListActivity implements
 				ConversationModel conversation = conversationList.get(j);
 				if (conversation.getOther().equals(other)) {
 					// it belongs here
-					conversation.getMessages().add(message);
+					conversation.getMessages().add(0, message);
 					inserted = true;
 					break;
 				}
