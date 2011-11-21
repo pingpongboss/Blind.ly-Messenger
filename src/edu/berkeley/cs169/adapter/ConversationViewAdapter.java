@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
@@ -41,6 +42,11 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 			holder.name = (TextView) convertView.findViewById(R.id.name);
 			holder.content = (TextView) convertView.findViewById(R.id.content);
 
+			holder.pictureLeft = (ImageView) convertView
+					.findViewById(R.id.picture_left);
+			holder.pictureRight = (ImageView) convertView
+					.findViewById(R.id.picture_right);
+
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -53,14 +59,18 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 			holder.name.setText(name);
 			holder.content.setText(content);
 
-			if (message.getFrom().equals(mMyContact)) {
+			if (!message.getFrom().equals(mMyContact)) {
 				holder.layout.setGravity(Gravity.LEFT);
 				holder.name.setGravity(Gravity.LEFT);
 				holder.content.setGravity(Gravity.LEFT);
+				holder.pictureLeft.setVisibility(View.VISIBLE);
+				holder.pictureRight.setVisibility(View.GONE);
 			} else {
 				holder.layout.setGravity(Gravity.RIGHT);
 				holder.name.setGravity(Gravity.RIGHT);
 				holder.content.setGravity(Gravity.RIGHT);
+				holder.pictureLeft.setVisibility(View.GONE);
+				holder.pictureRight.setVisibility(View.VISIBLE);
 			}
 		}
 
@@ -69,7 +79,11 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 
 	static class ViewHolder {
 		LinearLayout layout;
+
 		TextView name;
 		TextView content;
+
+		ImageView pictureLeft;
+		ImageView pictureRight;
 	}
 }
