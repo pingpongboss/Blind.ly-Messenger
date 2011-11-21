@@ -72,6 +72,18 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 				holder.pictureLeft.setVisibility(View.GONE);
 				holder.pictureRight.setVisibility(View.VISIBLE);
 			}
+
+			// hide name and picture if same person last text
+			if (position > 0
+					&& message.getFrom().equals(
+							mConversation.getMessages().get(position - 1)
+									.getFrom())) {
+				holder.name.setVisibility(View.GONE);
+				holder.pictureLeft.setVisibility(View.GONE);
+				holder.pictureRight.setVisibility(View.GONE);
+			} else {
+				holder.name.setVisibility(View.VISIBLE);
+			}
 		}
 
 		return convertView;
