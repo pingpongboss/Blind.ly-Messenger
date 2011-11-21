@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
+        android:layout_margin="7dp"
         android:src="@drawable/stub" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_toRightOf="@+id/picture_left"
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/list_item_text" android:layout_alignTop="@id/picture_left"/>
+        android:textColor="@color/list_item_text" />
 
     <ImageView
         android:id="@+id/picture_right"
@@ -33,7 +33,7 @@
         android:layout_alignBaseline="@+id/picture_left"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
+        android:layout_margin="7dp"
         android:src="@drawable/stub" />
 
     <TextView
