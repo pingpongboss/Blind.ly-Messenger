@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/list_item_background">
+    android:background="@color/list_item_background"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/picture_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_margin="5dp"
         android:src="@drawable/stub" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:textColor="@color/list_item_text"/>
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Number"
-            android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/list_item_text"/>
-
-    </LinearLayout>
+        android:layout_toLeftOf="@+id/picture_right"
+        android:layout_toRightOf="@+id/picture_left"
+        android:text="Name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/list_item_text" android:layout_alignTop="@id/picture_left"/>
 
     <ImageView
         android:id="@+id/picture_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/picture_left"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_margin="5dp"
         android:src="@drawable/stub" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toLeftOf="@+id/picture_right"
+        android:layout_toRightOf="@+id/picture_left"
+        android:text="Number"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/list_item_text" />
+
+</RelativeLayout>

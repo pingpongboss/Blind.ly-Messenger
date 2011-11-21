@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
@@ -171,7 +170,6 @@ public class MessageListActivity extends ListActivity implements
 			if (message.getFrom().equals(app.getMyContact())) {
 				// sent
 				other = message.getTo();
-				Log.d("test", "people" + other.toString());
 			} else {
 				// received
 				other = message.getFrom();

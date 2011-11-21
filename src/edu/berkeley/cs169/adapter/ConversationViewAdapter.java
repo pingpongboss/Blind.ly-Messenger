@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ContactModel;
@@ -37,8 +36,7 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 					parent, false);
 			holder = new ViewHolder();
 
-			holder.layout = (LinearLayout) convertView
-					.findViewById(R.id.layout);
+			holder.layout = (ViewGroup) convertView.findViewById(R.id.layout);
 			holder.name = (TextView) convertView.findViewById(R.id.name);
 			holder.content = (TextView) convertView.findViewById(R.id.content);
 
@@ -60,16 +58,16 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 			holder.content.setText(content);
 
 			if (!message.getFrom().equals(mMyContact)) {
-				holder.layout.setGravity(Gravity.LEFT);
+				// holder.layout.setGravity(Gravity.LEFT);
 				holder.name.setGravity(Gravity.LEFT);
 				holder.content.setGravity(Gravity.LEFT);
 				holder.pictureLeft.setVisibility(View.VISIBLE);
-				holder.pictureRight.setVisibility(View.GONE);
+				holder.pictureRight.setVisibility(View.INVISIBLE);
 			} else {
-				holder.layout.setGravity(Gravity.RIGHT);
+				// holder.layout.setGravity(Gravity.RIGHT);
 				holder.name.setGravity(Gravity.RIGHT);
 				holder.content.setGravity(Gravity.RIGHT);
-				holder.pictureLeft.setVisibility(View.GONE);
+				holder.pictureLeft.setVisibility(View.INVISIBLE);
 				holder.pictureRight.setVisibility(View.VISIBLE);
 			}
 
@@ -79,8 +77,8 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 							mConversation.getMessages().get(position - 1)
 									.getFrom())) {
 				holder.name.setVisibility(View.GONE);
-				holder.pictureLeft.setVisibility(View.GONE);
-				holder.pictureRight.setVisibility(View.GONE);
+				holder.pictureLeft.setVisibility(View.INVISIBLE);
+				holder.pictureRight.setVisibility(View.INVISIBLE);
 			} else {
 				holder.name.setVisibility(View.VISIBLE);
 			}
@@ -90,7 +88,7 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 	}
 
 	static class ViewHolder {
-		LinearLayout layout;
+		ViewGroup layout;
 
 		TextView name;
 		TextView content;
