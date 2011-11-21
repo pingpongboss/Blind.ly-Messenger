@@ -74,7 +74,7 @@ public class RecipientInputActivity extends ListActivity implements
 				if (constraint != null) {
 					constraint = constraint.toString().trim();
 					String selection = String
-							.format("%s = '%s' AND %s LIKE '%%%s%%'",
+							.format("%s = '%s' AND %s LIKE '%s%%'",
 									ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
 									mShowInvisible ? "0" : "1",
 									ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
