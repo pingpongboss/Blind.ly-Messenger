@@ -17,13 +17,7 @@
             <!-- Preview: listitem=@layout/message_list_item -->
         </ListView>
     </LinearLayout>
-    <TextView android:id="@id/android:empty" 
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-		android:textSize="45px"
-		android:gravity="center_vertical|center_horizontal"
-        android:text="No Messages" />
-
+   
     <View
         android:id="@+id/black"
         android:layout_width="fill_parent"
