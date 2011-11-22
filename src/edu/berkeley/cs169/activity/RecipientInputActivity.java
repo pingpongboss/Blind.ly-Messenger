@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -117,7 +118,7 @@ public class RecipientInputActivity extends ListActivity implements
 				}
 			});
 		}
-		
+
 		setListAdapter(adapter);
 	}
 
@@ -332,13 +333,40 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			passPhoneNumberAtCursorPosition(contactsList
-					.getSelectedItemPosition());
+			Log.d("RIA", "up down");
+			String phoneNum = filterText.getText().toString();
+			if (isPhoneNumber(phoneNum)) {
+				String name = app.getNameForNumber(phoneNum);
+				ContactModel recipient = new ContactModel(name, phoneNum);
+				Intent i = new Intent(this, MessageInputActivity.class);
+				i.putExtra("recipient", recipient);
+				startActivity(i);
+			} else {
+				// check selection is valid
+				if (contactsList.getSelectedItemPosition() > 0) {
+					passPhoneNumberAtCursorPosition(contactsList
+							.getSelectedItemPosition());
+				}
+			}
 			break;
 		case UP_AND_DOWN_LONG:
 			startHelp();
 			break;
 		}
+	}
+
+	private boolean isPhoneNumber(String phoneNum) {
+		char[] c = phoneNum.toCharArray();
+		// correct length of phone number
+		if ((c.length != 10) && (c.length != 7)) {
+			return false;
+		}
+		for (int i = 0; i < c.length; i++) { // verify all chars is a digit
+			if (!Character.isDigit(c[i])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static class ContactCursor extends CursorWrapper {
