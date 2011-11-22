@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ListView;
 import edu.berkeley.cs169.BlindlyMessenger;
@@ -36,7 +37,7 @@ public class ConversationViewActivity extends ListActivity implements
 
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
-				
+
 				public boolean onTouch(View v, MotionEvent event) {
 					return true;
 				}
@@ -50,21 +51,20 @@ public class ConversationViewActivity extends ListActivity implements
 
 	protected void onResume() {
 		super.onResume();
-		
-		String alert = getResources()
-				.getString(R.string.conversation_view_shortcode);
+
+		String alert = getResources().getString(
+				R.string.conversation_view_shortcode);
 		app.vibrate(alert);
-		
+
 		Utils.blankScreen(this);
 	}
-	
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (app.isTouch()) {
 			app.speak(l.getItemAtPosition(position).toString());
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
