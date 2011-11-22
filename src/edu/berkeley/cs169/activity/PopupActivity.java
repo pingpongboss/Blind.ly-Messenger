@@ -90,7 +90,7 @@ public class PopupActivity extends Activity implements
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.popup_help);
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	@Override

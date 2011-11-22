@@ -33,6 +33,16 @@ public class BlindlyMessenger extends Application {
 				savedText = "";
 			}
 		});
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean firstRun = prefs.getBoolean("firstRun", true);
+
+		if (firstRun) {
+			String firstRunMessage = getString(R.string.first_run_message);
+			speak(firstRunMessage, true);
+			prefs.edit().putBoolean("firstRun", false);
+		}
 	}
 
 	public void output(String text) {
@@ -40,7 +50,7 @@ public class BlindlyMessenger extends Application {
 		vibrate(text);
 	}
 
-	public void speak(String text) {
+	public void speak(String text, boolean force) {
 		// Check if not initialized
 		if (savedText == null) {
 			savedText = text;
@@ -49,8 +59,12 @@ public class BlindlyMessenger extends Application {
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("tts", false))
+		if (force || prefs.getBoolean("tts", false))
 			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+	}
+
+	public void speak(String text) {
+		speak(text, false);
 	}
 
 	public void vibrate(String text) {

@@ -185,7 +185,7 @@ public class MessageListActivity extends ListActivity implements
 	private void starthelp() {
 		String alert = getResources().getString(R.string.message_list_help);
 
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	private void populateConversationList() {
