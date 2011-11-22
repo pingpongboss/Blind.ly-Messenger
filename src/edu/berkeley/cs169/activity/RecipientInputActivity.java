@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
@@ -68,6 +70,12 @@ public class RecipientInputActivity extends ListActivity implements
 		keyKeyInterpreter = new KeyboardKeyInterpreter(this);
 
 		cursor = getContacts(defaultSelection);
+		
+		Log.d("Test1"," ffff" + cursor.getCount());
+		if(cursor.getCount() == 1){
+			setOnEmpty();
+		}else{
+		
 		adapter = new RecipientInputAdapter(this, cursor);
 		adapter.setFilterQueryProvider(new FilterQueryProvider() {
 			public Cursor runQuery(CharSequence constraint) {
@@ -87,7 +95,7 @@ public class RecipientInputActivity extends ListActivity implements
 				return cursor;
 			}
 		});
-
+		}
 		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -395,4 +403,10 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 
 	}
+	
+	private void setOnEmpty() {
+		TextView empty = (TextView) findViewById(android.R.id.empty);
+		empty.setText("No\nContacts");
+	}
+	
 }
