@@ -37,6 +37,7 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 			holder = new ViewHolder();
 
 			holder.layout = (ViewGroup) convertView.findViewById(R.id.layout);
+			holder.divider = convertView.findViewById(R.id.divider);
 			holder.name = (TextView) convertView.findViewById(R.id.name);
 			holder.content = (TextView) convertView.findViewById(R.id.content);
 
@@ -71,15 +72,18 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 				holder.pictureRight.setVisibility(View.VISIBLE);
 			}
 
-			// hide name and picture if same person last text
 			if (position > 0
 					&& message.getFrom().equals(
 							mConversation.getMessages().get(position - 1)
 									.getFrom())) {
+				// hide name and picture if same person last text
+				holder.divider.setVisibility(View.GONE);
 				holder.name.setVisibility(View.GONE);
 				holder.pictureLeft.setVisibility(View.INVISIBLE);
 				holder.pictureRight.setVisibility(View.INVISIBLE);
 			} else {
+				// show name and picture
+				holder.divider.setVisibility(View.VISIBLE);
 				holder.name.setVisibility(View.VISIBLE);
 			}
 		}
@@ -89,6 +93,8 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 
 	static class ViewHolder {
 		ViewGroup layout;
+		
+		View divider;
 
 		TextView name;
 		TextView content;

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
@@ -23,7 +24,6 @@ public class MessageListActivity extends ListActivity implements
 
 	BlindlyMessenger app;
 	private NavigationKeyInterpreter keyInterpreter;
-	ArrayList<MessageModel> messageList;
 	ArrayList<ConversationModel> conversationList;
 
 	@Override
@@ -38,15 +38,12 @@ public class MessageListActivity extends ListActivity implements
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 
 		// populate the lists
-		messageList = new ArrayList<MessageModel>();
 		conversationList = new ArrayList<ConversationModel>();
-
-		populateMessageList();
 
 		populateConversationList();
 
-		setListAdapter(new MessageListAdapter(this,
-				R.layout.message_list_item, conversationList));
+		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
+				conversationList));
 	}
 
 	@Override
@@ -121,16 +118,20 @@ public class MessageListActivity extends ListActivity implements
 		app.output(alert);
 	}
 
-	private void populateMessageList() {
-		messageList.clear();
+	private void populateConversationList() {
+		conversationList.clear();
+
 		int counter = 0;
-		ContactModel from;
-		ContactModel me;
-		MessageModel messageModel;
 		Cursor cursor = getContentResolver().query(Uri.parse("content://sms"),
 				null, null, null, null);
 		startManagingCursor(cursor);
+
 		while (cursor.moveToNext() && (counter < 200)) {
+			ContactModel from;
+			ContactModel to;
+			ContactModel other;
+			MessageModel message;
+
 			String number = cursor.getString(cursor.getColumnIndex("address"));
 			String body = cursor
 					.getString(cursor.getColumnIndexOrThrow("body"));
@@ -138,45 +139,27 @@ public class MessageListActivity extends ListActivity implements
 					.getString(cursor.getColumnIndexOrThrow("type"));
 			String name = app.getNameForNumber(number);
 
-			// received
 			if (type.equals("1")) {
-				from = new ContactModel(name, number);
-				me = app.getMyContact();
-				messageModel = new MessageModel(body, from, me);
-				messageList.add(messageModel);
-				// sent
-			} else if (type.equals("2")) {
-				me = new ContactModel(name, number);
-				from = app.getMyContact();
-				messageModel = new MessageModel(body, from, me);
-				messageList.add(messageModel);
-			} else if (type.equals("3")) {
-
-			}
-
-			counter++;
-
-		}
-
-	}
-
-	private void populateConversationList() {
-		conversationList.clear();
-
-		for (int i = 0; i < messageList.size(); i++) {
-			MessageModel message = messageList.get(i);
-			ContactModel other;
-
-			if (message.getFrom().equals(app.getMyContact())) {
-				// sent
-				other = message.getTo();
-			} else {
 				// received
-				other = message.getFrom();
+				from = new ContactModel(name, number);
+				to = app.getMyContact();
+				message = new MessageModel(body, from, to);
+				other = from;
+			} else if (type.equals("2")) {
+				// sent
+				to = new ContactModel(name, number);
+				from = app.getMyContact();
+				message = new MessageModel(body, from, to);
+				other = to;
+			} else {
+				Log.d("MessageListActivity",
+						"Message type not sent or received...");
+				continue;
 			}
+
 			boolean inserted = false;
-			for (int j = 0; j < conversationList.size(); j++) {
-				ConversationModel conversation = conversationList.get(j);
+			for (int i = 0; i < conversationList.size(); i++) {
+				ConversationModel conversation = conversationList.get(i);
 				if (conversation.getOther().equals(other)) {
 					// it belongs here
 					conversation.getMessages().add(0, message);
@@ -193,6 +176,8 @@ public class MessageListActivity extends ListActivity implements
 						messages, other);
 				conversationList.add(conversation);
 			}
+
+			counter++;
 		}
 	}
 

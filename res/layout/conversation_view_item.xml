@@ -7,14 +7,18 @@
     android:gravity="center_vertical"
     android:orientation="vertical" >
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp" android:background="#7affffff" android:layout_alignParentTop="true"/>
+
     <ImageView
         android:id="@+id/picture_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_margin="7dp"
-        android:src="@drawable/stub" />
+        android:src="@drawable/stub" android:layout_alignBottom="@id/divider"/>
 
     <TextView
         android:id="@+id/name"
@@ -32,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/picture_left"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:layout_margin="7dp"
         android:src="@drawable/stub" />
 
