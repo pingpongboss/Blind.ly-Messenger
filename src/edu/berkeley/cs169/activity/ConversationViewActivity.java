@@ -3,18 +3,19 @@ package edu.berkeley.cs169.activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.ListView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class ConversationViewActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
@@ -35,10 +36,21 @@ public class ConversationViewActivity extends ListActivity implements
 
 		// talk to Edmond for name
 		conversation = getIntent().getParcelableExtra("conversation");
+		
+		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long i) {
+				app.output(getListView().getItemAtPosition(position).toString());
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
-				
+
 				public boolean onTouch(View v, MotionEvent event) {
 					return true;
 				}
@@ -52,17 +64,20 @@ public class ConversationViewActivity extends ListActivity implements
 
 	protected void onResume() {
 		super.onResume();
-		
+
+		String alert = getResources().getString(
+				R.string.conversation_view_shortcode);
+		app.vibrate(alert);
+
 		Utils.blankScreen(this);
 	}
-	
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (app.isTouch()) {
 			app.speak(l.getItemAtPosition(position).toString());
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {

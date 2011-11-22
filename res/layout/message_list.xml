@@ -8,6 +8,13 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Conversations"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
         <ListView
             android:id="@id/android:list"
             android:layout_width="fill_parent"
@@ -16,13 +23,17 @@
 
             <!-- Preview: listitem=@layout/message_list_item -->
         </ListView>
+        
+ 		<TextView 
+            android:id="@+id/empty"
+     	    android:layout_width="fill_parent"
+       		android:layout_height="fill_parent"
+       		android:text="No Messages" 
+    	  	android:textSize="45px"
+       		android:visibility="invisible"
+       		android:gravity="center_vertical|center_horizontal"
+       		/>
     </LinearLayout>
-    <TextView android:id="@id/android:empty" 
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-		android:textSize="45px"
-		android:gravity="center_vertical|center_horizontal"
-        android:text="No Messages" />
 
     <View
         android:id="@+id/black"

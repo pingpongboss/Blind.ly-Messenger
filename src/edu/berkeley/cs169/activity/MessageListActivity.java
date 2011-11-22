@@ -15,6 +15,10 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ListView;
+import android.widget.TextView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.MessageListAdapter;
@@ -31,7 +35,8 @@ public class MessageListActivity extends ListActivity implements
 	BlindlyMessenger app;
 	private NavigationKeyInterpreter keyInterpreter;
 	ArrayList<ConversationModel> conversationList;
-
+	ListView lv;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,7 +55,14 @@ public class MessageListActivity extends ListActivity implements
 
 			public void run() {
 				populateConversationList();
+				
+				if(conversationList.size() == 0 ){
+						setOnVisible();
+						app.output("No messages");
+						return;
+				}
 				MessageListActivity.this.runOnUiThread(new Runnable() {
+			
 
 					public void run() {
 						((MessageListAdapter) getListAdapter())
@@ -59,6 +71,18 @@ public class MessageListActivity extends ListActivity implements
 				});
 			}
 		}).start();
+
+		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long i) {
+				ContactModel person = conversationList.get(position).getOther();
+				app.output(person.toString());
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
@@ -143,6 +167,13 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		if (app.isTouch()) {
+			openConversationPosition(position);
+		}
+	}
+
 	private void starthelp() {
 		String alert = getResources().getString(R.string.message_list_help);
 
@@ -150,6 +181,7 @@ public class MessageListActivity extends ListActivity implements
 	}
 
 	private void populateConversationList() {
+		ArrayList<ConversationModel> conversations = new ArrayList<ConversationModel>();
 		conversationList.clear();
 
 		int counter = 0;
@@ -193,8 +225,8 @@ public class MessageListActivity extends ListActivity implements
 			}
 
 			boolean inserted = false;
-			for (int i = 0; i < conversationList.size(); i++) {
-				ConversationModel conversation = conversationList.get(i);
+			for (int i = 0; i < conversations.size(); i++) {
+				ConversationModel conversation = conversations.get(i);
 				if (conversation.getOther().equals(other)) {
 					// it belongs here
 					conversation.getMessages().add(0, message);
@@ -209,11 +241,13 @@ public class MessageListActivity extends ListActivity implements
 				messages.add(message);
 				ConversationModel conversation = new ConversationModel(
 						messages, other);
-				conversationList.add(conversation);
+				conversations.add(conversation);
 			}
 
 			counter++;
 		}
+
+		conversationList.addAll(conversations);
 	}
 
 	private void openConversation() {
@@ -227,4 +261,20 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
+	private void openConversationPosition(int position) {
+		ConversationModel conversation = (ConversationModel) conversationList
+				.get(position);
+
+		if (conversation != null) {
+			Intent i = new Intent(this, ConversationViewActivity.class);
+			i.putExtra("conversation", conversation);
+			startActivity(i);
+		}
+	}
+	private void setOnVisible() { // Display "No messages"
+		TextView empty = (TextView) findViewById(R.id.empty);
+		empty.setVisibility(View.VISIBLE);
+		lv = this.getListView();
+		lv.setEmptyView(empty);
+	}
 }
