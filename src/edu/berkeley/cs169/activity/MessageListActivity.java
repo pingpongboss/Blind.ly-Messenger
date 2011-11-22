@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ListView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.MessageListAdapter;
@@ -143,6 +144,13 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		if (app.isTouch()) {
+			openConversationPosition(position);
+		}
+	}
+	
 	private void starthelp() {
 		String alert = getResources().getString(R.string.message_list_help);
 
@@ -227,4 +235,14 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
+	private void openConversationPosition(int position) {
+		ConversationModel conversation = (ConversationModel) conversationList
+				.get(position);
+
+		if (conversation != null) {
+			Intent i = new Intent(this, ConversationViewActivity.class);
+			i.putExtra("conversation", conversation);
+			startActivity(i);
+		}
+	}
 }
