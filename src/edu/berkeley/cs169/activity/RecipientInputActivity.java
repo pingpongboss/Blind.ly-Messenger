@@ -73,6 +73,7 @@ public class RecipientInputActivity extends ListActivity implements
 		
 		if(cursor.getCount() == 1){
 			setOnEmpty();
+			app.output("No Contacts");
 		}else{
 		
 		adapter = new RecipientInputAdapter(this, cursor);
