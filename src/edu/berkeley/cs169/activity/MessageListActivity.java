@@ -17,6 +17,7 @@ import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class MessageListActivity extends ListActivity implements
@@ -49,10 +50,15 @@ public class MessageListActivity extends ListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		String alert = getResources().getString(
+				R.string.message_list_shortcode);
+		app.vibrate(alert);
 
-		// TODO vibrate shortcode and speak greeting
+		String greeting = getResources()
+				.getString(R.string.message_list_tts);
+		app.speak(greeting);
 
-		// Utils.blankScreen(this);
+		Utils.blankScreen(this);
 	}
 
 	@Override
@@ -113,7 +119,7 @@ public class MessageListActivity extends ListActivity implements
 	}
 
 	private void starthelp() {
-		String alert = getResources().getString(R.string.message_input_help);
+		String alert = getResources().getString(R.string.message_list_help);
 
 		app.output(alert);
 	}
