@@ -5,11 +5,16 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.MessageListAdapter;
@@ -17,8 +22,8 @@ import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class MessageListActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
@@ -41,7 +46,31 @@ public class MessageListActivity extends ListActivity implements
 		// populate the lists
 		conversationList = new ArrayList<ConversationModel>();
 
-		populateConversationList();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				populateConversationList();
+				MessageListActivity.this.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						((MessageListAdapter) getListAdapter())
+								.notifyDataSetChanged();
+					}
+				});
+			}
+		}).start();
+
+		if (!app.isTouch()) {
+			getListView().setOnTouchListener(new OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
 
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
@@ -50,12 +79,11 @@ public class MessageListActivity extends ListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String alert = getResources().getString(
-				R.string.message_list_shortcode);
+		String alert = getResources()
+				.getString(R.string.message_list_shortcode);
 		app.vibrate(alert);
 
-		String greeting = getResources()
-				.getString(R.string.message_list_tts);
+		String greeting = getResources().getString(R.string.message_list_tts);
 		app.speak(greeting);
 
 		Utils.blankScreen(this);
@@ -132,7 +160,11 @@ public class MessageListActivity extends ListActivity implements
 				null, null, null, null);
 		startManagingCursor(cursor);
 
-		while (cursor.moveToNext() && (counter < 200)) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		int messageLimit = Integer.parseInt(prefs.getString("messages", "200"));
+
+		while (cursor.moveToNext() && (counter < messageLimit)) {
 			ContactModel from;
 			ContactModel to;
 			ContactModel other;

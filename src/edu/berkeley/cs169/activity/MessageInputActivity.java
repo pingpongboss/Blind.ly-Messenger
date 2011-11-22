@@ -1,6 +1,7 @@
 package edu.berkeley.cs169.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.KeyEvent;
@@ -175,7 +176,7 @@ public class MessageInputActivity extends Activity implements
 	}
 
 	protected void sendMessage() {
-		String message = edit.getText().toString();
+		String message = edit.getText().toString().toLowerCase();
 		if (message != null && !message.equals("")) {
 			Utils.sendSMSHelper(mRecipient.getNumber(), message);
 
@@ -187,7 +188,12 @@ public class MessageInputActivity extends Activity implements
 			status.setText(message);
 			MessageModel messageModel = new MessageModel(message,
 					app.getMyContact(), mRecipient);
-			app.output(messageModel.toString());
+
+			Intent intent = new Intent(this, MainActivity.class);
+			// finish RecipientInput and MessageInput activities
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.putExtra("message", messageModel);
+			startActivity(intent);
 		}
 	}
 }

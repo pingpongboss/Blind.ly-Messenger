@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
@@ -32,6 +35,15 @@ public class ConversationViewActivity extends ListActivity implements
 
 		// talk to Edmond for name
 		conversation = getIntent().getParcelableExtra("conversation");
+
+		if (!app.isTouch()) {
+			getListView().setOnTouchListener(new OnTouchListener() {
+				
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
 
 		setListAdapter(new ConversationViewAdapter(this,
 				R.layout.conversation_view_item, conversation,

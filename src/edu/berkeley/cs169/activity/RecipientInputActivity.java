@@ -100,8 +100,6 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -119,6 +117,7 @@ public class RecipientInputActivity extends ListActivity implements
 				}
 			});
 		}
+		
 		setListAdapter(adapter);
 	}
 
