@@ -57,7 +57,8 @@ public class MessageListActivity extends ListActivity implements
 				populateConversationList();
 				
 				if(conversationList.size() == 0 ){
-						setOnEmpty();
+						setOnVisible();
+						app.output("No messages");
 						return;
 				}
 				MessageListActivity.this.runOnUiThread(new Runnable() {
@@ -270,7 +271,7 @@ public class MessageListActivity extends ListActivity implements
 			startActivity(i);
 		}
 	}
-	private void setOnEmpty() { // Display "No messages"
+	private void setOnVisible() { // Display "No messages"
 		TextView empty = (TextView) findViewById(R.id.empty);
 		empty.setVisibility(View.VISIBLE);
 		lv = this.getListView();
