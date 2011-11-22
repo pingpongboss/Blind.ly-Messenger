@@ -346,7 +346,6 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			Log.d("RIA", "BLAM!!");
 			String phoneNum = filterText.getText().toString();
 			if (isPhoneNumber(phoneNum)) {
 				String name = app.getNameForNumber(phoneNum);
