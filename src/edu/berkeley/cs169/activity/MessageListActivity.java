@@ -55,15 +55,14 @@ public class MessageListActivity extends ListActivity implements
 			public void run() {
 				populateConversationList();
 
-				if (conversationList.size() == 0) {
-					setOnEmpty();
-					app.output("No messages");
-					return;
-				}
-
 				MessageListActivity.this.runOnUiThread(new Runnable() {
 
 					public void run() {
+						if (conversationList.size() == 0) {
+							setOnEmpty();
+							app.output("No\nConversations");
+							return;
+						}
 						((MessageListAdapter) getListAdapter())
 								.notifyDataSetChanged();
 						getListView().requestFocus();
@@ -92,9 +91,11 @@ public class MessageListActivity extends ListActivity implements
 				}
 			});
 		}
-
+		
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
+		
+		
 	}
 
 	@Override
