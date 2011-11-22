@@ -276,9 +276,12 @@ public class RecipientInputActivity extends ListActivity implements
 					break;
 				case LAST_LETTER:
 					String character = copyResult.toString();
-					filterText.setText(filterText.getText().toString()
-							+ character);
-					filterText.setSelection(filterText.length());
+					// do not allow spaces when typing a recipient or number
+					if (!character.equals(" ")) {
+						filterText.setText(filterText.getText().toString()
+								+ character);
+						filterText.setSelection(filterText.length());
+					}
 					break;
 				case DONE:
 					break;
@@ -333,7 +336,6 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			Log.d("RIA", "up down");
 			String phoneNum = filterText.getText().toString();
 			if (isPhoneNumber(phoneNum)) {
 				String name = app.getNameForNumber(phoneNum);
