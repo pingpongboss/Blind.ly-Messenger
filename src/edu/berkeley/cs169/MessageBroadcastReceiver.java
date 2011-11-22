@@ -44,7 +44,7 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 				} else {
 					// show status bar notification
 
-					int icon = R.drawable.stub;
+					int icon = R.drawable.statusbaricon;
 					long when = System.currentTimeMillis();
 					Context c = context.getApplicationContext();
 					String contentTitle = message.getFrom().toString();

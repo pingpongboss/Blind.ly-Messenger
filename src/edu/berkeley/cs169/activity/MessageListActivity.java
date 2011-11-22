@@ -48,12 +48,10 @@ public class MessageListActivity extends ListActivity implements
 
 		new Thread(new Runnable() {
 
-			@Override
 			public void run() {
 				populateConversationList();
 				MessageListActivity.this.runOnUiThread(new Runnable() {
 
-					@Override
 					public void run() {
 						((MessageListAdapter) getListAdapter())
 								.notifyDataSetChanged();
@@ -65,7 +63,6 @@ public class MessageListActivity extends ListActivity implements
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
 
-				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					return true;
 				}
