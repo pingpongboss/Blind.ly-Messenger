@@ -35,8 +35,7 @@ public class MessageListActivity extends ListActivity implements
 	BlindlyMessenger app;
 	private NavigationKeyInterpreter keyInterpreter;
 	ArrayList<ConversationModel> conversationList;
-	ListView lv;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,13 +54,12 @@ public class MessageListActivity extends ListActivity implements
 
 			public void run() {
 				populateConversationList();
-				
-				if(conversationList.size() == 0 ){
-						setOnEmpty();
-						return;
+
+				if (conversationList.size() == 0) {
+					setOnEmpty();
+					return;
 				}
 				MessageListActivity.this.runOnUiThread(new Runnable() {
-			
 
 					public void run() {
 						((MessageListAdapter) getListAdapter())
@@ -270,10 +268,9 @@ public class MessageListActivity extends ListActivity implements
 			startActivity(i);
 		}
 	}
+
 	private void setOnEmpty() { // Display "No messages"
-		TextView empty = (TextView) findViewById(R.id.empty);
-		empty.setVisibility(View.VISIBLE);
-		lv = this.getListView();
-		lv.setEmptyView(empty);
+		TextView empty = (TextView) findViewById(android.R.id.empty);
+		empty.setText("No\nConversations");
 	}
 }
