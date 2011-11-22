@@ -22,8 +22,8 @@ import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class MessageListActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
@@ -46,18 +46,32 @@ public class MessageListActivity extends ListActivity implements
 		// populate the lists
 		conversationList = new ArrayList<ConversationModel>();
 
-		populateConversationList();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				populateConversationList();
+				MessageListActivity.this.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						((MessageListAdapter) getListAdapter())
+								.notifyDataSetChanged();
+					}
+				});
+			}
+		}).start();
 
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
-				
+
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					return true;
 				}
 			});
 		}
-		
+
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
 	}
@@ -65,12 +79,11 @@ public class MessageListActivity extends ListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String alert = getResources().getString(
-				R.string.message_list_shortcode);
+		String alert = getResources()
+				.getString(R.string.message_list_shortcode);
 		app.vibrate(alert);
 
-		String greeting = getResources()
-				.getString(R.string.message_list_tts);
+		String greeting = getResources().getString(R.string.message_list_tts);
 		app.speak(greeting);
 
 		Utils.blankScreen(this);
