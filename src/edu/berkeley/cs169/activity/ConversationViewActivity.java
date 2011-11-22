@@ -6,7 +6,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.View.OnTouchListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
@@ -52,6 +51,10 @@ public class ConversationViewActivity extends ListActivity implements
 
 	protected void onResume() {
 		super.onResume();
+		
+		String alert = getResources()
+				.getString(R.string.conversation_view_shortcode);
+		app.vibrate(alert);
 		
 		Utils.blankScreen(this);
 	}
