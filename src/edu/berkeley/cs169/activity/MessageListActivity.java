@@ -58,6 +58,7 @@ public class MessageListActivity extends ListActivity implements
 				
 				if(conversationList.size() == 0 ){
 						setOnEmpty();
+						app.output("No messages");
 						return;
 				}
 				MessageListActivity.this.runOnUiThread(new Runnable() {
