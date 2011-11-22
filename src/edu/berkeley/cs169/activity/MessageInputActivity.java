@@ -108,10 +108,10 @@ public class MessageInputActivity extends Activity implements
 		send.setVisibility(touch ? View.VISIBLE : View.GONE);
 	}
 
-	protected void vibrateHelp() {
+	protected void startHelp() {
 		String alert = getResources().getString(R.string.message_input_help);
 
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	@Override

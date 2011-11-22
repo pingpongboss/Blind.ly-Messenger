@@ -55,15 +55,21 @@ public class MessageListActivity extends ListActivity implements
 			public void run() {
 				populateConversationList();
 
-				if (conversationList.size() == 0) {
-					setOnEmpty();
-					app.output("No messages");
-					return;
-				}
-
 				MessageListActivity.this.runOnUiThread(new Runnable() {
 
 					public void run() {
+						if (conversationList.size() == 0) {
+							alertEmpty();
+							return;
+						} else {
+							String alert = getResources().getString(
+									R.string.message_list_shortcode_done);
+							app.vibrate(alert);
+
+							String greeting = getResources().getString(
+									R.string.message_list_tts_done);
+							app.speak(greeting);
+						}
 						((MessageListAdapter) getListAdapter())
 								.notifyDataSetChanged();
 						getListView().requestFocus();
@@ -95,16 +101,18 @@ public class MessageListActivity extends ListActivity implements
 
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
+
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String alert = getResources()
-				.getString(R.string.message_list_shortcode);
+		String alert = getResources().getString(
+				R.string.message_list_shortcode_loading);
 		app.vibrate(alert);
 
-		String greeting = getResources().getString(R.string.message_list_tts);
+		String greeting = getResources().getString(
+				R.string.message_list_tts_loading);
 		app.speak(greeting);
 
 		Utils.blankScreen(this);
@@ -177,7 +185,7 @@ public class MessageListActivity extends ListActivity implements
 	private void starthelp() {
 		String alert = getResources().getString(R.string.message_list_help);
 
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	private void populateConversationList() {
@@ -272,8 +280,11 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
-	private void setOnEmpty() {
+	private void alertEmpty() {
+		String error = "No\nConversations";
+
 		TextView empty = (TextView) findViewById(android.R.id.empty);
-		empty.setText("No\nConversations");
+		empty.setText(error);
+		app.output(error);
 	}
 }

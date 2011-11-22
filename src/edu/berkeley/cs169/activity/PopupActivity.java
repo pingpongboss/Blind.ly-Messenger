@@ -72,11 +72,8 @@ public class PopupActivity extends Activity implements
 		sender.setText(mMessage.getFrom().toString());
 		body.setText(mMessage.getContent());
 
-		String alert = getResources().getString(R.string.popup_shortcode);
-		app.vibrate(alert);
-
 		String greeting = getResources().getString(R.string.popup_tts);
-		app.speak(String.format("%s %s", greeting, mMessage.getFrom()));
+		app.output(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
 
 	protected void startListen() {
@@ -93,7 +90,7 @@ public class PopupActivity extends Activity implements
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.popup_help);
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	@Override

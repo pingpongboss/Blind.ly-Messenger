@@ -128,7 +128,7 @@ public class MainActivity extends Activity implements
 
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.main_help);
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	protected void startCompose() {

@@ -69,31 +69,32 @@ public class RecipientInputActivity extends ListActivity implements
 		keyKeyInterpreter = new KeyboardKeyInterpreter(this);
 
 		cursor = getContacts(defaultSelection);
-		
-		
-		if(cursor.getCount() == 1){
+
+		if (cursor.getCount() == 1) {
 			setOnEmpty();
-		}else{
-		
-		adapter = new RecipientInputAdapter(this, cursor);
-		adapter.setFilterQueryProvider(new FilterQueryProvider() {
-			public Cursor runQuery(CharSequence constraint) {
-				if (constraint != null) {
-					constraint = constraint.toString().trim();
-					String selection = String
-							.format("%s = '%s' AND %s LIKE '%s%%'",
-									ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
-									mShowInvisible ? "0" : "1",
-									ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-									constraint.toString());
-					// maintain reference to new updated cursor
-					cursor = getContacts(selection);
-					// update reference of cursor in our ContactCursorAdapter
-					adapter.setCursor(cursor);
+			app.output("No Contacts");
+		} else {
+
+			adapter = new RecipientInputAdapter(this, cursor);
+			adapter.setFilterQueryProvider(new FilterQueryProvider() {
+				public Cursor runQuery(CharSequence constraint) {
+					if (constraint != null) {
+						constraint = constraint.toString().trim();
+						String selection = String
+								.format("%s = '%s' AND %s LIKE '%s%%'",
+										ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
+										mShowInvisible ? "0" : "1",
+										ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+										constraint.toString());
+						// maintain reference to new updated cursor
+						cursor = getContacts(selection);
+						// update reference of cursor in our
+						// ContactCursorAdapter
+						adapter.setCursor(cursor);
+					}
+					return cursor;
 				}
-				return cursor;
-			}
-		});
+			});
 		}
 		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -200,7 +201,7 @@ public class RecipientInputActivity extends ListActivity implements
 	private void startHelp() {
 		String alert = getResources().getString(R.string.recipient_input_help);
 
-		app.output(alert);
+		app.speak(alert, true);
 	}
 
 	private ContactModel getContactModelAtCursorPosition(Cursor c) {
@@ -402,10 +403,10 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 
 	}
-	
+
 	private void setOnEmpty() {
 		TextView empty = (TextView) findViewById(android.R.id.empty);
 		empty.setText("No\nContacts");
 	}
-	
+
 }
