@@ -3,18 +3,17 @@ package edu.berkeley.cs169.activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.ListView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ListView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.Utils;
 
 public class ConversationViewActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {

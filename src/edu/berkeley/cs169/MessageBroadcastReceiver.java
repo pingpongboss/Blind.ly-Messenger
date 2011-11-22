@@ -16,7 +16,7 @@ import edu.berkeley.cs169.model.MessageModel;
 
 public class MessageBroadcastReceiver extends BroadcastReceiver {
 	private static final int SMS_NOTIFICATION_ID = 1;
-	
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Bundle bundle = intent.getExtras(); // get the SMS message passed in
@@ -53,17 +53,20 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 							contentText);
 					Intent notificationIntent = getPopupIntent(context, message);
 					PendingIntent contentIntent = PendingIntent.getActivity(
-							context, 0, notificationIntent, 0);
+							context, 0, notificationIntent,
+							PendingIntent.FLAG_UPDATE_CURRENT);
 
 					Notification notification = new Notification(icon,
 							tickerText, when);
 					notification.setLatestEventInfo(c, contentTitle,
 							contentText, contentIntent);
-					notification.flags = notification.flags | Notification.FLAG_AUTO_CANCEL;
-					
+					notification.flags = notification.flags
+							| Notification.FLAG_AUTO_CANCEL;
+
 					NotificationManager mNotificationManager = (NotificationManager) context
 							.getSystemService(Context.NOTIFICATION_SERVICE);
-					mNotificationManager.notify(SMS_NOTIFICATION_ID, notification);
+					mNotificationManager.notify(SMS_NOTIFICATION_ID,
+							notification);
 				}
 			}
 		}
