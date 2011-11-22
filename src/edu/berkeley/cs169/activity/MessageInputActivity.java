@@ -176,7 +176,7 @@ public class MessageInputActivity extends Activity implements
 	}
 
 	protected void sendMessage() {
-		String message = edit.getText().toString();
+		String message = edit.getText().toString().toLowerCase();
 		if (message != null && !message.equals("")) {
 			Utils.sendSMSHelper(mRecipient.getNumber(), message);
 
