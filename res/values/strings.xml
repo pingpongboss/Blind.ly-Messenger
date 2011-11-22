@@ -11,4 +11,6 @@
     <string name="message_input_send">Send</string>
     <string name="message_list_help" >Use Volume Up to go up. Use Volume Down to go down. Tap both Volume Up and Down at same time to select.</string><string name="message_list_shortcode">t</string>
     <string name="message_list_tts">select the message</string><string name="conversation_view_shortcode">m</string>
+    <string name="conversation_view_tts">Conversation with </string>
+    <string name="conversation_view_help">Use volume up and voulme down keys to go through messages. Press volume up and volume together to reply to conversation.</string>
 </resources>

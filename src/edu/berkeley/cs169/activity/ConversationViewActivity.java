@@ -1,6 +1,7 @@
 package edu.berkeley.cs169.activity;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
+import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
@@ -31,6 +33,7 @@ public class ConversationViewActivity extends ListActivity implements
 		setContentView(R.layout.conversation_view);
 
 		app = (BlindlyMessenger) getApplication();
+		
 
 		// Register handler for UI elements
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
@@ -57,6 +60,8 @@ public class ConversationViewActivity extends ListActivity implements
 				}
 			});
 		}
+		
+		app.output(getResources().getString(R.string.conversation_view_tts) + conversation.getOther().toString());
 
 		setListAdapter(new ConversationViewAdapter(this,
 				R.layout.conversation_view_item, conversation,
@@ -129,7 +134,14 @@ public class ConversationViewActivity extends ListActivity implements
 			}
 			break;
 		case UP_AND_DOWN:
-			// open up MessageInputActivity
+			ContactModel recipient = conversation.getOther();
+			Intent i = new Intent(this, MessageInputActivity.class);
+			i.putExtra("recipient", recipient);
+			startActivity(i);
+			break;
+		case UP_AND_DOWN_LONG:
+			String alert = getResources().getString(R.string.conversation_view_help);
+			app.output(alert);
 			break;
 		}
 	}
