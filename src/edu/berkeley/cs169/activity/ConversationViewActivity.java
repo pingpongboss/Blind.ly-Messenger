@@ -6,7 +6,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
@@ -34,6 +36,17 @@ public class ConversationViewActivity extends ListActivity implements
 
 		// talk to Edmond for name
 		conversation = getIntent().getParcelableExtra("conversation");
+		
+		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long i) {
+				app.output(getListView().getItemAtPosition(position).toString());
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {

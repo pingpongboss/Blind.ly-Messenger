@@ -150,15 +150,15 @@ public class RecipientInputActivity extends ListActivity implements
 			if (navKeyInterpreter.onKeyDown(keyCode, event)) {
 				return true;
 			}
-		}
-		if (filterText.isFocused()) {
-			if (keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) {
-				if (keyKeyInterpreter.onKeyDown(keyCode, event)) {
-					return true;
-				}
-			} else {
+		} else if (filterText.isFocused()) {
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
 				contactsList.requestFocus();
 				if (navKeyInterpreter.onKeyDown(keyCode, event)) {
+					return true;
+				}
+			} else if (keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) {
+				if (keyKeyInterpreter.onKeyDown(keyCode, event)
+						&& navKeyInterpreter.onKeyDown(keyCode, event)) {
 					return true;
 				}
 			}
@@ -173,7 +173,8 @@ public class RecipientInputActivity extends ListActivity implements
 				return true;
 			}
 		} else if (filterText.isFocused()) {
-			if (keyKeyInterpreter.onKeyUp(keyCode, event)) {
+			if (keyKeyInterpreter.onKeyUp(keyCode, event)
+					&& navKeyInterpreter.onKeyUp(keyCode, event)) {
 				return true;
 			}
 		}
@@ -294,44 +295,54 @@ public class RecipientInputActivity extends ListActivity implements
 		switch (code) {
 		case UP:
 		case UP_REPEAT:
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-					KeyEvent.KEYCODE_DPAD_UP));
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-					KeyEvent.KEYCODE_DPAD_UP));
-			if (contactsList.getSelectedItemPosition() == 0) {
-				// move focus back up to filterText
-				filterText.setText(""); // clear text so user can re-filter
-				filterText.requestFocus();
-			}
-			break;
-		case UP_REPEAT_LONG:
-			for (int i = 0; i < navKeyInterpreter.getKeyRepeatLongThreshold(); i++) {
+			if (!filterText.isFocused()) {
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 						KeyEvent.KEYCODE_DPAD_UP));
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 						KeyEvent.KEYCODE_DPAD_UP));
+				if (contactsList.getSelectedItemPosition() == 0) {
+					// move focus back up to filterText
+					filterText.setText(""); // clear text so user can re-filter
+					filterText.requestFocus();
+				}
+			}
+			break;
+		case UP_REPEAT_LONG:
+			if (!filterText.isFocused()) {
+				for (int i = 0; i < navKeyInterpreter
+						.getKeyRepeatLongThreshold(); i++) {
+					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+							KeyEvent.KEYCODE_DPAD_UP));
+					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+							KeyEvent.KEYCODE_DPAD_UP));
+				}
 			}
 			break;
 		case DOWN:
 		case DOWN_REPEAT:
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-					KeyEvent.KEYCODE_DPAD_DOWN));
-			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-					KeyEvent.KEYCODE_DPAD_DOWN));
-			if (firstVolDown) {
-				firstVolDown = false;
+			if (!filterText.isFocused()) {
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 						KeyEvent.KEYCODE_DPAD_DOWN));
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 						KeyEvent.KEYCODE_DPAD_DOWN));
+				if (firstVolDown) {
+					firstVolDown = false;
+					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+							KeyEvent.KEYCODE_DPAD_DOWN));
+					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+							KeyEvent.KEYCODE_DPAD_DOWN));
+				}
 			}
 			break;
 		case DOWN_REPEAT_LONG:
-			for (int i = 0; i < navKeyInterpreter.getKeyRepeatLongThreshold(); i++) {
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-						KeyEvent.KEYCODE_DPAD_DOWN));
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-						KeyEvent.KEYCODE_DPAD_DOWN));
+			if (!filterText.isFocused()) {
+				for (int i = 0; i < navKeyInterpreter
+						.getKeyRepeatLongThreshold(); i++) {
+					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+							KeyEvent.KEYCODE_DPAD_DOWN));
+					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+							KeyEvent.KEYCODE_DPAD_DOWN));
+				}
 			}
 			break;
 		case UP_AND_DOWN:
