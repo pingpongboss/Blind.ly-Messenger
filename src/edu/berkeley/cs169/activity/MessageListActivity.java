@@ -66,6 +66,7 @@ public class MessageListActivity extends ListActivity implements
 					public void run() {
 						((MessageListAdapter) getListAdapter())
 								.notifyDataSetChanged();
+						getListView().requestFocus();
 					}
 				});
 			}
