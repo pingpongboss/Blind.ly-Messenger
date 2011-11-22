@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.MessageListAdapter;
@@ -42,6 +45,16 @@ public class MessageListActivity extends ListActivity implements
 
 		populateConversationList();
 
+		if (!app.isTouch()) {
+			getListView().setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+		}
+		
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
 	}
