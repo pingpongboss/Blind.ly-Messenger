@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
@@ -57,11 +59,19 @@ public class MainActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 
-		String alert = getResources().getString(R.string.main_shortcode);
-		app.vibrate(alert);
+		MessageModel message = getIntent().getParcelableExtra("message");
+		if (message != null) {
+			app.output(message.toString());
+			Toast.makeText(this, "Sent " + message.toString(),
+					Toast.LENGTH_SHORT).show();
+			getIntent().removeExtra("message");
+		} else {
+			String alert = getResources().getString(R.string.main_shortcode);
+			app.vibrate(alert);
 
-		String greeting = getResources().getString(R.string.main_tts);
-		app.speak(greeting);
+			String greeting = getResources().getString(R.string.main_tts);
+			app.speak(greeting);
+		}
 
 		Utils.blankScreen(this);
 	}
