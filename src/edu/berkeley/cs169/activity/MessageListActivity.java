@@ -15,7 +15,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.MessageListAdapter;
@@ -32,13 +34,14 @@ public class MessageListActivity extends ListActivity implements
 	BlindlyMessenger app;
 	private NavigationKeyInterpreter keyInterpreter;
 	ArrayList<ConversationModel> conversationList;
+	private AdapterView messageList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		app = (BlindlyMessenger) getApplication();
-
+		
 		setContentView(R.layout.message_list);
 
 		// Register handler for UI elements
@@ -60,6 +63,22 @@ public class MessageListActivity extends ListActivity implements
 				});
 			}
 		}).start();
+
+		messageList = getListView();
+		
+		messageList.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long i) {
+				ContactModel person = conversationList.get(position).getOther();
+				Log.d("testing", "personname" + person.toString());
+				app.output(person.toString());
+
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
@@ -210,7 +229,8 @@ public class MessageListActivity extends ListActivity implements
 					break;
 				}
 			}
-
+			
+			
 			if (!inserted) {
 				// add new conversation to list
 				List<MessageModel> messages = new ArrayList<MessageModel>();
