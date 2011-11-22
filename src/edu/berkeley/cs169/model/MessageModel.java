@@ -18,6 +18,15 @@ public class MessageModel implements Parcelable {
 	public String toString() {
 		return String.format("Message from %s to %s: %s", from, to, content);
 	}
+	
+	public String toShortString(ContactModel me) {
+		if (me.equals(from)) { //if I am the sender
+			return String.format("You said: %s", content);
+		}
+		else { //if i am the recipient
+			return String.format("They said: %s", content);
+		}
+	}
 
 	@Override
 	public boolean equals(Object o) {

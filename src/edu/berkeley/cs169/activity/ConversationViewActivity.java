@@ -7,12 +7,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ListView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
 import edu.berkeley.cs169.model.ConversationModel;
+import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
@@ -41,7 +42,7 @@ public class ConversationViewActivity extends ListActivity implements
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
-				app.output(getListView().getItemAtPosition(position).toString());
+				app.output(((MessageModel) getListView().getItemAtPosition(position)).toShortString(app.getMyContact()));
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
