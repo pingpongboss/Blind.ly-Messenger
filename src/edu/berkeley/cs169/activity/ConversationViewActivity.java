@@ -3,11 +3,14 @@ package edu.berkeley.cs169.activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ListView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.ConversationViewAdapter;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
+import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
 public class ConversationViewActivity extends ListActivity implements
@@ -37,8 +40,17 @@ public class ConversationViewActivity extends ListActivity implements
 
 	protected void onResume() {
 		super.onResume();
+		
+		Utils.blankScreen(this);
 	}
+	
 
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		if (app.isTouch()) {
+			app.speak(l.getItemAtPosition(position).toString());
+		}
+	}
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
