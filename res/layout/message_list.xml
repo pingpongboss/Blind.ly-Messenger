@@ -8,6 +8,13 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Conversations"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
         <ListView
             android:id="@id/android:list"
             android:layout_width="fill_parent"
@@ -17,7 +24,7 @@
             <!-- Preview: listitem=@layout/message_list_item -->
         </ListView>
     </LinearLayout>
-   
+
     <View
         android:id="@+id/black"
         android:layout_width="fill_parent"

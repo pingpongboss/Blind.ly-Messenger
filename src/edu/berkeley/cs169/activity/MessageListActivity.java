@@ -150,7 +150,7 @@ public class MessageListActivity extends ListActivity implements
 			openConversationPosition(position);
 		}
 	}
-	
+
 	private void starthelp() {
 		String alert = getResources().getString(R.string.message_list_help);
 
@@ -158,6 +158,7 @@ public class MessageListActivity extends ListActivity implements
 	}
 
 	private void populateConversationList() {
+		ArrayList<ConversationModel> conversations = new ArrayList<ConversationModel>();
 		conversationList.clear();
 
 		int counter = 0;
@@ -201,8 +202,8 @@ public class MessageListActivity extends ListActivity implements
 			}
 
 			boolean inserted = false;
-			for (int i = 0; i < conversationList.size(); i++) {
-				ConversationModel conversation = conversationList.get(i);
+			for (int i = 0; i < conversations.size(); i++) {
+				ConversationModel conversation = conversations.get(i);
 				if (conversation.getOther().equals(other)) {
 					// it belongs here
 					conversation.getMessages().add(0, message);
@@ -217,11 +218,13 @@ public class MessageListActivity extends ListActivity implements
 				messages.add(message);
 				ConversationModel conversation = new ConversationModel(
 						messages, other);
-				conversationList.add(conversation);
+				conversations.add(conversation);
 			}
 
 			counter++;
 		}
+
+		conversationList.addAll(conversations);
 	}
 
 	private void openConversation() {
