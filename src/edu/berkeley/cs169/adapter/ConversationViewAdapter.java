@@ -93,7 +93,7 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 
 	static class ViewHolder {
 		ViewGroup layout;
-		
+
 		View divider;
 
 		TextView name;

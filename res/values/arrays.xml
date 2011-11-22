@@ -14,6 +14,12 @@
         <item >125</item>
         <item >150</item>
     </string-array>
+    <string-array name="number_messages">
+        <item >50</item>
+        <item >100</item>
+        <item >200</item>
+        <item >400</item>
+    </string-array>
 
     
 </resources>

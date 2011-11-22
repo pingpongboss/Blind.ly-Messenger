@@ -5,9 +5,11 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import edu.berkeley.cs169.BlindlyMessenger;
@@ -126,7 +128,11 @@ public class MessageListActivity extends ListActivity implements
 				null, null, null, null);
 		startManagingCursor(cursor);
 
-		while (cursor.moveToNext() && (counter < 200)) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		int messageLimit = Integer.parseInt(prefs.getString("messages", "200"));
+
+		while (cursor.moveToNext() && (counter < messageLimit)) {
 			ContactModel from;
 			ContactModel to;
 			ContactModel other;
