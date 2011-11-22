@@ -18,6 +18,7 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.MessageListAdapter;
@@ -34,7 +35,8 @@ public class MessageListActivity extends ListActivity implements
 	BlindlyMessenger app;
 	private NavigationKeyInterpreter keyInterpreter;
 	ArrayList<ConversationModel> conversationList;
-
+	ListView lv;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,7 +55,13 @@ public class MessageListActivity extends ListActivity implements
 
 			public void run() {
 				populateConversationList();
+				
+				if(conversationList.size() == 0 ){
+						setOnEmpty();
+						return;
+				}
 				MessageListActivity.this.runOnUiThread(new Runnable() {
+			
 
 					public void run() {
 						((MessageListAdapter) getListAdapter())
@@ -261,5 +269,11 @@ public class MessageListActivity extends ListActivity implements
 			i.putExtra("conversation", conversation);
 			startActivity(i);
 		}
+	}
+	private void setOnEmpty() { // Display "No messages"
+		TextView empty = (TextView) findViewById(R.id.empty);
+		empty.setVisibility(View.VISIBLE);
+		lv = this.getListView();
+		lv.setEmptyView(empty);
 	}
 }

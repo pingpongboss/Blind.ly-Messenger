@@ -23,6 +23,16 @@
 
             <!-- Preview: listitem=@layout/message_list_item -->
         </ListView>
+        
+ 		<TextView 
+            android:id="@+id/empty"
+     	    android:layout_width="fill_parent"
+       		android:layout_height="fill_parent"
+       		android:text="No Messages" 
+    	  	android:textSize="45px"
+       		android:visibility="invisible"
+       		android:gravity="center_vertical|center_horizontal"
+       		/>
     </LinearLayout>
 
     <View
