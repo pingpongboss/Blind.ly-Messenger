@@ -93,7 +93,8 @@ public class MessageListActivity extends ListActivity implements
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
-
+		
+		//accommodate touch preference
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
 
@@ -103,6 +104,7 @@ public class MessageListActivity extends ListActivity implements
 			});
 		}
 
+		//display list items
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
 
@@ -187,7 +189,8 @@ public class MessageListActivity extends ListActivity implements
 			break;
 		}
 	}
-
+	
+	//enable tap to go to conversation view
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (app.isTouch()) {
