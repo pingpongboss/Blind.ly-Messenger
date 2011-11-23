@@ -29,6 +29,7 @@ import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
 
+//screen to select a conversation to view
 public class MessageListActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 
@@ -44,17 +45,17 @@ public class MessageListActivity extends ListActivity implements
 
 		setContentView(R.layout.message_list);
 
-		// Register handler for UI elements
+		// Register handler for key events
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 
-		// populate the lists
+		// populate the ListView's backing ArrayList in the background
 		conversationList = new ArrayList<ConversationModel>();
-
 		new Thread(new Runnable() {
 
 			public void run() {
 				populateConversationList();
 
+				// once finished, notify the user on the main UI thread
 				MessageListActivity.this.runOnUiThread(new Runnable() {
 
 					public void run() {
@@ -78,6 +79,7 @@ public class MessageListActivity extends ListActivity implements
 			}
 		}).start();
 
+		// read the name of the conversation partner when user selects an item
 		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -188,19 +190,27 @@ public class MessageListActivity extends ListActivity implements
 		app.speak(alert, true);
 	}
 
+	// makes the ConversationModels from the system's SMS messages
 	private void populateConversationList() {
+		// temporary ArrayList to avoid populating the real ArrayList partially
 		ArrayList<ConversationModel> conversations = new ArrayList<ConversationModel>();
+		// clear real ArrayList
 		conversationList.clear();
 
 		int counter = 0;
+
+		// get the Cursor representing all SMS messages
 		Cursor cursor = getContentResolver().query(Uri.parse("content://sms"),
 				null, null, null, null);
 		startManagingCursor(cursor);
 
+		// determine how many SMS messages to retrieve
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		int messageLimit = Integer.parseInt(prefs.getString("messages", "200"));
 
+		// go through each SMS message and put it into the correct
+		// ConversationModel
 		while (cursor.moveToNext() && (counter < messageLimit)) {
 			ContactModel from;
 			ContactModel to;
@@ -215,13 +225,13 @@ public class MessageListActivity extends ListActivity implements
 			String name = app.getNameForNumber(number);
 
 			if (type.equals("1")) {
-				// received
+				// SMS message is received
 				from = new ContactModel(name, number);
 				to = app.getMyContact();
 				message = new MessageModel(body, from, to);
 				other = from;
 			} else if (type.equals("2")) {
-				// sent
+				// SMS message is sent
 				to = new ContactModel(name, number);
 				from = app.getMyContact();
 				message = new MessageModel(body, from, to);
@@ -233,18 +243,23 @@ public class MessageListActivity extends ListActivity implements
 			}
 
 			boolean inserted = false;
+
+			// go through all previous ConversationModels
+			// add this MessageModel if the person you are conversing with is
+			// the same
 			for (int i = 0; i < conversations.size(); i++) {
 				ConversationModel conversation = conversations.get(i);
 				if (conversation.getOther().equals(other)) {
-					// it belongs here
+					// this message belongs in this conversation
 					conversation.getMessages().add(0, message);
 					inserted = true;
 					break;
 				}
 			}
 
+			// we found no conversations where the message belongs
 			if (!inserted) {
-				// add new conversation to list
+				// add this message to a new conversation
 				List<MessageModel> messages = new ArrayList<MessageModel>();
 				messages.add(message);
 				ConversationModel conversation = new ConversationModel(
@@ -255,9 +270,11 @@ public class MessageListActivity extends ListActivity implements
 			counter++;
 		}
 
+		// update real ArrayList with our temporary one
 		conversationList.addAll(conversations);
 	}
 
+	// starts a new Activity to view the messages in the selected conversation
 	private void openConversation() {
 		ConversationModel conversation = (ConversationModel) getListView()
 				.getSelectedItem();
@@ -269,6 +286,7 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
+	// starts a new Activity ot view the messages in the tapped conversation
 	private void openConversationPosition(int position) {
 		ConversationModel conversation = (ConversationModel) conversationList
 				.get(position);
@@ -280,6 +298,7 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
+	// called if there are no SMS messages in the system
 	private void alertEmpty() {
 		String error = "No\nConversations";
 
