@@ -13,6 +13,7 @@ import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 
+//adapter that knows how to make views from MessageModels for ConversationViewActivity
 public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 	ConversationModel mConversation;
 	ContactModel mMyContact;
@@ -41,6 +42,7 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 			holder.name = (TextView) convertView.findViewById(R.id.name);
 			holder.content = (TextView) convertView.findViewById(R.id.content);
 
+			// need 2 pictures. 1 for left-align, 1 for right-align
 			holder.pictureLeft = (ImageView) convertView
 					.findViewById(R.id.picture_left);
 			holder.pictureRight = (ImageView) convertView
@@ -59,30 +61,31 @@ public class ConversationViewAdapter extends ArrayAdapter<MessageModel> {
 			holder.content.setText(content);
 
 			if (!message.getFrom().equals(mMyContact)) {
-				// holder.layout.setGravity(Gravity.LEFT);
+				// left-align other messages
 				holder.name.setGravity(Gravity.LEFT);
 				holder.content.setGravity(Gravity.LEFT);
 				holder.pictureLeft.setVisibility(View.VISIBLE);
 				holder.pictureRight.setVisibility(View.INVISIBLE);
 			} else {
-				// holder.layout.setGravity(Gravity.RIGHT);
+				// right-align your messages
 				holder.name.setGravity(Gravity.RIGHT);
 				holder.content.setGravity(Gravity.RIGHT);
 				holder.pictureLeft.setVisibility(View.INVISIBLE);
 				holder.pictureRight.setVisibility(View.VISIBLE);
 			}
 
+			// group messages from the same person
 			if (position > 0
 					&& message.getFrom().equals(
 							mConversation.getMessages().get(position - 1)
 									.getFrom())) {
-				// hide name and picture if same person last text
+				// hide name and picture if sender was same person last text
 				holder.divider.setVisibility(View.GONE);
 				holder.name.setVisibility(View.GONE);
 				holder.pictureLeft.setVisibility(View.INVISIBLE);
 				holder.pictureRight.setVisibility(View.INVISIBLE);
 			} else {
-				// show name and picture
+				// show name and picture if sender was different
 				holder.divider.setVisibility(View.VISIBLE);
 				holder.name.setVisibility(View.VISIBLE);
 			}

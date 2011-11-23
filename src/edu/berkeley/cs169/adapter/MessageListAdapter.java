@@ -11,6 +11,7 @@ import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ConversationModel;
 
+//adapter that knows how to make views from ConversationModels for MessageListActivity
 public class MessageListAdapter extends ArrayAdapter<ConversationModel> {
 	List<ConversationModel> mConversations;
 	LayoutInflater mInflater;
