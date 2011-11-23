@@ -30,6 +30,7 @@ import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
 
+//screen to select which phone number to compose a new message for
 public class RecipientInputActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener,
 		KeyboardKeyInterpreterResultListener {
@@ -44,41 +45,65 @@ public class RecipientInputActivity extends ListActivity implements
 	private NavigationKeyInterpreter navKeyInterpreter;
 	private KeyboardKeyInterpreter keyKeyInterpreter;
 
-	String defaultSelection = String.format("%s = '%s'",
-			ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
-			mShowInvisible ? "0" : "1");
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recipient_input);
+
+		app = (BlindlyMessenger) getApplication();
+
+		// hook up the text box so that it filters our list
 		filterText = (EditText) findViewById(R.id.search_box);
-		filterText.addTextChangedListener(filterTextWatcher);
+		filterText.addTextChangedListener(new TextWatcher() {
+
+			public void afterTextChanged(Editable s) {
+			}
+
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				if (adapter != null) {
+					adapter.getFilter().filter(s);
+				}
+			}
+
+		});
+
 		filterText.requestFocus();
 		contactsList = (ListView) findViewById(android.R.id.list);
 		contactsList.setClickable(false);
-
-		app = (BlindlyMessenger) getApplication();
 
 		// Initialize class properties
 		mShowInvisible = false;
 		firstVolDown = false;
 
-		// Register handler for UI elements
+		// selector for retrieving contacts
+		String defaultSelection = String.format("%s = '%s'",
+				ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
+				mShowInvisible ? "0" : "1");
+
+		// Register handler for key events
 		navKeyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 		keyKeyInterpreter = new KeyboardKeyInterpreter(this);
 
+		// get Cursor representing contacts data
 		cursor = getContacts(defaultSelection);
 
 		if (cursor.getCount() == 1) {
 			setOnEmpty();
 			app.output("No Contacts");
 		} else {
-
+			// initialize list adapter
 			adapter = new RecipientInputAdapter(this, cursor);
+
+			// make list filterable
 			adapter.setFilterQueryProvider(new FilterQueryProvider() {
 				public Cursor runQuery(CharSequence constraint) {
 					if (constraint != null) {
+						// ignore spaces
 						constraint = constraint.toString().trim();
 						String selection = String
 								.format("%s = '%s' AND %s LIKE '%s%%'",
@@ -96,6 +121,8 @@ public class RecipientInputActivity extends ListActivity implements
 				}
 			});
 		}
+
+		// alert user of contact name when they select it
 		contactsList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -126,6 +153,7 @@ public class RecipientInputActivity extends ListActivity implements
 			});
 		}
 
+		// display list items
 		setListAdapter(adapter);
 	}
 
@@ -148,11 +176,16 @@ public class RecipientInputActivity extends ListActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+
+		// close Cursor when Activity is closed
 		cursor.close();
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// if the list is focused, key events are navigation events
+		// if the filter text box is focused, then key events are morse code
+		// keyboard events
 
 		if (contactsList.isFocused()) {
 			if (navKeyInterpreter.onKeyDown(keyCode, event)) {
@@ -204,6 +237,7 @@ public class RecipientInputActivity extends ListActivity implements
 		app.speak(alert, true);
 	}
 
+	// retrieves the contact at the user's selection position
 	private ContactModel getContactModelAtCursorPosition(Cursor c) {
 		if (c != null) {
 			String name = c
@@ -218,8 +252,11 @@ public class RecipientInputActivity extends ListActivity implements
 		return null;
 	}
 
+	// starts new Activity to compose the message content
 	private void passPhoneNumberAtCursorPosition(int position) {
 		Cursor c = ((RecipientInputAdapter) getListAdapter()).getCursor();
+		// work around the fact that we have an invisible 0th element
+		// (used to swap focus between the filter EditText and the ListView)
 		c.moveToPosition(position - 1);
 		ContactModel recipient = getContactModelAtCursorPosition(c);
 		if (recipient != null) {
@@ -233,6 +270,7 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 	}
 
+	// retrieves the Cursor representing phone contacts
 	private ContactCursor getContacts(String selection) {
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 		String[] projection = new String[] {
@@ -247,29 +285,13 @@ public class RecipientInputActivity extends ListActivity implements
 				selection, null, sortOrder));
 	}
 
-	private TextWatcher filterTextWatcher = new TextWatcher() {
-
-		public void afterTextChanged(Editable s) {
-		}
-
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-		}
-
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			if (adapter != null) {
-				adapter.getFilter().filter(s);
-			}
-		}
-
-	};
-
 	public void onKeyboardKeyInterpreterResult(
-			edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode code,
-			Object result) {
-		final edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode copyCode = code;
+			KeyboardKeyInterpreterResultListener.ResultCode code, Object result) {
+		// final copies for anonymous nested methods
+		final KeyboardKeyInterpreterResultListener.ResultCode copyCode = code;
 		final Object copyResult = result;
+
+		// run on main UI thread whenever we change UI elements
 		runOnUiThread(new Runnable() {
 
 			public void run() {
@@ -299,7 +321,8 @@ public class RecipientInputActivity extends ListActivity implements
 	}
 
 	public void onNavKeyInterpreterResult(
-			edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener.ResultCode code) {
+			NavigationKeyInterpreterResultListener.ResultCode code) {
+		// send the appropriate DPAD_UP or DPAD_DOWN action to the system
 		switch (code) {
 		case UP:
 		case UP_REPEAT:
@@ -355,6 +378,8 @@ public class RecipientInputActivity extends ListActivity implements
 			break;
 		case UP_AND_DOWN:
 			String phoneNum = filterText.getText().toString();
+			// we allow the user to type a phone number into the filter text box
+			// check if there is a valid number
 			if (isPhoneNumber(phoneNum)) {
 				String name = app.getNameForNumber(phoneNum);
 				ContactModel recipient = new ContactModel(name, phoneNum);
@@ -362,7 +387,8 @@ public class RecipientInputActivity extends ListActivity implements
 				i.putExtra("recipient", recipient);
 				startActivity(i);
 			} else {
-				// check selection is valid
+				// If no phone number in the text box, then check to see if the
+				// user has a valid selection in the ListView
 				if (contactsList.getSelectedItemPosition() > 0) {
 					passPhoneNumberAtCursorPosition(contactsList
 							.getSelectedItemPosition());
@@ -375,6 +401,7 @@ public class RecipientInputActivity extends ListActivity implements
 		}
 	}
 
+	// utility method to check for valid phone numbers
 	private boolean isPhoneNumber(String phoneNum) {
 		char[] c = phoneNum.toCharArray();
 		// correct length of phone number
@@ -404,6 +431,7 @@ public class RecipientInputActivity extends ListActivity implements
 
 	}
 
+	// called if no contacts exist on the phone
 	private void setOnEmpty() {
 		TextView empty = (TextView) findViewById(android.R.id.empty);
 		empty.setText("No\nContacts");
