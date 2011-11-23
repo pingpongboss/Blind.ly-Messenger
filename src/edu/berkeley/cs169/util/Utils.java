@@ -13,6 +13,7 @@ import edu.berkeley.cs169.model.MorseCodeModel;
 public class Utils {
 	public static final long INPUT_SPEED_BASE = 100;
 
+	//Utility method that converts string text to MorseCodeModel.
 	public static MorseCodeModel textToMorse(String text) {
 		boolean lastWasWhitespace;
 		int strlen = text.length();
@@ -41,7 +42,7 @@ public class Utils {
 		return new MorseCodeModel(result);
 	}
 
-	// "AB C" "120211002121"
+	//Utility method that converts MorsecodeModel to string text.
 	public static String morseToText(MorseCodeModel morse) {
 		String output = "";
 		String word = "";
@@ -60,11 +61,11 @@ public class Utils {
 				tempWord += MorseCodeModel.DASH;
 
 			} else if (morseInput.get(i) == MorseCodeModel.SPACE) {
-				if (prev == true) {// word is ready to be added
+				if (prev == true) { // word is ready to be added
 					prev = false;
 					output += word + " ";
 					word = "";
-				} else { // constructing a word
+				} else {  // constructing a word
 					prev = true;
 					word += morseWordToText(tempWord);
 					tempWord = "";
@@ -81,6 +82,7 @@ public class Utils {
 		return output;
 	}
 
+	//Takes string representation of Morse code and returns string letter.
 	public static String morseWordToText(String input) {
 		String output = "";
 		if (input.equals("12")) {
@@ -226,12 +228,13 @@ public class Utils {
 		}
 		return result;
 	}
-
+	//Takes phone number and an message and sends SMS message.
 	public static void sendSMSHelper(String phoneNumber, String message) {
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, null, null);
 	}
-
+	
+	//Blanks the screen for battery saving purpose.
 	public static void blankScreen(Activity activity) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(activity);
