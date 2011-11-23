@@ -22,6 +22,7 @@ import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
 
+//screen to compose the message content
 public class MessageInputActivity extends Activity implements
 		KeyboardKeyInterpreterResultListener {
 	BlindlyMessenger app;
@@ -47,10 +48,12 @@ public class MessageInputActivity extends Activity implements
 
 		keyInterpreter = new KeyboardKeyInterpreter(this);
 
+		// get contact data from RecipientInputActivity
 		mRecipient = getIntent().getParcelableExtra("recipient");
 
 		edit = (EditText) findViewById(R.id.edit);
 
+		// allow user to tap morse code on the lower half of the screen
 		scroll = (ScrollView) findViewById(R.id.scroll);
 		scroll.setOnTouchListener(new OnTouchListener() {
 
@@ -58,6 +61,7 @@ public class MessageInputActivity extends Activity implements
 				if (!app.isTouch())
 					return false;
 
+				// fake events
 				if (event.getAction() == MotionEvent.ACTION_DOWN)
 					dispatchKeyEvent(new KeyEvent(SystemClock.uptimeMillis(),
 							SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN,
@@ -71,6 +75,7 @@ public class MessageInputActivity extends Activity implements
 		});
 		visualizer = (TextView) findViewById(R.id.visualizer);
 
+		// the overlay lights up when a key is being held down
 		overlay = (ImageView) findViewById(R.id.overlay);
 		overlay.setAlpha(0);
 
@@ -138,6 +143,8 @@ public class MessageInputActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 
 			public void run() {
+				// update the visualizer or the edit text box to show the last
+				// morse code actions or characters
 				status.setVisibility(View.GONE);
 				String sentText = getResources().getString(
 						R.string.message_input_sent);
@@ -175,9 +182,12 @@ public class MessageInputActivity extends Activity implements
 		});
 	}
 
+	// sends a text message to the recipient
 	protected void sendMessage() {
+		// get content from what the user has tapped in mrose code so far
 		String message = edit.getText().toString().toLowerCase();
 		if (message != null && !message.equals("")) {
+			// actually send the SMS
 			Utils.sendSMSHelper(mRecipient.getNumber(), message);
 
 			String sentText = getResources().getString(
@@ -189,8 +199,12 @@ public class MessageInputActivity extends Activity implements
 			MessageModel messageModel = new MessageModel(message,
 					app.getMyContact(), mRecipient);
 
+			// once sent, go back to MainActivity
+			// give MainActivity the message we just sent so MainActivity can
+			// alert the user
 			Intent intent = new Intent(this, MainActivity.class);
-			// finish RecipientInput and MessageInput activities
+			// flag finishes RecipientInput and MessageInput activities, which
+			// are on top of the back stack
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.putExtra("message", messageModel);
 			startActivity(intent);
