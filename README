@@ -29,4 +29,21 @@ To run this project do the following:
  * Use the VOLUME_DOWN key to send the message to the selected recipient
  
  To test this project, first follow all steps above, then do the following:
- * Right click AllTests.java and choose Run As -> JUnit Test. Make sure you run it as an Eclipse JUnit Test
+ * Right click AllTests.java and choose Run As -> JUnit Test. Make sure you run it as an Eclipse JUnit Test.
+ 
+ How to Setup JUnit testing. (If you're having issues running the test cases.)
+ 	1.Select a existing JUnit test file.
+ 	2.Goto "Run Configuration".
+ 	3.Select "Classpath".
+ 	4.Under "Bootstrap entries", remove everything EXCEPT "JUnit 4" and "JRE System Library".(Has to be JUnit4)
+ 	5.If you don't have both of these entries, select "Bootstrap entries" and click 
+ 		"Advanced" -> "Add Library".
+ 	6.Add "JUnit 4" or/and "JRE System Library".  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
