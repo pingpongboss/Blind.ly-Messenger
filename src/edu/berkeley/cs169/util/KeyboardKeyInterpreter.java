@@ -10,6 +10,7 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.model.MorseCodeModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
 
+//each instance hooks in with an Activity and interprets its key events
 public class KeyboardKeyInterpreter {
 	public static long DOT_DASH_THRESHOLD = 3;
 	public static long LETTER_GAP_THRESHOLD = 4;
@@ -20,6 +21,7 @@ public class KeyboardKeyInterpreter {
 	KeyboardKeyInterpreterResultListener listener;
 	MorseCodeModel model;
 
+	// manipulate timestaps to determine whether a DOT or DASH was inputted
 	long upKeyDownTimestamp = -1;
 	long upKeyUpTimestamp = -1;
 	long downKeyDownTimestamp = -1;
@@ -34,6 +36,7 @@ public class KeyboardKeyInterpreter {
 		this.listener = listener;
 		model = new MorseCodeModel(new ArrayList<Long>());
 
+		// timers used to determine when characters end and spaces are inserted
 		letterTimer = new Timer();
 		wordTimer = new Timer();
 	}
@@ -42,17 +45,21 @@ public class KeyboardKeyInterpreter {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP:
 			if (upKeyUpTimestamp != -1) {
+				// cancel timers. they will be started again on keyUp
 				letterTimer.cancel();
 				wordTimer.cancel();
 			}
 
 			if (upKeyDownTimestamp == -1) {
+				// set keyDown timestamp
 				upKeyDownTimestamp = event.getEventTime();
+				// reset keyUp timestamp
 				upKeyUpTimestamp = -1;
 			}
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
 			if (downKeyDownTimestamp == -1) {
+				// set keyDown timestamp
 				downKeyDownTimestamp = event.getEventTime();
 			}
 			return true;
@@ -61,33 +68,42 @@ public class KeyboardKeyInterpreter {
 	}
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		// used to determine between DOT and DASH
 		long dt = event.getEventTime() - upKeyDownTimestamp;
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_UP:
 			if (upKeyDownTimestamp != -1) {
 				if (dt < DOT_DASH_THRESHOLD * speedBase) {
+					// add DOT to morse code model
 					model.getRawData().add(MorseCodeModel.DOT);
+					// report back to Activity
 					listener.onKeyboardKeyInterpreterResult(ResultCode.DOT,
 							null);
 				} else {
+					// add DASH to morse code model
 					model.getRawData().add(MorseCodeModel.DASH);
+					// report back to Activity
 					listener.onKeyboardKeyInterpreterResult(ResultCode.DASH,
 							null);
 				}
 				lastLetterOutputted = false;
 
+				// reset all timers
 				letterTimer.cancel();
 				letterTimer = new Timer();
 				letterTimer.schedule(new TimerTask() {
 
 					@Override
 					public void run() {
+						// last letter is finished
 						model.getRawData().add(MorseCodeModel.SPACE);
+						// get the last letter
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
 							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.ERROR, null);
 						} else {
+							// report back to Activity
 							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
@@ -103,12 +119,15 @@ public class KeyboardKeyInterpreter {
 
 					@Override
 					public void run() {
+						// last word is finished
 						model.getRawData().add(MorseCodeModel.SPACE);
+						// get the last letter. should be a space
 						char lastChar = model.getLastChar();
 						if (lastChar == 0) {
 							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.ERROR, null);
 						} else {
+							// report back to Activity
 							listener.onKeyboardKeyInterpreterResult(
 									ResultCode.LAST_LETTER, lastChar);
 							lastLetterOutputted = true;
@@ -120,21 +139,27 @@ public class KeyboardKeyInterpreter {
 			}
 
 			if (upKeyUpTimestamp == -1) {
+				// reset keyDown timestamp
 				upKeyDownTimestamp = -1;
+				// set keyUp timestamp
 				upKeyUpTimestamp = event.getEventTime();
 			}
 
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			// cancel all timers
 			letterTimer.cancel();
 			wordTimer.cancel();
 			if (downKeyDownTimestamp != -1) {
 				if (!lastLetterOutputted) {
+					// the letterTimer had not yet fired
 					char lastChar = model.getLastChar();
+					// report back to Activity
 					listener.onKeyboardKeyInterpreterResult(
 							ResultCode.LAST_LETTER, lastChar);
 				}
 
+				// report back to Activity that we are done typing
 				listener.onKeyboardKeyInterpreterResult(ResultCode.DONE, model);
 			}
 			return true;
@@ -147,7 +172,7 @@ public class KeyboardKeyInterpreter {
 			ERROR, DOT, DASH, LETTER_GAP, WORD_GAP, LAST_LETTER, DONE
 		}
 
-		// May be called from a non-UI thread
+		// possibly called from a non-UI thread
 		public void onKeyboardKeyInterpreterResult(ResultCode code,
 				Object result);
 
