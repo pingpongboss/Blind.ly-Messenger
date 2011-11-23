@@ -34,7 +34,7 @@ public class MessageListActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 
 	BlindlyMessenger app;
-	Thread getMessages;
+	Thread backgroundTask;
 	private NavigationKeyInterpreter keyInterpreter;
 	ArrayList<ConversationModel> conversationList;
 
@@ -51,7 +51,7 @@ public class MessageListActivity extends ListActivity implements
 
 		// populate the ListView's backing ArrayList in the background
 		conversationList = new ArrayList<ConversationModel>();
-		getMessages = new Thread(new Runnable() {
+		backgroundTask = new Thread(new Runnable() {
 
 			public void run() {
 				populateConversationList();
@@ -79,7 +79,7 @@ public class MessageListActivity extends ListActivity implements
 				});
 			}
 		});
-		getMessages.start();
+		backgroundTask.start();
 
 		// read the name of the conversation partner when user selects an item
 		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -123,14 +123,14 @@ public class MessageListActivity extends ListActivity implements
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
-		// interrupt getMessages thread if Activity is stopped
-		if (getMessages.isAlive()) {
-			getMessages.interrupt();
+	public void onPause() {
+		super.onPause();
+		// interrupt backgroundTask thread if Activity is paused
+		if (backgroundTask.isAlive()) {
+			backgroundTask.interrupt();
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
@@ -222,7 +222,10 @@ public class MessageListActivity extends ListActivity implements
 
 		// go through each SMS message and put it into the correct
 		// ConversationModel
-		while (cursor.moveToNext() && (counter < messageLimit)) {
+
+		while (!Thread.interrupted() && cursor.moveToNext()
+				&& (counter < messageLimit)) {
+
 			ContactModel from;
 			ContactModel to;
 			ContactModel other;
