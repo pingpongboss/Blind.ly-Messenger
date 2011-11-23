@@ -11,6 +11,7 @@ import android.widget.TextView;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.activity.RecipientInputActivity.ContactCursor;
 
+//adapter which knows how to make views from contacts for RecipientInputActivity
 public class RecipientInputAdapter extends CursorAdapter {
 	LayoutInflater mInflater;
 	ContactCursor mCursor;
@@ -23,6 +24,7 @@ public class RecipientInputAdapter extends CursorAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		// hack used to swap focus from the filter text box and the list view
 		int fauxPosition = position - 1;
 		ViewHolder holder;
 		if (convertView == null) {
@@ -41,7 +43,8 @@ public class RecipientInputAdapter extends CursorAdapter {
 		if (fauxPosition != -1) {
 			if (mCursor.moveToPosition(fauxPosition)) {
 				convertView.setVisibility(View.VISIBLE);
-				convertView.findViewById(R.id.picture).setVisibility(View.VISIBLE);
+				convertView.findViewById(R.id.picture).setVisibility(
+						View.VISIBLE);
 				holder.name.setVisibility(View.VISIBLE);
 				holder.number.setVisibility(View.VISIBLE);
 				holder.name
@@ -54,6 +57,7 @@ public class RecipientInputAdapter extends CursorAdapter {
 				// cursor failed to move to position
 			}
 		} else {
+			// hide the first fake row
 			convertView.findViewById(R.id.picture).setVisibility(View.GONE);
 			holder.name.setVisibility(View.GONE);
 			holder.number.setVisibility(View.GONE);
