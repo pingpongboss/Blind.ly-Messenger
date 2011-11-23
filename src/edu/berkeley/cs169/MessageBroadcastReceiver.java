@@ -14,6 +14,7 @@ import edu.berkeley.cs169.activity.PopupActivity;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.MessageModel;
 
+//Receiver that hooks into Android's SMS_RECEIVED event broadcast
 public class MessageBroadcastReceiver extends BroadcastReceiver {
 	private static final int SMS_NOTIFICATION_ID = 1;
 
@@ -29,10 +30,14 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 				BlindlyMessenger app = (BlindlyMessenger) context
 						.getApplicationContext();
 				String number = msg.getOriginatingAddress();
+
+				// create new MessageModel to represent the new message
 				MessageModel message = new MessageModel(msg.getMessageBody(),
 						new ContactModel(app.getNameForNumber(number), number),
 						app.getMyContact());
 
+				// use settings to determine whether to show as popup or
+				// notification
 				SharedPreferences prefs = PreferenceManager
 						.getDefaultSharedPreferences(context);
 				if (prefs.getBoolean("popup", true)) {
@@ -54,6 +59,7 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 					Intent notificationIntent = getPopupIntent(context, message);
 					PendingIntent contentIntent = PendingIntent.getActivity(
 							context, 0, notificationIntent,
+							// flag updates any existing notification
 							PendingIntent.FLAG_UPDATE_CURRENT);
 
 					Notification notification = new Notification(icon,
@@ -74,8 +80,13 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 
 	private Intent getPopupIntent(Context context, MessageModel message) {
 		Intent i = new Intent(context, PopupActivity.class);
+		// flag that needs to be set because we are a BroadcastReceiver
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+		// flag that prevents multiple PopupActivities from spawning
+		// existing instances will be updated instead
 				| Intent.FLAG_ACTIVITY_SINGLE_TOP
+				// flag that prevents the PopupActivity from showing up in
+				// recent apps
 				| Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 		i.putExtra("message", message);
 
