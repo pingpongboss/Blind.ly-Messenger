@@ -13,6 +13,7 @@ import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 
+//view that is shown when an SMS_RECEIVED broadcast is received
 public class PopupActivity extends Activity implements
 		NavigationKeyInterpreterResultListener {
 	BlindlyMessenger app;
@@ -35,6 +36,8 @@ public class PopupActivity extends Activity implements
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 
+		// since we disallow multiple popups, an existing popup will be given a
+		// new Intent
 		setIntent(intent);
 	}
 
@@ -42,6 +45,7 @@ public class PopupActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 
+		// get the MessageModel from MessageBroadcastReceiver
 		MessageModel message = getIntent().getParcelableExtra("message");
 
 		if (message == null)
@@ -72,15 +76,18 @@ public class PopupActivity extends Activity implements
 		sender.setText(mMessage.getFrom().toString());
 		body.setText(mMessage.getContent());
 
+		// no shortcode for popup
 		String greeting = getResources().getString(R.string.popup_tts);
 		app.output(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
 
+	// listen to the message
 	protected void startListen() {
 		String alert = mMessage.toString();
 		app.output(alert);
 	}
 
+	// start new Activity to compose a reply message
 	protected void startReply() {
 		Intent i = new Intent(this, MessageInputActivity.class);
 		i.putExtra("recipient", mMessage.getFrom());
