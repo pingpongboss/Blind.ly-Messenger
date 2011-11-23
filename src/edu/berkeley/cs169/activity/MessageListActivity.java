@@ -297,7 +297,7 @@ public class MessageListActivity extends ListActivity implements
 		}
 	}
 
-	// starts a new Activity ot view the messages in the tapped conversation
+	// starts a new Activity to view the messages in the tapped conversation
 	private void openConversationPosition(int position) {
 		ConversationModel conversation = (ConversationModel) conversationList
 				.get(position);
