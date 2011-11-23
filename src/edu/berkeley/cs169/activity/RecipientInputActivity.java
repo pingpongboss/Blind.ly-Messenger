@@ -80,7 +80,7 @@ public class RecipientInputActivity extends ListActivity implements
 		mShowInvisible = false;
 		firstVolDown = false;
 
-		// selector for retrieving contacts
+		// default selector for retrieving contacts
 		String defaultSelection = String.format("%s = '%s'",
 				ContactsContract.CommonDataKinds.Phone.IN_VISIBLE_GROUP,
 				mShowInvisible ? "0" : "1");
@@ -138,6 +138,7 @@ public class RecipientInputActivity extends ListActivity implements
 			}
 		});
 
+		// accommodate touch preference
 		if (!app.isTouch()) {
 			filterText.setOnTouchListener(new OnTouchListener() {
 
@@ -185,8 +186,8 @@ public class RecipientInputActivity extends ListActivity implements
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// if the list is focused, key events are navigation events
 		// if the filter text box is focused, then key events are morse code
-		// keyboard events
-
+		// keyboard events and navigation events (only UP_AND_DOWN is being
+		// listened for when filterText is focused)
 		if (contactsList.isFocused()) {
 			if (navKeyInterpreter.onKeyDown(keyCode, event)) {
 				return true;
