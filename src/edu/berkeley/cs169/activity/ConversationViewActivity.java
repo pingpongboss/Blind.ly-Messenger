@@ -20,6 +20,7 @@ import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.Utils;
 
+//screen to view messages in a particular conversation
 public class ConversationViewActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 
@@ -33,19 +34,20 @@ public class ConversationViewActivity extends ListActivity implements
 		setContentView(R.layout.conversation_view);
 
 		app = (BlindlyMessenger) getApplication();
-		
 
-		// Register handler for UI elements
+		// Register handler for Key events
 		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
 
-		// talk to Edmond for name
+		// get the ConversationModel from MessageListActivity
 		conversation = getIntent().getParcelableExtra("conversation");
-		
+
+		// alert the user of the message that gets selected
 		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long i) {
-				app.output(((MessageModel) getListView().getItemAtPosition(position)).toShortString(app.getMyContact()));
+				app.output(((MessageModel) getListView().getItemAtPosition(
+						position)).toShortString(app.getMyContact()));
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -60,8 +62,6 @@ public class ConversationViewActivity extends ListActivity implements
 				}
 			});
 		}
-		
-		app.output(getResources().getString(R.string.conversation_view_tts) + conversation.getOther().toString());
 
 		setListAdapter(new ConversationViewAdapter(this,
 				R.layout.conversation_view_item, conversation,
@@ -74,6 +74,9 @@ public class ConversationViewActivity extends ListActivity implements
 		String alert = getResources().getString(
 				R.string.conversation_view_shortcode);
 		app.vibrate(alert);
+
+		app.speak(getResources().getString(R.string.conversation_view_tts)
+				+ conversation.getOther().toString());
 
 		Utils.blankScreen(this);
 	}
@@ -140,7 +143,8 @@ public class ConversationViewActivity extends ListActivity implements
 			startActivity(i);
 			break;
 		case UP_AND_DOWN_LONG:
-			String alert = getResources().getString(R.string.conversation_view_help);
+			String alert = getResources().getString(
+					R.string.conversation_view_help);
 			app.output(alert);
 			break;
 		}
