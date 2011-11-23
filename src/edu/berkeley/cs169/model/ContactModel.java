@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.telephony.PhoneNumberUtils;
 
+//model for a Contact
 public class ContactModel implements Parcelable {
 	private String name;
 	private String number;

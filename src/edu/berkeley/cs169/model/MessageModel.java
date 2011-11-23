@@ -3,6 +3,7 @@ package edu.berkeley.cs169.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//model for a message
 public class MessageModel implements Parcelable {
 	private String content;
 	private ContactModel from;

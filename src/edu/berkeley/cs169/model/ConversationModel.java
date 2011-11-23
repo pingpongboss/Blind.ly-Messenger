@@ -5,6 +5,7 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//model for a conversation
 public class ConversationModel implements Parcelable {
 
 	private List<MessageModel> messages;

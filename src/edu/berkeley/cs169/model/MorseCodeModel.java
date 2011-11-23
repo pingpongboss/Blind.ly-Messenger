@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.berkeley.cs169.util.Utils;
 import edu.berkeley.cs169.util.VibrateConstants;
 
+//model for text represented as morse code
 public class MorseCodeModel {
 	// use SPACE to separate letters, two SPACEs to separate words
 	// this representation is ONLY used for the MorseCodeModel
@@ -18,19 +19,19 @@ public class MorseCodeModel {
 		rawData = data;
 	}
 
+	// get the last character of the text represented by this model
 	public char getLastChar() {
 		String str = Utils.morseToText(this);
 		if (str.length() > 0)
 			return str.charAt(str.length() - 1);
 		return 0;
 	}
-	
-	
-	public String toString(){
+
+	public String toString() {
 		ArrayList<String> output = new ArrayList<String>();
 		int length = rawData.size();
-		for(int i = 0; i < length ; i++ ){
-			output.add( rawData.get(i).toString());
+		for (int i = 0; i < length; i++) {
+			output.add(rawData.get(i).toString());
 		}
 		return output.toString();
 	}
@@ -61,8 +62,7 @@ public class MorseCodeModel {
 	}
 
 	// convert BMVibrateConstant morse code representation to the MorseCodeModel
-	// morse
-	// code representation
+	// morse code representation
 	public static long[] convert(long[] pattern) {
 		int len = pattern.length;
 
