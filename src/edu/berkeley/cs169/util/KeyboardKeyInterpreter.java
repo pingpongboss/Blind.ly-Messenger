@@ -22,7 +22,7 @@ public class KeyboardKeyInterpreter {
 	KeyboardKeyInterpreterResultListener listener;
 	MorseCodeModel model;
 
-	// manipulate timestaps to determine whether a DOT or DASH was inputted
+	// manipulate timestamps to determine whether a DOT or DASH was inputted
 	long upKeyDownTimestamp = -1;
 	long upKeyUpTimestamp = -1;
 	long downKeyDownTimestamp = -1;
