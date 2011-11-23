@@ -7,6 +7,7 @@ import org.junit.Test;
 import edu.berkeley.cs169.model.MorseCodeModel;
 import edu.berkeley.cs169.util.Utils;
 
+//Testing helper methods in utility.
 public class MorseCodeModelTest {
 
 	@Test
