@@ -2,18 +2,12 @@ package edu.berkeley.cs169.util;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.telephony.SmsManager;
-import android.view.View;
-import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.MorseCodeModel;
 
 public class Utils {
 	public static final long INPUT_SPEED_BASE = 100;
 
-	//Utility method that converts string text to MorseCodeModel.
+	// Utility method that converts string text to MorseCodeModel.
 	public static MorseCodeModel textToMorse(String text) {
 		boolean lastWasWhitespace;
 		int strlen = text.length();
@@ -42,7 +36,7 @@ public class Utils {
 		return new MorseCodeModel(result);
 	}
 
-	//Utility method that converts MorsecodeModel to string text.
+	// Utility method that converts MorsecodeModel to string text.
 	public static String morseToText(MorseCodeModel morse) {
 		String output = "";
 		String word = "";
@@ -65,7 +59,7 @@ public class Utils {
 					prev = false;
 					output += word + " ";
 					word = "";
-				} else {  // constructing a word
+				} else { // constructing a word
 					prev = true;
 					word += morseWordToText(tempWord);
 					tempWord = "";
@@ -82,7 +76,7 @@ public class Utils {
 		return output;
 	}
 
-	//Takes string representation of Morse code and returns string letter.
+	// Takes string representation of Morse code and returns string letter.
 	public static String morseWordToText(String input) {
 		String output = "";
 		if (input.equals("12")) {
@@ -227,18 +221,5 @@ public class Utils {
 			}
 		}
 		return result;
-	}
-	//Takes phone number and an message and sends SMS message.
-	public static void sendSMSHelper(String phoneNumber, String message) {
-		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(phoneNumber, null, message, null, null);
-	}
-	
-	//Blanks the screen for battery saving purpose.
-	public static void blankScreen(Activity activity) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(activity);
-		activity.findViewById(R.id.black).setVisibility(
-				prefs.getBoolean("blank", false) ? View.VISIBLE : View.GONE);
 	}
 }

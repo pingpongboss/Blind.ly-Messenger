@@ -16,9 +16,9 @@ import edu.berkeley.cs169.adapter.ConversationViewAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.util.AndroidUtils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.util.Utils;
 
 //screen to view messages in a particular conversation
 public class ConversationViewActivity extends ListActivity implements
@@ -78,7 +78,7 @@ public class ConversationViewActivity extends ListActivity implements
 		app.speak(getResources().getString(R.string.conversation_view_tts)
 				+ conversation.getOther().toString());
 
-		Utils.blankScreen(this);
+		AndroidUtils.blankScreen(this);
 	}
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {

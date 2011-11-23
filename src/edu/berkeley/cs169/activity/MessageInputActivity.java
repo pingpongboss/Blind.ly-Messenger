@@ -18,9 +18,9 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.util.AndroidUtils;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
-import edu.berkeley.cs169.util.Utils;
 
 //screen to compose the message content
 public class MessageInputActivity extends Activity implements
@@ -106,7 +106,7 @@ public class MessageInputActivity extends Activity implements
 		String greeting = getResources().getString(R.string.message_input_tts);
 		app.speak(String.format("%s %s", greeting, mRecipient));
 
-		Utils.blankScreen(this);
+		AndroidUtils.blankScreen(this);
 
 		boolean touch = app.isTouch();
 		edit.setFocusable(touch);
@@ -188,7 +188,7 @@ public class MessageInputActivity extends Activity implements
 		String message = edit.getText().toString().toLowerCase();
 		if (message != null && !message.equals("")) {
 			// actually send the SMS
-			Utils.sendSMSHelper(mRecipient.getNumber(), message);
+			AndroidUtils.sendSMSHelper(mRecipient.getNumber(), message);
 
 			String sentText = getResources().getString(
 					R.string.message_input_sent);

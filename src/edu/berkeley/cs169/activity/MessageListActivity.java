@@ -25,9 +25,9 @@ import edu.berkeley.cs169.adapter.MessageListAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.util.AndroidUtils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.util.Utils;
 
 //screen to select a conversation to view
 public class MessageListActivity extends ListActivity implements
@@ -119,7 +119,7 @@ public class MessageListActivity extends ListActivity implements
 				R.string.message_list_tts_loading);
 		app.speak(greeting);
 
-		Utils.blankScreen(this);
+		AndroidUtils.blankScreen(this);
 	}
 
 	@Override

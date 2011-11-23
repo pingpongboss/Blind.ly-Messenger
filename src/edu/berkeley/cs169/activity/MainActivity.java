@@ -14,9 +14,9 @@ import android.widget.Toast;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.MessageModel;
+import edu.berkeley.cs169.util.AndroidUtils;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.util.Utils;
 
 // entry point of the app
 public class MainActivity extends Activity implements
@@ -85,7 +85,7 @@ public class MainActivity extends Activity implements
 		}
 
 		// blanks the screen depending on settings
-		Utils.blankScreen(this);
+		AndroidUtils.blankScreen(this);
 	}
 
 	@Override

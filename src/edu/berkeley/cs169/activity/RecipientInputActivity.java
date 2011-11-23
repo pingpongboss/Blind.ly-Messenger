@@ -24,11 +24,11 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.RecipientInputAdapter;
 import edu.berkeley.cs169.model.ContactModel;
+import edu.berkeley.cs169.util.AndroidUtils;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter;
 import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
-import edu.berkeley.cs169.util.Utils;
 
 //screen to select which phone number to compose a new message for
 public class RecipientInputActivity extends ListActivity implements
@@ -171,7 +171,7 @@ public class RecipientInputActivity extends ListActivity implements
 				.getString(R.string.recipient_input_tts);
 		app.speak(greeting);
 
-		Utils.blankScreen(this);
+		AndroidUtils.blankScreen(this);
 	}
 
 	@Override
