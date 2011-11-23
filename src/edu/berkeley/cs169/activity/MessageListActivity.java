@@ -34,6 +34,7 @@ public class MessageListActivity extends ListActivity implements
 		NavigationKeyInterpreterResultListener {
 
 	BlindlyMessenger app;
+	Thread getMessages;
 	private NavigationKeyInterpreter keyInterpreter;
 	ArrayList<ConversationModel> conversationList;
 
@@ -50,7 +51,7 @@ public class MessageListActivity extends ListActivity implements
 
 		// populate the ListView's backing ArrayList in the background
 		conversationList = new ArrayList<ConversationModel>();
-		new Thread(new Runnable() {
+		getMessages = new Thread(new Runnable() {
 
 			public void run() {
 				populateConversationList();
@@ -77,7 +78,8 @@ public class MessageListActivity extends ListActivity implements
 					}
 				});
 			}
-		}).start();
+		});
+		getMessages.start();
 
 		// read the name of the conversation partner when user selects an item
 		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -120,6 +122,15 @@ public class MessageListActivity extends ListActivity implements
 		Utils.blankScreen(this);
 	}
 
+	@Override
+	public void onStop() {
+		super.onStop();
+		// interrupt getMessages thread if Activity is stopped
+		if (getMessages.isAlive()) {
+			getMessages.interrupt();
+		}
+	}
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event)) {
