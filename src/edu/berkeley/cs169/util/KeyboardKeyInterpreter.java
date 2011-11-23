@@ -10,6 +10,7 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.model.MorseCodeModel;
 import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener.ResultCode;
 
+//Key Event Intrepreter for typing morse code
 //each instance hooks in with an Activity and interprets its key events
 public class KeyboardKeyInterpreter {
 	public static long DOT_DASH_THRESHOLD = 3;
