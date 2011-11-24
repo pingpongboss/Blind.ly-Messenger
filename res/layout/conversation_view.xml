@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    
-        <View
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Conversation View"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:divider="@android:color/transparent"
+            android:fastScrollEnabled="true"
+            android:stackFromBottom="true" >
+
+            <!-- Preview: listitem=@layout/conversation_view_item -->
+
+        </ListView>
+    </LinearLayout>
+
+    <View
         android:id="@+id/black"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="#000000"
         android:visibility="gone" />
 
-	
-    <ListView
-        android:id="@id/android:list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fastScrollEnabled="true" android:stackFromBottom="true" android:divider="@android:color/transparent">
-        
-        <!-- Preview: listitem=@layout/conversation_view_item -->
-            
-    </ListView>
-    
-
-
-</LinearLayout>
+</FrameLayout>
