@@ -79,6 +79,7 @@ public class MessageListActivity extends ListActivity implements
 				});
 			}
 		});
+		backgroundTask.setPriority(Thread.MIN_PRIORITY);
 		backgroundTask.start();
 
 		// read the name of the conversation partner when user selects an item

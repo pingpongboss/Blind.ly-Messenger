@@ -43,9 +43,9 @@ public class BlindlyMessenger extends Application {
 
 		// if on first run, speak out a long help message
 		if (firstRun) {
+			prefs.edit().putBoolean("firstRun", false).commit();
 			String firstRunMessage = getString(R.string.first_run_message);
 			speak(firstRunMessage, true);
-			prefs.edit().putBoolean("firstRun", false);
 		}
 	}
 
