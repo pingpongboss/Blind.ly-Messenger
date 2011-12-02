@@ -188,7 +188,7 @@ public class MessageInputActivity extends Activity implements
 		String message = edit.getText().toString().toLowerCase();
 		if (message != null && !message.equals("")) {
 			// actually send the SMS
-			AndroidUtils.sendSMSHelper(mRecipient.getNumber(), message);
+			AndroidUtils.sendSMSHelper(mRecipient.getNumber(), message, getApplicationContext());
 
 			String sentText = getResources().getString(
 					R.string.message_input_sent);
