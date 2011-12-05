@@ -175,6 +175,13 @@ public class RecipientInputActivity extends ListActivity implements
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+
+		app.stopOutput();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 

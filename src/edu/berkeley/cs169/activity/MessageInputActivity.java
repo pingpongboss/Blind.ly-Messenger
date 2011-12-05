@@ -113,6 +113,13 @@ public class MessageInputActivity extends Activity implements
 		send.setVisibility(touch ? View.VISIBLE : View.GONE);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		app.stopOutput();
+	}
+
 	protected void startHelp() {
 		String alert = getResources().getString(R.string.message_input_help);
 
@@ -188,7 +195,8 @@ public class MessageInputActivity extends Activity implements
 		String message = edit.getText().toString().toLowerCase();
 		if (message != null && !message.equals("")) {
 			// actually send the SMS
-			AndroidUtils.sendSMSHelper(mRecipient.getNumber(), message, getApplicationContext());
+			AndroidUtils.sendSMSHelper(mRecipient.getNumber(), message,
+					getApplicationContext());
 
 			String sentText = getResources().getString(
 					R.string.message_input_sent);

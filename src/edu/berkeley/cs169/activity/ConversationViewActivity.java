@@ -80,6 +80,13 @@ public class ConversationViewActivity extends ListActivity implements
 
 		AndroidUtils.blankScreen(this);
 	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		app.stopOutput();
+	}
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (app.isTouch()) {

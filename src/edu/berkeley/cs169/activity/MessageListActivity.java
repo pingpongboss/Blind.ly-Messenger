@@ -56,6 +56,9 @@ public class MessageListActivity extends ListActivity implements
 			public void run() {
 				populateConversationList();
 
+				if (backgroundTask.isInterrupted())
+					return;
+
 				// once finished, notify the user on the main UI thread
 				MessageListActivity.this.runOnUiThread(new Runnable() {
 
@@ -132,6 +135,8 @@ public class MessageListActivity extends ListActivity implements
 		if (backgroundTask.isAlive()) {
 			backgroundTask.interrupt();
 		}
+
+		app.stopOutput();
 	}
 
 	@Override
@@ -228,7 +233,7 @@ public class MessageListActivity extends ListActivity implements
 		// go through each SMS message and put it into the correct
 		// ConversationModel
 
-		while (!Thread.interrupted() && cursor.moveToNext()
+		while (!backgroundTask.isInterrupted() && cursor.moveToNext()
 				&& (counter < messageLimit)) {
 
 			ContactModel from;

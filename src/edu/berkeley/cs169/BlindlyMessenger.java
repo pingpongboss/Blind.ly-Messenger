@@ -17,6 +17,7 @@ import edu.berkeley.cs169.util.Utils;
 // Shared Application instance, shared across all Activities in this Android app
 public class BlindlyMessenger extends Application {
 	private TextToSpeech mTextToSpeech;
+	private Vibrator mVibrator;
 
 	private String savedText = null;
 
@@ -35,6 +36,8 @@ public class BlindlyMessenger extends Application {
 				savedText = "";
 			}
 		});
+
+		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 		// check to see if this is the first time this app is being run
 		SharedPreferences prefs = PreferenceManager
@@ -74,15 +77,17 @@ public class BlindlyMessenger extends Application {
 		speak(text, false);
 	}
 
+	public void stopOutput() {
+		mTextToSpeech.stop();
+		mVibrator.cancel();
+	}
+
 	// vibrate a message if user enabled vibrations in the settings
 	public void vibrate(String text) {
 		// check settings
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		if (isVibrateEnabled()) {
-
-			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
 			// get morse code from text
 			long[] data = Utils.vibratePattern(text);
 			int baseSpeed = Integer.parseInt(prefs.getString("vibrate_speed",
@@ -92,7 +97,7 @@ public class BlindlyMessenger extends Application {
 			for (int i = 0; i < data.length; i++) {
 				data[i] *= baseSpeed;
 			}
-			vibrator.vibrate(data, -1);
+			mVibrator.vibrate(data, -1);
 		}
 	}
 

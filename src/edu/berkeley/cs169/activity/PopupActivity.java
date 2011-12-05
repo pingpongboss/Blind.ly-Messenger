@@ -80,6 +80,13 @@ public class PopupActivity extends Activity implements
 		String greeting = getResources().getString(R.string.popup_tts);
 		app.output(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		app.stopOutput();
+	}
 
 	// listen to the message
 	protected void startListen() {

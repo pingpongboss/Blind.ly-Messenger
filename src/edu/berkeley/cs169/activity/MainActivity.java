@@ -89,6 +89,13 @@ public class MainActivity extends Activity implements
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+
+		app.stopOutput();
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// delegates the key events to the Interpreter
 		if (keyInterpreter.onKeyDown(keyCode, event))
