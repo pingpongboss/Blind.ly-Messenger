@@ -38,15 +38,13 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 
 				// use settings to determine whether to show as popup or
 				// notification
-				SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(context);
-				if (prefs.getBoolean("popup", true)) {
+				if (isPopupEnabled(context)) {
 					// show popup alert
 
 					Intent i = getPopupIntent(context, message);
 
 					context.startActivity(i);
-				} else {
+				} else if (isNotificationEnabled(context)) {
 					// show status bar notification
 
 					int icon = R.drawable.statusbaricon;
@@ -76,6 +74,24 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 				}
 			}
 		}
+	}
+
+	public boolean isPopupEnabled(Context context) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		String pref = prefs.getString("alert", context.getResources()
+				.getString(R.string.default_alert));
+		return pref.equals(context.getResources()
+				.getStringArray(R.array.alerts)[0]);
+	}
+
+	public boolean isNotificationEnabled(Context context) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		String pref = prefs.getString("alert", context.getResources()
+				.getString(R.string.default_alert));
+		return pref.equals(context.getResources()
+				.getStringArray(R.array.alerts)[1]);
 	}
 
 	private Intent getPopupIntent(Context context, MessageModel message) {

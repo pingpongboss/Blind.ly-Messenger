@@ -3,12 +3,7 @@
 
     <PreferenceCategory android:title="Main Preferences" >
 
-        <CheckBoxPreference
-            android:defaultValue="@bool/default_popup"
-            android:key="popup"
-            android:summaryOff="Show status bar notification for SMS messages"
-            android:summaryOn="Show pop-up alert on incoming SMS messages"
-            android:title="SMS pop-up alert" />
+        <ListPreference android:key="alert" android:title="Incoming SMS alert method" android:entryValues="@array/alerts" android:entries="@array/alerts" android:summary="Choose alert method for incoming SMS messages" android:defaultValue="@string/default_alert" android:dialogTitle="Choose alert method"/>
 
         <CheckBoxPreference
             android:defaultValue="@bool/default_blank"
@@ -25,6 +20,7 @@
             android:summaryOff="Only navigate with Volume keys"
             android:summaryOn="Navigate by touching the screen"
             android:title="Allow touch input" />
+        
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Output Preferences" >
@@ -35,7 +31,7 @@
             android:entries="@array/outputs"
             android:entryValues="@array/outputs"
             android:key="output"
-            android:summary="Specify the output method for actions and help"
+            android:summary="Choose the output method for actions and help"
             android:title="Output method" />
 
         <ListPreference
@@ -44,7 +40,7 @@
             android:entries="@array/speed_names"
             android:entryValues="@array/speed_values"
             android:key="vibrate_speed"
-            android:summary="Specify the base speed for vibrating Morse Code"
+            android:summary="Choose the base speed for vibrating Morse Code"
             android:title="Vibrate base speed" />
     </PreferenceCategory>
 
@@ -56,7 +52,7 @@
             android:entries="@array/speed_names"
             android:entryValues="@array/speed_values"
             android:key="input_speed"
-            android:summary="Specify the base speed for inputing Morse Code"
+            android:summary="Choose the base speed for inputing Morse Code"
             android:title="Input base speed" />
     </PreferenceCategory>
 
@@ -68,7 +64,7 @@
             android:entries="@array/number_messages"
             android:entryValues="@array/number_messages"
             android:key="messages"
-            android:summary="Specify how many messages to show"
+            android:summary="Choose how many messages to show"
             android:title="Text message limit" />
     </PreferenceCategory>
 
