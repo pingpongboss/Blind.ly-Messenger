@@ -318,6 +318,7 @@ public class RecipientInputActivity extends ListActivity implements
 							filterText.setText(""); // clear text so user can
 													// re-filter
 							filterText.requestFocus();
+							keyInterpreter.clearMorseCodeModel();
 						}
 					}
 					break;
@@ -376,7 +377,7 @@ public class RecipientInputActivity extends ListActivity implements
 							filterText.setText(filterText.getText().toString()
 									.trim());
 							contactsList.requestFocus();
-							app.speak(contactsList.getAdapter().getCount()
+							app.speak(contactsList.getAdapter().getCount() - 1
 									+ " contacts");
 						}
 					} else {
