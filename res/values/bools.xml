@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item format="boolean" name="default_popup" type="bool">true</item>
     <item format="boolean" name="default_blank" type="bool">false</item>
     <item format="boolean" name="default_touch" type="bool">false</item>
 
