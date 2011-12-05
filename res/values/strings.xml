@@ -28,7 +28,7 @@
     <string name="message_list_tts_loading">Loading your conversations.</string>
     <string name="message_list_tts_done">conversations loaded.</string>
     <string name="conversation_view_shortcode">m</string>
-    <string name="conversation_view_tts">Conversation with </string>
+    <string name="conversation_view_tts">messages with</string>
     <string name="conversation_view_help">Tap the volume up and volume down buttons to navigate through the list. Tap both Volume Up and volume Down buttons together to reply to conversation.</string>
     <string name="first_run_message">This message will only play once. Thank you for installing Blindly Messenger. You can use this application by tapping the volume keys and listening to the voice commands. If you are stuck on any screen, hold volume up and volume down together for 2 seconds to get help on that screen. You can access Preferences by tapping the Menu button. We hope you enjoy using Blindly Messenger!</string>
     <string name="default_vibrate_speed">50</string>

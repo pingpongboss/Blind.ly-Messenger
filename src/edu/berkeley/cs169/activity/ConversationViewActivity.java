@@ -78,12 +78,15 @@ public class ConversationViewActivity extends ListActivity implements
 				R.string.conversation_view_shortcode);
 		app.vibrate(alert);
 
-		app.speak(getResources().getString(R.string.conversation_view_tts)
-				+ conversation.getOther().toString());
+		String greeting = String.format("%d %s %s", conversation.getMessages()
+				.size(),
+				getResources().getString(R.string.conversation_view_tts),
+				conversation.getOther().toString());
+		app.speak(greeting);
 
 		AndroidUtils.blankScreen(this);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
