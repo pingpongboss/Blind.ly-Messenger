@@ -31,7 +31,7 @@
     <string name="conversation_view_shortcode">m</string>
     <string name="conversation_view_tts">Conversation with </string>
     <string name="conversation_view_help">Tap the volume up and volume down buttons to navigate through the list. Tap both Volume Up and volume Down buttons together to reply to conversation.</string>
-    <string name="first_run_message">This message will only play once. Thank you for installing Blindly Messenger. To turn on text to speech after this message, use the touch screen to press Menu and Preferences. After you are set up, you can use the application without using the touchscreen. On any screen, long hold and release volume up and down for help on that screen. Enjoy!</string>
+    <string name="first_run_message">This message will only play once. Thank you for installing Blindly Messenger. You can use this application by tapping the volume keys and listening to the voice commands. If you are stuck on any screen, press volume up and volume down together for 2 seconds for help on that screen. You can access Preferences by tapping the Menu button. Enjoy!</string>
     <string name="default_vibrate_speed">50</string>
     <string name="default_input_speed">150</string>
     <string name="default_messages">200</string>

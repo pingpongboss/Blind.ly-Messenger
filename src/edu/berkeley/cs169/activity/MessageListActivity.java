@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -137,6 +140,27 @@ public class MessageListActivity extends ListActivity implements
 		}
 
 		app.stopOutput();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// creates the context menu to get to settings
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// detects when user clicks on the settings context menu
+		switch (item.getItemId()) {
+		case R.id.preference:
+			Intent i = new Intent(this, MainPreferenceActivity.class);
+			startActivity(i);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override

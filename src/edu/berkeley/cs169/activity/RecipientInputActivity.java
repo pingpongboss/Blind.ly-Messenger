@@ -10,6 +10,9 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -185,33 +188,31 @@ public class RecipientInputActivity extends ListActivity implements
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// creates the context menu to get to settings
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// detects when user clicks on the settings context menu
+		switch (item.getItemId()) {
+		case R.id.preference:
+			Intent i = new Intent(this, MainPreferenceActivity.class);
+			startActivity(i);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
 		return super.onKeyDown(keyCode, event);
-		//
-		// // if the list is focused, key events are navigation events
-		// // if the filter text box is focused, then key events are morse code
-		// // keyboard events and navigation events (only UP_AND_DOWN is being
-		// // listened for when filterText is focused)
-		// if (contactsList.isFocused()) {
-		// if (keyInterpreter.onKeyDown(keyCode, event)) {
-		// return true;
-		// }
-		// } else if (filterText.isFocused()) {
-		// if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-		// contactsList.requestFocus();
-		// if (keyInterpreter.onKeyDown(keyCode, event)) {
-		// return true;
-		// }
-		// } else if (keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) {
-		// if (keyInterpreter.onKeyDown(keyCode, event)
-		// && keyInterpreter.onKeyDown(keyCode, event)) {
-		// return true;
-		// }
-		// }
-		// }
-		// return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -219,18 +220,6 @@ public class RecipientInputActivity extends ListActivity implements
 		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
-
-		// if (contactsList.isFocused()) {
-		// if (keyInterpreter.onKeyUp(keyCode, event)) {
-		// return true;
-		// }
-		// } else if (filterText.isFocused()) {
-		// if (keyInterpreter.onKeyUp(keyCode, event)
-		// && keyInterpreter.onKeyUp(keyCode, event)) {
-		// return true;
-		// }
-		// }
-		// return super.onKeyUp(keyCode, event);
 	}
 
 	@Override
