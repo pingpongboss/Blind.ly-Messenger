@@ -71,7 +71,6 @@ public class RecipientInputActivity extends ListActivity implements
 
 		});
 
-		filterText.requestFocus();
 		contactsList = (ListView) findViewById(android.R.id.list);
 		contactsList.setClickable(false);
 
@@ -159,6 +158,9 @@ public class RecipientInputActivity extends ListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		filterText.requestFocus();
+		filterText.setText("");
 
 		firstVolDown = true;
 		String alert = getResources().getString(
