@@ -161,6 +161,10 @@ public class KeyInterpreter {
 		return false;
 	}
 
+	public void clearMorseCodeModel() {
+		model.getRawData().clear();
+	}
+
 	public interface KeyInterpreterResultListener {
 		public enum ResultCode {
 			NAVIGATION_UP, NAVIGATION_UP_REPEAT, NAVIGATION_UP_REPEAT_LONG, NAVIGATION_DOWN, NAVIGATION_DOWN_REPEAT, NAVIGATION_DOWN_REPEAT_LONG, KEYBOARD_DOT, KEYBOARD_DASH, KEYBOARD_LAST_LETTER, UP_AND_DOWN, UP_AND_DOWN_LONG,
