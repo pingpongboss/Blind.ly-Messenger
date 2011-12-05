@@ -6,51 +6,45 @@
         <CheckBoxPreference
             android:defaultValue="@bool/default_popup"
             android:key="popup"
-            android:summaryOff="Show status bar notification for SMS messages."
-            android:summaryOn="Show pop-up alert on incoming SMS messages."
+            android:summaryOff="Show status bar notification for SMS messages"
+            android:summaryOn="Show pop-up alert on incoming SMS messages"
             android:title="SMS pop-up alert" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/default_blank"
             android:disableDependentsState="true"
             android:key="blank"
-            android:summaryOff="Screen on for touch navigation."
-            android:summaryOn="Blanks the screen to save power."
+            android:summaryOff="Screen on for touch navigation"
+            android:summaryOn="Blanks the screen to save power"
             android:title="Blank screen" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/default_touch"
             android:dependency="blank"
             android:key="touch"
-            android:summaryOff="Only navigate with Volume keys."
-            android:summaryOn="Navigate by touching the screen."
+            android:summaryOff="Only navigate with Volume keys"
+            android:summaryOn="Navigate by touching the screen"
             android:title="Allow touch input" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Output Preferences" >
 
-        <CheckBoxPreference
-            android:defaultValue="@bool/default_tts"
-            android:key="tts"
-            android:summaryOff="Only vibrate for actions."
-            android:summaryOn="Allow actions to be spoken."
-            android:title="Text-to-speech" />
-
-        <CheckBoxPreference
-            android:defaultValue="@bool/default_vibrate"
-            android:key="vibrate"
-            android:summaryOff="No vibrations for actions and help."
-            android:summaryOn="Use vibrations for navigation and help."
-            android:title="Vibrate morse code" />
+        <ListPreference
+            android:defaultValue="@string/default_output"
+            android:dialogTitle="Choose output method"
+            android:entries="@array/outputs"
+            android:entryValues="@array/outputs"
+            android:key="output"
+            android:summary="Specify the output method for actions and help"
+            android:title="Output method" />
 
         <ListPreference
             android:defaultValue="@string/default_vibrate_speed"
-            android:dependency="vibrate"
             android:dialogTitle="Choose base speed"
             android:entries="@array/speed_names"
             android:entryValues="@array/speed_values"
             android:key="vibrate_speed"
-            android:summary="Specify the base speed for vibrating Morse Code."
+            android:summary="Specify the base speed for vibrating Morse Code"
             android:title="Vibrate base speed" />
     </PreferenceCategory>
 
@@ -62,7 +56,7 @@
             android:entries="@array/speed_names"
             android:entryValues="@array/speed_values"
             android:key="input_speed"
-            android:summary="Specify the base speed for inputing Morse Code."
+            android:summary="Specify the base speed for inputing Morse Code"
             android:title="Input base speed" />
     </PreferenceCategory>
 
@@ -74,7 +68,7 @@
             android:entries="@array/number_messages"
             android:entryValues="@array/number_messages"
             android:key="messages"
-            android:summary="Specify how many messages to show."
+            android:summary="Specify how many messages to show"
             android:title="Text message limit" />
     </PreferenceCategory>
 

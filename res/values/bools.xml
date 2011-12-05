@@ -4,7 +4,5 @@
     <item format="boolean" name="default_popup" type="bool">true</item>
     <item format="boolean" name="default_blank" type="bool">false</item>
     <item format="boolean" name="default_touch" type="bool">false</item>
-    <item format="boolean" name="default_tts" type="bool">true</item>
-    <item format="boolean" name="default_vibrate" type="bool">false</item>
 
 </resources>

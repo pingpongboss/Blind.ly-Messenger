@@ -67,12 +67,12 @@ public class MainActivity extends Activity implements
 		// MainActivity which message was sent
 		MessageModel message = getIntent().getParcelableExtra("message");
 		if (message != null) {
+			// don't alert them more than once
+			getIntent().removeExtra("message");
 			// alert the user they just sent a message
 			app.output(message.toString());
 			Toast.makeText(this, "Sent " + message.toString(),
 					Toast.LENGTH_SHORT).show();
-			// don't alert them more than once
-			getIntent().removeExtra("message");
 		} else {
 
 			// short code is a quick reminder of which screen the user is on

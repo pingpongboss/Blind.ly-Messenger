@@ -35,5 +35,6 @@
     <string name="default_vibrate_speed">50</string>
     <string name="default_input_speed">150</string>
     <string name="default_messages">200</string>
+    <string name="default_output">Text-to-speech</string>
 
 </resources>

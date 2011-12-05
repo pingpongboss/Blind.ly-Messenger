@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="outputs">
+        <item>Text-to-speech</item>
+        <item>Vibrate morse code</item>
+        <item>None</item>
+    </string-array>
     <string-array name="speed_names">
         <item>50 (Fastest)</item>
         <item>75</item>
@@ -8,7 +13,6 @@
         <item>125</item>
         <item>150 (Slowest)</item>
     </string-array>
-
     <string-array name="speed_values">
         <item>50</item>
         <item>75</item>

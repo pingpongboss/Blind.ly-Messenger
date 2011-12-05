@@ -65,11 +65,7 @@ public class BlindlyMessenger extends Application {
 		}
 
 		// check settings
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		if (force
-				|| prefs.getBoolean("tts",
-						getResources().getBoolean(R.bool.default_tts)))
+		if (force || isTtsEnabled())
 			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 	}
 
@@ -80,16 +76,13 @@ public class BlindlyMessenger extends Application {
 
 	// vibrate a message if user enabled vibrations in the settings
 	public void vibrate(String text) {
-
-		Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
 		// check settings
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean(
-				"vibrate",
-				prefs.getBoolean("tts",
-						getResources().getBoolean(R.bool.default_vibrate)))) {
+		if (isVibrateEnabled()) {
+
+			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
 			// get morse code from text
 			long[] data = Utils.vibratePattern(text);
 			int baseSpeed = Integer.parseInt(prefs.getString("vibrate_speed",
@@ -150,5 +143,21 @@ public class BlindlyMessenger extends Application {
 				getResources().getBoolean(R.bool.default_touch))
 				&& !prefs.getBoolean("blank",
 						getResources().getBoolean(R.bool.default_blank));
+	}
+
+	public boolean isTtsEnabled() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String pref = prefs.getString("output",
+				getResources().getString(R.string.default_output));
+		return pref.equals(getResources().getStringArray(R.array.outputs)[0]);
+	}
+
+	public boolean isVibrateEnabled() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String pref = prefs.getString("output",
+				getResources().getString(R.string.default_output));
+		return pref.equals(getResources().getStringArray(R.array.outputs)[1]);
 	}
 }
