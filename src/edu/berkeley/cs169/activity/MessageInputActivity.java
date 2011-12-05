@@ -19,15 +19,15 @@ import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.AndroidUtils;
-import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
-import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.KeyInterpreter;
+import edu.berkeley.cs169.util.KeyInterpreter.KeyInterpreterResultListener;
 
 //screen to compose the message content
 public class MessageInputActivity extends Activity implements
-		KeyboardKeyInterpreterResultListener {
+		KeyInterpreterResultListener {
 	BlindlyMessenger app;
 
-	KeyboardKeyInterpreter keyInterpreter;
+	KeyInterpreter keyInterpreter;
 
 	EditText edit;
 	ScrollView scroll;
@@ -46,7 +46,7 @@ public class MessageInputActivity extends Activity implements
 
 		app = (BlindlyMessenger) getApplication();
 
-		keyInterpreter = new KeyboardKeyInterpreter(this);
+		keyInterpreter = new KeyInterpreter(this);
 
 		// get contact data from RecipientInputActivity
 		mRecipient = getIntent().getParcelableExtra("recipient");
@@ -128,8 +128,7 @@ public class MessageInputActivity extends Activity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-			overlay.setAlpha(255);
+		overlay.setAlpha(255);
 		if (keyInterpreter.onKeyDown(keyCode, event))
 			return true;
 		return super.onKeyDown(keyCode, event);
@@ -137,16 +136,15 @@ public class MessageInputActivity extends Activity implements
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-			overlay.setAlpha(0);
+		overlay.setAlpha(0);
 		if (keyInterpreter.onKeyUp(keyCode, event))
 			return true;
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onKeyboardKeyInterpreterResult(ResultCode code, Object result) {
+	public void onKeyInterpreterResult(ResultCode code, Object data) {
 		final ResultCode copyCode = code;
-		final Object copyResult = result;
+		final Object copyData = data;
 		runOnUiThread(new Runnable() {
 
 			public void run() {
@@ -160,27 +158,31 @@ public class MessageInputActivity extends Activity implements
 					existingText = "";
 
 				switch (copyCode) {
-				case DOT:
+				case KEYBOARD_DOT:
 					visualizer.setText(existingText + ".");
 					break;
-				case DASH:
+				case KEYBOARD_DASH:
 					visualizer.setText(existingText + "-");
 					break;
-				case LETTER_GAP:
-					visualizer.setText(existingText + " ");
-					break;
-				case WORD_GAP:
-					visualizer.setText(existingText.trim() + "\n");
-					break;
-				case LAST_LETTER:
-					String character = copyResult.toString();
+				case KEYBOARD_LAST_LETTER:
+					char character = (Character) copyData;
+
+					if (character == ' ') {
+						visualizer.setText(existingText + "\n");
+					} else {
+						visualizer.setText(existingText + " ");
+					}
+
 					edit.setText(edit.getText().toString() + character);
 					edit.setSelection(edit.length());
 
-					app.speak(character);
+					app.speak(String.valueOf(character));
 					break;
-				case DONE:
+				case UP_AND_DOWN:
 					sendMessage();
+					break;
+				case UP_AND_DOWN_LONG:
+					startHelp();
 					break;
 				}
 

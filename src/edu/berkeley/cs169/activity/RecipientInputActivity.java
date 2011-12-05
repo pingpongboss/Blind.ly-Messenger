@@ -25,15 +25,12 @@ import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.adapter.RecipientInputAdapter;
 import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.util.AndroidUtils;
-import edu.berkeley.cs169.util.KeyboardKeyInterpreter;
-import edu.berkeley.cs169.util.KeyboardKeyInterpreter.KeyboardKeyInterpreterResultListener;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.KeyInterpreter;
+import edu.berkeley.cs169.util.KeyInterpreter.KeyInterpreterResultListener;
 
 //screen to select which phone number to compose a new message for
 public class RecipientInputActivity extends ListActivity implements
-		NavigationKeyInterpreterResultListener,
-		KeyboardKeyInterpreterResultListener {
+		KeyInterpreterResultListener {
 	BlindlyMessenger app;
 
 	private EditText filterText;
@@ -42,8 +39,7 @@ public class RecipientInputActivity extends ListActivity implements
 	ContactCursor cursor;
 
 	private boolean mShowInvisible, firstVolDown;
-	private NavigationKeyInterpreter navKeyInterpreter;
-	private KeyboardKeyInterpreter keyKeyInterpreter;
+	private KeyInterpreter keyInterpreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,8 +82,7 @@ public class RecipientInputActivity extends ListActivity implements
 				mShowInvisible ? "0" : "1");
 
 		// Register handler for key events
-		navKeyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
-		keyKeyInterpreter = new KeyboardKeyInterpreter(this);
+		keyInterpreter = new KeyInterpreter(this, 200, 5);
 
 		// get Cursor representing contacts data
 		cursor = getContacts(defaultSelection);
@@ -191,43 +186,51 @@ public class RecipientInputActivity extends ListActivity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// if the list is focused, key events are navigation events
-		// if the filter text box is focused, then key events are morse code
-		// keyboard events and navigation events (only UP_AND_DOWN is being
-		// listened for when filterText is focused)
-		if (contactsList.isFocused()) {
-			if (navKeyInterpreter.onKeyDown(keyCode, event)) {
-				return true;
-			}
-		} else if (filterText.isFocused()) {
-			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-				contactsList.requestFocus();
-				if (navKeyInterpreter.onKeyDown(keyCode, event)) {
-					return true;
-				}
-			} else if (keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) {
-				if (keyKeyInterpreter.onKeyDown(keyCode, event)
-						&& navKeyInterpreter.onKeyDown(keyCode, event)) {
-					return true;
-				}
-			}
-		}
+		if (keyInterpreter.onKeyDown(keyCode, event))
+			return true;
 		return super.onKeyDown(keyCode, event);
+		//
+		// // if the list is focused, key events are navigation events
+		// // if the filter text box is focused, then key events are morse code
+		// // keyboard events and navigation events (only UP_AND_DOWN is being
+		// // listened for when filterText is focused)
+		// if (contactsList.isFocused()) {
+		// if (keyInterpreter.onKeyDown(keyCode, event)) {
+		// return true;
+		// }
+		// } else if (filterText.isFocused()) {
+		// if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+		// contactsList.requestFocus();
+		// if (keyInterpreter.onKeyDown(keyCode, event)) {
+		// return true;
+		// }
+		// } else if (keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) {
+		// if (keyInterpreter.onKeyDown(keyCode, event)
+		// && keyInterpreter.onKeyDown(keyCode, event)) {
+		// return true;
+		// }
+		// }
+		// }
+		// return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (contactsList.isFocused()) {
-			if (navKeyInterpreter.onKeyUp(keyCode, event)) {
-				return true;
-			}
-		} else if (filterText.isFocused()) {
-			if (keyKeyInterpreter.onKeyUp(keyCode, event)
-					&& navKeyInterpreter.onKeyUp(keyCode, event)) {
-				return true;
-			}
-		}
+		if (keyInterpreter.onKeyUp(keyCode, event))
+			return true;
 		return super.onKeyUp(keyCode, event);
+
+		// if (contactsList.isFocused()) {
+		// if (keyInterpreter.onKeyUp(keyCode, event)) {
+		// return true;
+		// }
+		// } else if (filterText.isFocused()) {
+		// if (keyInterpreter.onKeyUp(keyCode, event)
+		// && keyInterpreter.onKeyUp(keyCode, event)) {
+		// return true;
+		// }
+		// }
+		// return super.onKeyUp(keyCode, event);
 	}
 
 	@Override
@@ -293,120 +296,118 @@ public class RecipientInputActivity extends ListActivity implements
 				selection, null, sortOrder));
 	}
 
-	public void onKeyboardKeyInterpreterResult(
-			KeyboardKeyInterpreterResultListener.ResultCode code, Object result) {
+	public void onKeyInterpreterResult(ResultCode code, Object data) {
 		// final copies for anonymous nested methods
-		final KeyboardKeyInterpreterResultListener.ResultCode copyCode = code;
-		final Object copyResult = result;
+		final ResultCode copyCode = code;
+		final Object copyData = data;
 
 		// run on main UI thread whenever we change UI elements
 		runOnUiThread(new Runnable() {
 
 			public void run() {
 				switch (copyCode) {
-				case DOT:
+				case NAVIGATION_UP:
+				case NAVIGATION_UP_REPEAT:
+					if (!filterText.isFocused()) {
+						dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+								KeyEvent.KEYCODE_DPAD_UP));
+						dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+								KeyEvent.KEYCODE_DPAD_UP));
+						if (contactsList.getSelectedItemPosition() == 0) {
+							// move focus back up to filterText
+							filterText.setText(""); // clear text so user can
+													// re-filter
+							filterText.requestFocus();
+						}
+					}
 					break;
-				case DASH:
+				case NAVIGATION_UP_REPEAT_LONG:
+					if (!filterText.isFocused()) {
+						for (int i = 0; i < (Long) copyData; i++) {
+							dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+									KeyEvent.KEYCODE_DPAD_UP));
+							dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+									KeyEvent.KEYCODE_DPAD_UP));
+						}
+					}
 					break;
-				case LETTER_GAP:
+				case NAVIGATION_DOWN:
+				case NAVIGATION_DOWN_REPEAT:
+					if (!filterText.isFocused()) {
+						dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+								KeyEvent.KEYCODE_DPAD_DOWN));
+						dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+								KeyEvent.KEYCODE_DPAD_DOWN));
+						if (firstVolDown) {
+							firstVolDown = false;
+							dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+									KeyEvent.KEYCODE_DPAD_DOWN));
+							dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+									KeyEvent.KEYCODE_DPAD_DOWN));
+						}
+					}
 					break;
-				case WORD_GAP:
+				case NAVIGATION_DOWN_REPEAT_LONG:
+					if (!filterText.isFocused()) {
+						for (int i = 0; i < (Long) copyData; i++) {
+							dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+									KeyEvent.KEYCODE_DPAD_DOWN));
+							dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+									KeyEvent.KEYCODE_DPAD_DOWN));
+						}
+					}
 					break;
-				case LAST_LETTER:
-					String character = copyResult.toString();
-					// do not allow spaces when typing a recipient or number
-					if (!character.equals(" ")) {
+				case UP_AND_DOWN:
+					if (filterText.isFocused()) {
+						String phoneNum = filterText.getText().toString();
+						// we allow the user to type a phone number into the
+						// filter text box check if there is a valid number
+						if (isPhoneNumber(phoneNum)) {
+							// OK phone number
+							String name = app.getNameForNumber(phoneNum);
+							ContactModel recipient = new ContactModel(name,
+									phoneNum);
+							Intent i = new Intent(RecipientInputActivity.this,
+									MessageInputActivity.class);
+							i.putExtra("recipient", recipient);
+							startActivity(i);
+						} else {
+							// bad phone number
+							filterText.setText(filterText.getText().toString()
+									.trim());
+							contactsList.requestFocus();
+							app.speak(contactsList.getAdapter().getCount()
+									+ " contacts");
+						}
+					} else {
+						// compose to selected contact
+						if (contactsList.getSelectedItemPosition() > 0) {
+							passPhoneNumberAtCursorPosition(contactsList
+									.getSelectedItemPosition());
+						} else {
+							// bad contact selected
+							// TODO
+						}
+					}
+					break;
+				case UP_AND_DOWN_LONG:
+					startHelp();
+					break;
+				case KEYBOARD_LAST_LETTER:
+					if (filterText.isFocused()) {
+						char character = (Character) copyData;
+						// do not allow spaces when typing a recipient or number
 						filterText.setText(filterText.getText().toString()
 								+ character);
 						filterText.setSelection(filterText.length());
+
+						app.speak(String.valueOf(character));
+
+						break;
 					}
-					break;
-				case DONE:
-					break;
 				}
 			}
 		});
-	}
-
-	public void onNavKeyInterpreterResult(
-			NavigationKeyInterpreterResultListener.ResultCode code) {
-		// send the appropriate DPAD_UP or DPAD_DOWN action to the system
-		switch (code) {
-		case UP:
-		case UP_REPEAT:
-			if (!filterText.isFocused()) {
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-						KeyEvent.KEYCODE_DPAD_UP));
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-						KeyEvent.KEYCODE_DPAD_UP));
-				if (contactsList.getSelectedItemPosition() == 0) {
-					// move focus back up to filterText
-					filterText.setText(""); // clear text so user can re-filter
-					filterText.requestFocus();
-				}
-			}
-			break;
-		case UP_REPEAT_LONG:
-			if (!filterText.isFocused()) {
-				for (int i = 0; i < navKeyInterpreter
-						.getKeyRepeatLongThreshold(); i++) {
-					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-							KeyEvent.KEYCODE_DPAD_UP));
-					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-							KeyEvent.KEYCODE_DPAD_UP));
-				}
-			}
-			break;
-		case DOWN:
-		case DOWN_REPEAT:
-			if (!filterText.isFocused()) {
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-						KeyEvent.KEYCODE_DPAD_DOWN));
-				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-						KeyEvent.KEYCODE_DPAD_DOWN));
-				if (firstVolDown) {
-					firstVolDown = false;
-					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-							KeyEvent.KEYCODE_DPAD_DOWN));
-					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-							KeyEvent.KEYCODE_DPAD_DOWN));
-				}
-			}
-			break;
-		case DOWN_REPEAT_LONG:
-			if (!filterText.isFocused()) {
-				for (int i = 0; i < navKeyInterpreter
-						.getKeyRepeatLongThreshold(); i++) {
-					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
-							KeyEvent.KEYCODE_DPAD_DOWN));
-					dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
-							KeyEvent.KEYCODE_DPAD_DOWN));
-				}
-			}
-			break;
-		case UP_AND_DOWN:
-			String phoneNum = filterText.getText().toString();
-			// we allow the user to type a phone number into the filter text box
-			// check if there is a valid number
-			if (isPhoneNumber(phoneNum)) {
-				String name = app.getNameForNumber(phoneNum);
-				ContactModel recipient = new ContactModel(name, phoneNum);
-				Intent i = new Intent(this, MessageInputActivity.class);
-				i.putExtra("recipient", recipient);
-				startActivity(i);
-			} else {
-				// If no phone number in the text box, then check to see if the
-				// user has a valid selection in the ListView
-				if (contactsList.getSelectedItemPosition() > 0) {
-					passPhoneNumberAtCursorPosition(contactsList
-							.getSelectedItemPosition());
-				}
-			}
-			break;
-		case UP_AND_DOWN_LONG:
-			startHelp();
-			break;
-		}
 	}
 
 	// utility method to check for valid phone numbers

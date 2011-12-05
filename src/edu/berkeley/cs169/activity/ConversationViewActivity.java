@@ -17,16 +17,16 @@ import edu.berkeley.cs169.model.ContactModel;
 import edu.berkeley.cs169.model.ConversationModel;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.AndroidUtils;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.KeyInterpreter;
+import edu.berkeley.cs169.util.KeyInterpreter.KeyInterpreterResultListener;
 
 //screen to view messages in a particular conversation
 public class ConversationViewActivity extends ListActivity implements
-		NavigationKeyInterpreterResultListener {
+		KeyInterpreterResultListener {
 
 	BlindlyMessenger app;
 	ConversationModel conversation;
-	private NavigationKeyInterpreter keyInterpreter;
+	private KeyInterpreter keyInterpreter;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +36,7 @@ public class ConversationViewActivity extends ListActivity implements
 		app = (BlindlyMessenger) getApplication();
 
 		// Register handler for Key events
-		keyInterpreter = new NavigationKeyInterpreter(this, 200, 5);
+		keyInterpreter = new KeyInterpreter(this, 200, 5);
 
 		// get the ConversationModel from MessageListActivity
 		conversation = getIntent().getParcelableExtra("conversation");
@@ -110,33 +110,32 @@ public class ConversationViewActivity extends ListActivity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onNavKeyInterpreterResult(ResultCode code) {
-		// TODO Auto-generated method stub
+	public void onKeyInterpreterResult(ResultCode code, Object data) {
 		switch (code) {
-		case UP:
-		case UP_REPEAT:
+		case NAVIGATION_UP:
+		case NAVIGATION_UP_REPEAT:
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 					KeyEvent.KEYCODE_DPAD_UP));
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 					KeyEvent.KEYCODE_DPAD_UP));
 			break;
-		case UP_REPEAT_LONG:
-			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
+		case NAVIGATION_UP_REPEAT_LONG:
+			for (int i = 0; i < (Long) data; i++) {
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 						KeyEvent.KEYCODE_DPAD_UP));
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 						KeyEvent.KEYCODE_DPAD_UP));
 			}
 			break;
-		case DOWN:
-		case DOWN_REPEAT:
+		case NAVIGATION_DOWN:
+		case NAVIGATION_DOWN_REPEAT:
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 					KeyEvent.KEYCODE_DPAD_DOWN));
 			dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
 					KeyEvent.KEYCODE_DPAD_DOWN));
 			break;
-		case DOWN_REPEAT_LONG:
-			for (int i = 0; i < keyInterpreter.getKeyRepeatLongThreshold(); i++) {
+		case NAVIGATION_DOWN_REPEAT_LONG:
+			for (int i = 0; i < (Long) data; i++) {
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
 						KeyEvent.KEYCODE_DPAD_DOWN));
 				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,

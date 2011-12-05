@@ -10,14 +10,14 @@ import android.widget.TextView;
 import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.MessageModel;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.KeyInterpreter;
+import edu.berkeley.cs169.util.KeyInterpreter.KeyInterpreterResultListener;
 
 //view that is shown when an SMS_RECEIVED broadcast is received
 public class PopupActivity extends Activity implements
-		NavigationKeyInterpreterResultListener {
+		KeyInterpreterResultListener {
 	BlindlyMessenger app;
-	NavigationKeyInterpreter keyInterpreter;
+	KeyInterpreter keyInterpreter;
 
 	MessageModel mMessage;
 
@@ -29,7 +29,7 @@ public class PopupActivity extends Activity implements
 
 		app = (BlindlyMessenger) getApplication();
 
-		keyInterpreter = new NavigationKeyInterpreter(this);
+		keyInterpreter = new KeyInterpreter(this);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class PopupActivity extends Activity implements
 		String greeting = getResources().getString(R.string.popup_tts);
 		app.output(String.format("%s %s", greeting, mMessage.getFrom()));
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -121,12 +121,12 @@ public class PopupActivity extends Activity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void onNavKeyInterpreterResult(ResultCode code) {
+	public void onKeyInterpreterResult(ResultCode code, Object data) {
 		switch (code) {
-		case UP:
+		case NAVIGATION_UP:
 			startListen();
 			break;
-		case DOWN:
+		case NAVIGATION_DOWN:
 			startReply();
 			break;
 		case UP_AND_DOWN:

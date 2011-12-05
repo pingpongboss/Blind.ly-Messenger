@@ -15,14 +15,14 @@ import edu.berkeley.cs169.BlindlyMessenger;
 import edu.berkeley.cs169.R;
 import edu.berkeley.cs169.model.MessageModel;
 import edu.berkeley.cs169.util.AndroidUtils;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter;
-import edu.berkeley.cs169.util.NavigationKeyInterpreter.NavigationKeyInterpreterResultListener;
+import edu.berkeley.cs169.util.KeyInterpreter;
+import edu.berkeley.cs169.util.KeyInterpreter.KeyInterpreterResultListener;
 
 // entry point of the app
 public class MainActivity extends Activity implements
-		NavigationKeyInterpreterResultListener {
+		KeyInterpreterResultListener {
 	BlindlyMessenger app;
-	NavigationKeyInterpreter keyInterpreter;
+	KeyInterpreter keyInterpreter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements
 		app = (BlindlyMessenger) getApplication();
 
 		// delegates the key presses to the Interpreter
-		keyInterpreter = new NavigationKeyInterpreter(this);
+		keyInterpreter = new KeyInterpreter(this);
 
 		// allow clicking on Up and Down screen elements
 		LinearLayout layoutUp = (LinearLayout) findViewById(R.id.layout_up);
@@ -113,12 +113,12 @@ public class MainActivity extends Activity implements
 
 	// callback from the Interpreter, when it detects that a series of key
 	// events has some meanings ag
-	public void onNavKeyInterpreterResult(ResultCode code) {
+	public void onKeyInterpreterResult(ResultCode code, Object data) {
 		switch (code) {
-		case UP:
+		case NAVIGATION_UP:
 			startCompose();
 			break;
-		case DOWN:
+		case NAVIGATION_DOWN:
 			startRead();
 			break;
 		case UP_AND_DOWN:

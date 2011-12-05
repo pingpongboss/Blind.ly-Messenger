@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import edu.berkeley.cs169.model.MorseCodeModel;
 
 public class Utils {
-	public static final long INPUT_SPEED_BASE = 100;
 
 	// Utility method that converts string text to MorseCodeModel.
 	public static MorseCodeModel textToMorse(String text) {
