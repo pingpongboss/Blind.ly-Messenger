@@ -23,11 +23,10 @@
     <string name="message_input_send">Send</string>
     <string name="message_list_help">Tap the volume up and volume down buttons to navigate through the list. Tap both Volume Up and volume Down together to read a conversation.</string>
     <string name="message_list_shortcode">t</string>
-    <string name="message_list_tts">select the message</string>
     <string name="message_list_shortcode_loading">t</string>
     <string name="message_list_shortcode_done">h</string>
     <string name="message_list_tts_loading">Loading your conversations.</string>
-    <string name="message_list_tts_done">Select a conversation.</string>
+    <string name="message_list_tts_done">conversations loaded.</string>
     <string name="conversation_view_shortcode">m</string>
     <string name="conversation_view_tts">Conversation with </string>
     <string name="conversation_view_help">Tap the volume up and volume down buttons to navigate through the list. Tap both Volume Up and volume Down buttons together to reply to conversation.</string>

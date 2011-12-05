@@ -54,39 +54,6 @@ public class MessageListActivity extends ListActivity implements
 
 		// populate the ListView's backing ArrayList in the background
 		conversationList = new ArrayList<ConversationModel>();
-		backgroundTask = new Thread(new Runnable() {
-
-			public void run() {
-				populateConversationList();
-
-				if (backgroundTask.isInterrupted())
-					return;
-
-				// once finished, notify the user on the main UI thread
-				MessageListActivity.this.runOnUiThread(new Runnable() {
-
-					public void run() {
-						if (conversationList.size() == 0) {
-							alertEmpty();
-							return;
-						} else {
-							String alert = getResources().getString(
-									R.string.message_list_shortcode_done);
-							app.vibrate(alert);
-
-							String greeting = getResources().getString(
-									R.string.message_list_tts_done);
-							app.speak(greeting);
-						}
-						((MessageListAdapter) getListAdapter())
-								.notifyDataSetChanged();
-						getListView().requestFocus();
-					}
-				});
-			}
-		});
-		backgroundTask.setPriority(Thread.MIN_PRIORITY);
-		backgroundTask.start();
 
 		// read the name of the conversation partner when user selects an item
 		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -127,6 +94,18 @@ public class MessageListActivity extends ListActivity implements
 		String greeting = getResources().getString(
 				R.string.message_list_tts_loading);
 		app.speak(greeting);
+		
+		conversationList.clear();
+		((MessageListAdapter)getListAdapter()).notifyDataSetChanged();
+
+		backgroundTask = new Thread(new Runnable() {
+
+			public void run() {
+				startLoadConversations();
+			}
+		});
+		backgroundTask.setPriority(Thread.MIN_PRIORITY);
+		backgroundTask.start();
 
 		AndroidUtils.blankScreen(this);
 	}
@@ -232,6 +211,37 @@ public class MessageListActivity extends ListActivity implements
 		String alert = getResources().getString(R.string.message_list_help);
 
 		app.speak(alert, true);
+	}
+
+	private void startLoadConversations() {
+		populateConversationList();
+
+		if (backgroundTask.isInterrupted())
+			return;
+
+		// once finished, notify the user on the main UI thread
+		MessageListActivity.this.runOnUiThread(new Runnable() {
+
+			public void run() {
+				if (conversationList.size() == 0) {
+					alertEmpty();
+					return;
+				} else {
+					String alert = getResources().getString(
+							R.string.message_list_shortcode_done);
+					app.vibrate(alert);
+
+					String greeting = String.format(
+							"%d %s",
+							conversationList.size(),
+							getResources().getString(
+									R.string.message_list_tts_done));
+					app.speak(greeting);
+				}
+				((MessageListAdapter) getListAdapter()).notifyDataSetChanged();
+				getListView().requestFocus();
+			}
+		});
 	}
 
 	// makes the ConversationModels from the system's SMS messages
