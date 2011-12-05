@@ -125,10 +125,6 @@ public class KeyInterpreter {
 				}
 			} else if (upKeyDownTimestamp != -1) {
 				// UP was pressed
-				if (keyRepeated == 0) {
-					listener.onKeyInterpreterResult(ResultCode.NAVIGATION_UP,
-							null);
-				}
 
 				if (upDt > HOLD_THRESHOLD * speedBase) {
 					// DASH
@@ -141,16 +137,22 @@ public class KeyInterpreter {
 					listener.onKeyInterpreterResult(ResultCode.KEYBOARD_DOT,
 							null);
 				}
-			} else if (downKeyDownTimestamp != -1) {
-				// DOWN was pressed
+
 				if (keyRepeated == 0) {
-					listener.onKeyInterpreterResult(ResultCode.NAVIGATION_DOWN,
+					listener.onKeyInterpreterResult(ResultCode.NAVIGATION_UP,
 							null);
 				}
+			} else if (downKeyDownTimestamp != -1) {
+				// DOWN was pressed
 
 				model.getRawData().add(MorseCodeModel.SPACE);
 				listener.onKeyInterpreterResult(
 						ResultCode.KEYBOARD_LAST_LETTER, model.getLastChar());
+
+				if (keyRepeated == 0) {
+					listener.onKeyInterpreterResult(ResultCode.NAVIGATION_DOWN,
+							null);
+				}
 			}
 
 			// reset timestamps

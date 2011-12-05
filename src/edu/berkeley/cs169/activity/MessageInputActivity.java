@@ -160,9 +160,11 @@ public class MessageInputActivity extends Activity implements
 				switch (copyCode) {
 				case KEYBOARD_DOT:
 					visualizer.setText(existingText + ".");
+					app.speak("dot");
 					break;
 				case KEYBOARD_DASH:
 					visualizer.setText(existingText + "-");
+					app.speak("dash");
 					break;
 				case KEYBOARD_LAST_LETTER:
 					char character = (Character) copyData;

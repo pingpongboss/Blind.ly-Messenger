@@ -394,6 +394,14 @@ public class RecipientInputActivity extends ListActivity implements
 				case UP_AND_DOWN_LONG:
 					startHelp();
 					break;
+				case KEYBOARD_DOT:
+					if (contactsList.getSelectedItemPosition() != 1) {
+						app.speak("dot");
+					}
+					break;
+				case KEYBOARD_DASH:
+					app.speak("dash");
+					break;
 				case KEYBOARD_LAST_LETTER:
 					if (filterText.isFocused()) {
 						char character = (Character) copyData;
