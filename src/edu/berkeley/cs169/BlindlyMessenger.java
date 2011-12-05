@@ -68,7 +68,7 @@ public class BlindlyMessenger extends Application {
 		}
 
 		// check settings
-		if (force || isTtsEnabled())
+		if ((force || isTtsEnabled()) && text != null && !text.equals(""))
 			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 	}
 
@@ -84,12 +84,12 @@ public class BlindlyMessenger extends Application {
 
 	// vibrate a message if user enabled vibrations in the settings
 	public void vibrate(String text) {
-		// check settings
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		if (isVibrateEnabled()) {
+		if (isVibrateEnabled() && text != null && !text.equals("")) {
 			// get morse code from text
 			long[] data = Utils.vibratePattern(text);
+			// check settings
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(this);
 			int baseSpeed = Integer.parseInt(prefs.getString("vibrate_speed",
 					"100"));
 

@@ -8,11 +8,11 @@
     <string name="main_up">COMPOSE</string>
     <string name="main_down">READ</string>
     <string name="recipient_input_shortcode">i</string>
-    <string name="recipient_input_help">Use volume up to tap out Morse Code. Tap volume up for dot, hold volume up for dash. Use Volume Down to start navigating the list. Tap both Volume Up and Down at the same time to select.</string>
+    <string name="recipient_input_help">First type the beginning of the contact name using Morse Code. Tap volume up for dot, hold volume up for dash, and tap volume down for the next character. Tap volume down again for the next word. Tap volume up and down together to start navigating the list. Once you have chosen the correct contact, tap volume Up and Down again at the same time.</string>
     <string name="recipient_input_tts">Input recipient name.</string>
     <string name="recipient_input_hint">Enter recipient</string>
     <string name="message_input_shortcode">s</string>
-    <string name="message_input_help">Tap volume up for dot, hold volume up for dash, press volume down to send</string>
+    <string name="message_input_help">Type the message using Morse Code. Tap volume up for dot, hold volume up for dash, and tap volume down for the next character. Tap volume down again for the next word. Tap volume up and down together to send the message.</string>
     <string name="message_input_tts">Compose message to</string>
     <string name="message_input_sent">Message\nSent</string>
     <string name="message_input_hint">Compose message body</string>
@@ -21,7 +21,7 @@
     <string name="name_self">Me</string>
     <string name="filter_hint">type a contact or a phone number</string>
     <string name="message_input_send">Send</string>
-    <string name="message_list_help">Use Volume Up to go up. Use Volume Down to go down. Tap both Volume Up and Down at same time to select.</string>
+    <string name="message_list_help">Tap the volume up and volume down buttons to navigate through the list. Tap both Volume Up and volume Down together to read a conversation.</string>
     <string name="message_list_shortcode">t</string>
     <string name="message_list_tts">select the message</string>
     <string name="message_list_shortcode_loading">t</string>
@@ -30,7 +30,7 @@
     <string name="message_list_tts_done">Select a conversation.</string>
     <string name="conversation_view_shortcode">m</string>
     <string name="conversation_view_tts">Conversation with </string>
-    <string name="conversation_view_help">Use volume up and volume down keys to go through messages. Press volume up and volume together to reply to conversation.</string>
+    <string name="conversation_view_help">Tap the volume up and volume down buttons to navigate through the list. Tap both Volume Up and volume Down buttons together to reply to conversation.</string>
     <string name="first_run_message">This message will only play once. Thank you for installing Blindly Messenger. To turn on text to speech after this message, use the touch screen to press Menu and Preferences. After you are set up, you can use the application without using the touchscreen. On any screen, long hold and release volume up and down for help on that screen. Enjoy!</string>
     <string name="default_vibrate_speed">50</string>
     <string name="default_input_speed">150</string>

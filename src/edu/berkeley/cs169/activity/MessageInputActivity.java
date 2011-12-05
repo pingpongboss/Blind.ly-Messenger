@@ -168,6 +168,8 @@ public class MessageInputActivity extends Activity implements
 					break;
 				case KEYBOARD_LAST_LETTER:
 					char character = (Character) copyData;
+					
+					if (character == 0) break;
 
 					if (character == ' ') {
 						visualizer.setText(existingText + "\n");

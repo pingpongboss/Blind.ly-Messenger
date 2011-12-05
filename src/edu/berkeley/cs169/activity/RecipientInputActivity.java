@@ -405,6 +405,10 @@ public class RecipientInputActivity extends ListActivity implements
 				case KEYBOARD_LAST_LETTER:
 					if (filterText.isFocused()) {
 						char character = (Character) copyData;
+
+						if (character == 0)
+							break;
+
 						// do not allow spaces when typing a recipient or number
 						filterText.setText(filterText.getText().toString()
 								+ character);
