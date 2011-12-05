@@ -16,7 +16,8 @@ public class AndroidUtils {
 	public static void sendSMSHelper(String phoneNumber, String message,
 			Context c) {
 		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(phoneNumber, null, message, null, null);
+		sms.sendMultipartTextMessage(phoneNumber, null,
+				sms.divideMessage(message), null, null);
 
 		ContentValues values = new ContentValues();
 		values.put("address", phoneNumber);
@@ -30,7 +31,7 @@ public class AndroidUtils {
 				.getDefaultSharedPreferences(activity);
 		boolean blank = prefs.getBoolean("blank", activity.getResources()
 				.getBoolean(R.bool.default_blank));
-		
+
 		activity.findViewById(R.id.black).setVisibility(
 				blank ? View.VISIBLE : View.GONE);
 	}
