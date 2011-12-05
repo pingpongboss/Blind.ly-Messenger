@@ -94,8 +94,8 @@ public class MessageListActivity extends ListActivity implements
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
-		
-		//accommodate touch preference
+
+		// accommodate touch preference
 		if (!app.isTouch()) {
 			getListView().setOnTouchListener(new OnTouchListener() {
 
@@ -105,7 +105,7 @@ public class MessageListActivity extends ListActivity implements
 			});
 		}
 
-		//display list items
+		// display list items
 		setListAdapter(new MessageListAdapter(this, R.layout.message_list_item,
 				conversationList));
 
@@ -190,8 +190,8 @@ public class MessageListActivity extends ListActivity implements
 			break;
 		}
 	}
-	
-	//enable tap to go to conversation view
+
+	// enable tap to go to conversation view
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (app.isTouch()) {
@@ -222,7 +222,8 @@ public class MessageListActivity extends ListActivity implements
 		// determine how many SMS messages to retrieve
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		int messageLimit = Integer.parseInt(prefs.getString("messages", "200"));
+		int messageLimit = Integer.parseInt(prefs.getString("messages",
+				getResources().getString(R.string.default_messages)));
 
 		// go through each SMS message and put it into the correct
 		// ConversationModel

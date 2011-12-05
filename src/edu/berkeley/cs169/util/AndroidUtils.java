@@ -10,14 +10,14 @@ import android.telephony.SmsManager;
 import android.view.View;
 import edu.berkeley.cs169.R;
 
-
 //utility class that uses Android specific tools
 public class AndroidUtils {
 	// Takes phone number and an message and sends SMS message.
-	public static void sendSMSHelper(String phoneNumber, String message, Context c) {
+	public static void sendSMSHelper(String phoneNumber, String message,
+			Context c) {
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, null, null);
-		
+
 		ContentValues values = new ContentValues();
 		values.put("address", phoneNumber);
 		values.put("body", message);
@@ -28,7 +28,10 @@ public class AndroidUtils {
 	public static void blankScreen(Activity activity) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(activity);
+		boolean blank = prefs.getBoolean("blank", activity.getResources()
+				.getBoolean(R.bool.default_blank));
+		
 		activity.findViewById(R.id.black).setVisibility(
-				prefs.getBoolean("blank", false) ? View.VISIBLE : View.GONE);
+				blank ? View.VISIBLE : View.GONE);
 	}
 }

@@ -67,7 +67,9 @@ public class BlindlyMessenger extends Application {
 		// check settings
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (force || prefs.getBoolean("tts", false))
+		if (force
+				|| prefs.getBoolean("tts",
+						getResources().getBoolean(R.bool.default_tts)))
 			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 	}
 
@@ -84,7 +86,10 @@ public class BlindlyMessenger extends Application {
 		// check settings
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("vibrate", true)) {
+		if (prefs.getBoolean(
+				"vibrate",
+				prefs.getBoolean("tts",
+						getResources().getBoolean(R.bool.default_vibrate)))) {
 			// get morse code from text
 			long[] data = Utils.vibratePattern(text);
 			int baseSpeed = Integer.parseInt(prefs.getString("vibrate_speed",
@@ -132,7 +137,8 @@ public class BlindlyMessenger extends Application {
 	public int getInputSpeedBase() {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		return Integer.parseInt(prefs.getString("input_speed", "100"));
+		return Integer.parseInt(prefs.getString("input_speed", getResources()
+				.getString(R.string.default_input_speed)));
 	}
 
 	// utility method to intelligently return whether the app should respond to
@@ -140,7 +146,9 @@ public class BlindlyMessenger extends Application {
 	public boolean isTouch() {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		return prefs.getBoolean("touch", true)
-				&& !prefs.getBoolean("blank", false);
+		return prefs.getBoolean("touch",
+				getResources().getBoolean(R.bool.default_touch))
+				&& !prefs.getBoolean("blank",
+						getResources().getBoolean(R.bool.default_blank));
 	}
 }
