@@ -9,16 +9,20 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import edu.berkeley.cs169.R;
+import edu.berkeley.cs169.activity.RecipientInputActivity;
 import edu.berkeley.cs169.activity.RecipientInputActivity.ContactCursor;
 
 //adapter which knows how to make views from contacts for RecipientInputActivity
 public class RecipientInputAdapter extends CursorAdapter {
+	RecipientInputActivity mActivity;
 	LayoutInflater mInflater;
 	ContactCursor mCursor;
 
-	public RecipientInputAdapter(Context context, ContactCursor c) {
-		super(context, c);
-		mInflater = LayoutInflater.from(context);
+	public RecipientInputAdapter(RecipientInputActivity activity,
+			ContactCursor c) {
+		super(activity, c);
+		mActivity = activity;
+		mInflater = LayoutInflater.from(activity);
 		mCursor = c;
 	}
 
@@ -81,5 +85,14 @@ public class RecipientInputAdapter extends CursorAdapter {
 	static class ViewHolder {
 		TextView name;
 		TextView number;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+
+		if (getCount() == 1) {
+mActivity.onAdapterEmpty();
+		}
 	}
 }

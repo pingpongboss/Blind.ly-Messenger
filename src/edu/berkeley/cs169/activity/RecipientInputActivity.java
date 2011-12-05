@@ -450,4 +450,9 @@ public class RecipientInputActivity extends ListActivity implements
 		empty.setText("No\nContacts");
 	}
 
+	public void onAdapterEmpty() {
+		app.output("No matches. Starting over.");
+		filterText.setText("");
+	}
+
 }
