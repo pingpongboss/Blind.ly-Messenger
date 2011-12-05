@@ -3,24 +3,28 @@
 
     <PreferenceCategory android:title="Main Preferences" >
 
-        <ListPreference android:key="alert" android:title="Incoming SMS alert method" android:entryValues="@array/alerts" android:entries="@array/alerts" android:summary="Choose alert method for incoming SMS messages" android:defaultValue="@string/default_alert" android:dialogTitle="Choose alert method"/>
+        <ListPreference
+            android:defaultValue="@string/default_alert"
+            android:dialogTitle="Choose alert method"
+            android:entries="@array/alerts"
+            android:entryValues="@array/alerts"
+            android:key="alert"
+            android:summary="Choose alert method for incoming SMS messages"
+            android:title="Incoming SMS alert method" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/default_blank"
             android:disableDependentsState="true"
             android:key="blank"
-            android:summaryOff="Screen on for touch navigation"
-            android:summaryOn="Blanks the screen to save power"
+            android:summary="Turn off the screen"
             android:title="Blank screen" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/default_touch"
             android:dependency="blank"
             android:key="touch"
-            android:summaryOff="Only navigate with Volume keys"
-            android:summaryOn="Navigate by touching the screen"
+            android:summary="Navigate by touching the screen"
             android:title="Allow touch input" />
-        
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Output Preferences" >
