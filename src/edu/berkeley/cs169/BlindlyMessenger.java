@@ -68,8 +68,11 @@ public class BlindlyMessenger extends Application {
 		}
 
 		// check settings
-		if ((force || isTtsEnabled()) && text != null && !text.equals(""))
+		if ((force || isTtsEnabled()) && text != null && !text.equals("")) {
+			if (text.equals(" "))
+				text = "space";
 			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+		}
 	}
 
 	// speak a message if user enabled text-to-speech in the settings
